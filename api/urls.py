@@ -1,8 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
-urlpatterns = [
+urlpatterns = [    
+    path('account/', include('account.urls')),
+    
     path('exchanges/', views.ExchangeListAPIView.as_view(), name='get-exchanges'),
     path('exchanges/<int:pk>/', views.ExchangeRetrieveAPIView.as_view(),
          name='get-exchange'),
