@@ -6,13 +6,13 @@ from . import models
 class ExchangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Exchange
-        fields = ['id', 'name', 'logo']
+        fields = ['id', 'name', 'slug', 'logo']
 
 
 class CoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Coin
-        fields = ['id', 'name', 'short_name', 'icon']
+        fields = ['id', 'short_name', 'name', 'icon']
 
 
 class PortfolioSerializer(serializers.ModelSerializer):

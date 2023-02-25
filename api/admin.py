@@ -6,6 +6,7 @@ from .models import Portfolio
 from .models import PortfolioHolding
 from .models import PortfolioSnapshot
 from .models import Watchlist
+from .models import WatchlistCoin
 from .models import CoinExchangeInfo
 
 # Register your models here.
@@ -19,3 +20,4 @@ admin.site.register(PortfolioHolding)
 admin.site.register(PortfolioSnapshot)
 admin.site.register(Watchlist)
 admin.site.register(CoinExchangeInfo)
+admin.site.register(WatchlistCoin)
