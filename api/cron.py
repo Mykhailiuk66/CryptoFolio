@@ -1,7 +1,7 @@
 from datetime import date
 from .models import Coin, Exchange, CoinExchangeInfo
 
-from .utils import ExchangeManagerFactory
+from .utils.exchange_managers import ExchangeManagerFactory
 
 exchanges = ['binance', 'bybit']
 

@@ -1,6 +1,5 @@
 from rest_framework.exceptions import ValidationError
-from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
-from rest_framework.generics import (GenericAPIView, ListAPIView, RetrieveAPIView,
+from rest_framework.generics import (ListAPIView, RetrieveAPIView,
                                      RetrieveUpdateDestroyAPIView, ListCreateAPIView,
                                      CreateAPIView)
 
@@ -8,10 +7,9 @@ from . import models
 from . import serializers
 
 from .cron import update_coins_info
-from .util.misc import calculate_portfolio_snapshots
+from .utils.misc import calculate_portfolio_snapshots
 
-update_coins_info()
-print('update_coins_info******************************************')
+# update_coins_info() # temp
 
 class ExchangeListAPIView(ListAPIView):
     queryset = models.Exchange.objects.all()
@@ -27,12 +25,6 @@ class ExchangeRetrieveAPIView(RetrieveAPIView):
 class CoinListAPIView(ListAPIView):
     queryset = models.Coin.objects.all()
     serializer_class = serializers.CoinSerializer
-
-
-class CoinRetrieveAPIView(RetrieveAPIView):
-    queryset = models.Coin.objects.all()
-    serializer_class = serializers.CoinSerializer
-
 
 class PortfolioRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = models.Portfolio.objects.all()
@@ -82,9 +74,7 @@ class PortfolioHoldingCreateAPIView(CreateAPIView):
         serializer.save(portfolio=portfolio)
 
 
-class WatchlistUpdateDestroyAPIView(GenericAPIView,
-                                    DestroyModelMixin,
-                                    UpdateModelMixin):
+class WatchlisRetrievetUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.WatchlistSerializer
 
     def get_queryset(self):
@@ -98,6 +88,12 @@ class WatchlistListCreateAPIView(ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         return models.Watchlist.objects.filter(user=user)
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return serializers.WatchlistListSerializer
+        elif self.request.method == 'POST':
+            return serializers.WatchlistSerializer
 
 
 class PortfolioHoldingsByPortfolioAPIView(ListAPIView):
@@ -118,3 +114,37 @@ class PortfolioSnapshotListAPIView(ListAPIView):
         portfolio_id = self.kwargs['pk']
 
         return models.PortfolioSnapshot.objects.filter(portfolio_id=portfolio_id, portfolio__user=user)
+
+
+class CoinExchangeHistoryAPIView(ListAPIView):
+    serializer_class = serializers.CoinExchangeInfoSerializer
+
+    def get_queryset(self):
+        coin_slug = self.kwargs['coin_slug']
+        exchange_slug = self.kwargs['exchange_slug']
+
+        return models.CoinExchangeInfo.objects.filter(coin__slug__iexact=coin_slug, exchange__slug=exchange_slug)
+
+
+class TrendingCoinsAPIView(ListAPIView):
+    serializer_class = serializers.CoinExchangeInfoExtendedSerializer
+
+    def get_queryset(self):
+        max_objects = 50
+
+        coin_exchange_infos = models.CoinExchangeInfo.objects.order_by('-date')
+        coin_exchange_infos = sorted(coin_exchange_infos,
+                                     key=lambda o: o.get_turnover if o.get_turnover else 0, reverse=True)
+
+        unique_short_names = set()
+        unique_objects = []
+        for obj in coin_exchange_infos:
+            short_name = obj.coin.short_name
+            if short_name not in unique_short_names:
+                unique_short_names.add(short_name)
+                unique_objects.append(obj)
+
+            if len(unique_objects) >= max_objects:
+                break
+
+        return unique_objects

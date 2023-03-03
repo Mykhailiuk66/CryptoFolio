@@ -21,11 +21,19 @@ class Exchange(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            base_slug = slugify(self.name)
+            unique_slug = base_slug
+            suffix = 1
+            while Exchange.objects.filter(slug=unique_slug).exists():
+                unique_slug = f"{base_slug}-{suffix}"
+                suffix += 1
+            self.slug = unique_slug
         super().save(*args, **kwargs)
 
 
 class Coin(models.Model):
+    slug = models.SlugField(unique=True, max_length=30,
+                            null=False, blank=True)
     short_name = models.CharField(max_length=20)
     name = models.CharField(max_length=100, null=True, blank=True)
     icon = models.ImageField(upload_to='coins/',
@@ -37,6 +45,17 @@ class Coin(models.Model):
 
     def __str__(self):
         return f"{self.short_name}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base_slug = slugify(self.short_name)
+            unique_slug = base_slug
+            suffix = 1
+            while Coin.objects.filter(slug=unique_slug).exists():
+                unique_slug = f"{base_slug}-{suffix}"
+                suffix += 1
+            self.slug = unique_slug
+        super().save(*args, **kwargs)
 
 
 class CoinExchangeInfo(models.Model):
@@ -57,7 +76,7 @@ class CoinExchangeInfo(models.Model):
     @property
     def get_turnover(self):
         if self.volume:
-            return self.volume * self.price
+            return round((self.volume * self.price), 2)
         return None
 
     @property
@@ -69,7 +88,7 @@ class CoinExchangeInfo(models.Model):
     @property
     def get_price_change_perc(self):
         if self.prev_price_24h:
-            return ((self.price - self.prev_price_24h) / self.prev_price_24h) * 100
+            return round((((self.price - self.prev_price_24h) / self.prev_price_24h) * 100), 3)
         return None
 
     class Meta:
@@ -100,7 +119,7 @@ class PortfolioHolding(models.Model):
                           primary_key=True, editable=False)
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE,
                                   related_name='holdings')
-    coin = models.ForeignKey(Coin, on_delete=models.RESTRICT)
+    coin = models.ForeignKey(Coin, on_delete=models.CASCADE)
     exchange = models.ForeignKey(Exchange, on_delete=models.SET_NULL,
                                  default=None, null=True, blank=True)
     quantity = models.DecimalField(max_digits=40, decimal_places=20)
@@ -125,7 +144,7 @@ class PortfolioHolding(models.Model):
 class PortfolioSnapshot(models.Model):
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE,
                                   related_name='snapshots')
-    created = models.DateField(auto_now_add=True)
+    created = models.DateField(default=date.today, blank=True)
     value = models.DecimalField(max_digits=20, decimal_places=2)
 
     def __str__(self):
@@ -146,11 +165,13 @@ class Watchlist(models.Model):
 class WatchlistCoin(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,
                           primary_key=True, editable=False)
-    watchlist = models.ForeignKey(Watchlist, on_delete=models.CASCADE,
-                                  related_name='coins')
-    coin = models.ForeignKey(Coin, on_delete=models.RESTRICT)
+    watchlist = models.ForeignKey(
+        Watchlist, on_delete=models.CASCADE, related_name="watchlistcoins")
+    coin = models.ForeignKey(Coin, on_delete=models.CASCADE)
     exchange = models.ForeignKey(Exchange, on_delete=models.SET_NULL,
                                  default=None, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.watchlist.user.username} - {self.coin.short_name} - {self.exchange.name}"
+        return f"{self.watchlist.name} - {self.watchlist.user.username} - {self.coin.short_name} - {self.exchange.name}"
+
+
