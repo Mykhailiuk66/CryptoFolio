@@ -1,7 +1,8 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
-from rest_framework.generics import (ListAPIView, RetrieveAPIView,
-                                     RetrieveUpdateDestroyAPIView, ListCreateAPIView,
-                                     CreateAPIView)
+from rest_framework.generics import (ListAPIView, RetrieveAPIView, UpdateAPIView,
+                                     DestroyAPIView, RetrieveUpdateDestroyAPIView,
+                                     ListCreateAPIView, CreateAPIView)
 
 from . import models
 from . import serializers
@@ -10,6 +11,7 @@ from .cron import update_coins_info
 from .utils.misc import calculate_portfolio_snapshots
 
 # update_coins_info() # temp
+
 
 class ExchangeListAPIView(ListAPIView):
     queryset = models.Exchange.objects.all()
@@ -26,13 +28,10 @@ class CoinListAPIView(ListAPIView):
     queryset = models.Coin.objects.all()
     serializer_class = serializers.CoinSerializer
 
-class PortfolioRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+
+class PortfolioUpdateDestroyAPIView(UpdateAPIView, DestroyAPIView):
     queryset = models.Portfolio.objects.all()
     serializer_class = serializers.PortfolioSerializer
-
-    def retrieve(self, request, *args, **kwargs):
-        calculate_portfolio_snapshots(self.get_object())
-        return super().retrieve(request, *args, **kwargs)
 
     def get_queryset(self):
         user = self.request.user
@@ -113,7 +112,12 @@ class PortfolioSnapshotListAPIView(ListAPIView):
         user = self.request.user
         portfolio_id = self.kwargs['pk']
 
-        return models.PortfolioSnapshot.objects.filter(portfolio_id=portfolio_id, portfolio__user=user)
+        portfolio = get_object_or_404(models.Portfolio,
+                                      id=portfolio_id,
+                                      user=user)
+        calculate_portfolio_snapshots(portfolio)
+
+        return models.PortfolioSnapshot.objects.filter(portfolio=portfolio)
 
 
 class CoinExchangeHistoryAPIView(ListAPIView):
