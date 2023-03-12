@@ -3,6 +3,9 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.generics import (ListAPIView, RetrieveAPIView, UpdateAPIView,
                                      DestroyAPIView, RetrieveUpdateDestroyAPIView,
                                      ListCreateAPIView, CreateAPIView)
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 from . import models
 from . import serializers
@@ -118,6 +121,28 @@ class PortfolioSnapshotListAPIView(ListAPIView):
         calculate_portfolio_snapshots(portfolio)
 
         return models.PortfolioSnapshot.objects.filter(portfolio=portfolio)
+
+
+class CoinExchangeInfoAPIView(APIView):
+    def get(self, request):
+        coin_ids = request.query_params.getlist('coin_id')
+        exchange_ids = request.query_params.getlist('exchange_id')
+        
+        if len(coin_ids) != len(exchange_ids):
+            return Response({'error': 'Number of coin_ids must match number of exchange_ids'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        coin_exchange_infos = []
+        for coin_id, exchange_id in zip(coin_ids, exchange_ids):
+            try:   
+                coin_exchange_info = models.CoinExchangeInfo.objects.filter(coin_id=coin_id, exchange_id=exchange_id).order_by('-date').first()
+                coin_exchange_infos.append(coin_exchange_info)
+            except models.CoinExchangeInfo.DoesNotExist:
+                pass
+
+        serializer = serializers.CoinExchangeInfoSerializer(coin_exchange_infos, many=True)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 
 
 class CoinExchangeHistoryAPIView(ListAPIView):

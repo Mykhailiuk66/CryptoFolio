@@ -31,6 +31,8 @@ urlpatterns = [
     path('portfolios/<str:pk>/snapshots/', views.PortfolioSnapshotListAPIView.as_view(),
          name='portfolio_snapshots'),
 
+    path('coin-exchange-info/', views.CoinExchangeInfoAPIView.as_view(), name='coin-exchange-info'),
+
     path('history-prices/<slug:exchange_slug>/<slug:coin_slug>/',
          views.CoinExchangeHistoryAPIView.as_view(), name='history-prices'),
     path('trending/', views.TrendingCoinsAPIView.as_view(), name='trending-coins'),
