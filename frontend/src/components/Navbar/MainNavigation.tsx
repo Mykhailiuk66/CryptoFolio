@@ -1,14 +1,16 @@
 import { Navbar, NavbarBrand, NavbarMenu, NavbarMenuToggle, NavbarContent, Link, Input, Button } from "@nextui-org/react";
 import { Image } from "@nextui-org/image";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import UserDropdown from "./UserDropdown";
 import { useLocation } from "react-router-dom";
 import NavbarLink from "./NavbarLink";
 import NavbarMenuLink from "./NavbarMenuLink";
+import AuthContext from "../../store/AuthContext";
 
 const MainNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { pathname } = useLocation();
+  const { user, logoutUser } = useContext(AuthContext)
 
   return (
     <Navbar
@@ -38,9 +40,9 @@ const MainNavigation = () => {
         </Link>
 
         <NavbarContent className="hidden md:flex gap-3">
-          <NavbarLink text="Home" href="/" pathname={pathname} />
-          <NavbarLink text="Portfolio" href="/portfolio" pathname={pathname} />
-          <NavbarLink text="Watchlist" href="/watchlist" pathname={pathname} />
+          <NavbarLink href="/" pathname={pathname}>Home</NavbarLink>
+          <NavbarLink href="/portfolio" pathname={pathname}>Portfolio</NavbarLink>
+          <NavbarLink href="/watchlist" pathname={pathname}>Watchlist</NavbarLink>
         </NavbarContent>
       </NavbarContent>
 
@@ -59,17 +61,32 @@ const MainNavigation = () => {
 
         />
 
+        {!user &&
+          (<Button
+            as={Link}
+            href="/login"
+            color="primary"
+            variant="ghost"
+            type="button"
+          >
+            Log In / Create Account
+          </Button>)
+        }
 
-        <Button color="primary" variant="ghost">
-          Log In / Create Account
-        </Button>
-        <UserDropdown></UserDropdown>
+        {user &&
+          (<UserDropdown></UserDropdown>)
+        }
       </NavbarContent>
 
       <NavbarMenu>
-        <NavbarMenuLink text="Home" href="/" pathname={pathname} onClick={() => setIsMenuOpen(false)} />
-        <NavbarMenuLink text="Portfolio" href="/portfolio" pathname={pathname} onClick={() => setIsMenuOpen(false)} />
-        <NavbarMenuLink text="Watchlist" href="/watchlist" pathname={pathname} onClick={() => setIsMenuOpen(false)} />
+        <NavbarMenuLink href="/" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Home</NavbarMenuLink>
+        <NavbarMenuLink href="/portfolio" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Portfolio</NavbarMenuLink>
+        <NavbarMenuLink href="/watchlist" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Watchlist</NavbarMenuLink>
+
+        {!user && (<NavbarMenuLink href="/login" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Log In</NavbarMenuLink>)}
+        {user && (<Button color="danger" onClick={logoutUser}>Log Out</Button>)}
+      
+      
       </NavbarMenu>
     </Navbar>
   );
