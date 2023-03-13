@@ -22,7 +22,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    # username = serializers.CharField(write_only=True, required=True)
+    username = serializers.CharField(required=True, validators=[
+                                     UniqueValidator(queryset=User.objects.all())])
     email = serializers.EmailField(
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())]
