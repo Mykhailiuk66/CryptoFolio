@@ -5,6 +5,7 @@ import Watchlist from "./pages/Watchlist";
 import Portfolios from "./pages/Portfolios";
 import Authentication from "./pages/Authentication";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import WatchlistProvider from "./components/ContextProviders/WatchlistProvider";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,9 @@ const router = createBrowserRouter([
         path: 'watchlist',
         element: (
           <PrivateRoute>
-            <Watchlist />
+            <WatchlistProvider>
+              <Watchlist />
+            </WatchlistProvider>
           </PrivateRoute>
         )
       },

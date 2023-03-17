@@ -1,11 +1,23 @@
-import { Navbar, NavbarBrand, NavbarMenu, NavbarMenuToggle, NavbarContent, Link, Input, Button } from "@nextui-org/react";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarMenu,
+  NavbarMenuToggle,
+  NavbarContent,
+  Link,
+  Input,
+  Button
+} from "@nextui-org/react";
 import { Image } from "@nextui-org/image";
 import { useState, useContext } from "react";
-import UserDropdown from "./UserDropdown";
 import { useLocation } from "react-router-dom";
+
+import UserDropdown from "./UserDropdown";
 import NavbarLink from "./NavbarLink";
 import NavbarMenuLink from "./NavbarMenuLink";
 import AuthContext from "../../store/AuthContext";
+import { FaSearch } from "react-icons/fa";
+
 
 const MainNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,8 +31,6 @@ const MainNavigation = () => {
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="full"
     >
-
-
       <NavbarContent justify="start">
         <NavbarContent className="md:hidden" justify="start">
           <NavbarMenuToggle aria-label={isMenuOpen ? "Close menu" : "Open menu"} />
@@ -56,6 +66,7 @@ const MainNavigation = () => {
           }}
           placeholder="Type to search..."
           size="sm"
+          startContent={<FaSearch color="success" size={18}/>}
           // startContent={<SearchIcon size={18} />}
           type="search"
 
@@ -85,8 +96,8 @@ const MainNavigation = () => {
 
         {!user && (<NavbarMenuLink href="/login" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Log In</NavbarMenuLink>)}
         {user && (<Button color="danger" onClick={logoutUser}>Log Out</Button>)}
-      
-      
+
+
       </NavbarMenu>
     </Navbar>
   );

@@ -1,7 +1,9 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { NextUIProvider } from "@nextui-org/react";
 import MainNavigation from "../Navbar/MainNavigation";
-import { AuthProvider } from "../AuthProvider/AuthProvider";
+import AuthProvider from "../ContextProviders/AuthProvider";
+import DataProvider from "../ContextProviders/DataProvider";
+
 
 const RootLayout: React.FC = () => {
   const navigate = useNavigate();
@@ -10,10 +12,12 @@ const RootLayout: React.FC = () => {
   return (<>
     <NextUIProvider navigate={navigate}>
       <AuthProvider>
-        {pathname !== '/login' && <MainNavigation />}
-        <main>
-          <Outlet />
-        </main>
+        <DataProvider>
+          {pathname !== '/login' && <MainNavigation />}
+          <main>
+            <Outlet />
+          </main>
+        </DataProvider>
       </AuthProvider>
     </NextUIProvider>
   </>)

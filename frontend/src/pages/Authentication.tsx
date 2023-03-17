@@ -10,7 +10,7 @@ const Authentication = () => {
   const navigate = useNavigate()
   const [selected, setSelected] = useState<string | number>("login");
   const { user } = useContext(AuthContext)
-  console.log(user)
+
   useEffect(() => {
     if (user) {
       navigate('/portfolio')

@@ -1,5 +1,5 @@
 import { Checkbox } from "@nextui-org/react";
-import Container from "../components/Container";
+import Container from "../components/Container/Container";
 
 const Home = () => {
   return (
