@@ -92,6 +92,9 @@ class WatchlistListCreateAPIView(ListCreateAPIView):
             return serializers.WatchlistListSerializer
         elif self.request.method == 'POST':
             return serializers.WatchlistSerializer
+    
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class PortfolioHoldingsByPortfolioAPIView(ListAPIView):
