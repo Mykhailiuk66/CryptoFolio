@@ -6,9 +6,6 @@ urlpatterns = [
     path('account/', include('account.urls')),
 
     path('exchanges/', views.ExchangeListAPIView.as_view(), name='get-exchanges'),
-    path('exchanges/<slug:slug>/', views.ExchangeRetrieveAPIView.as_view(),
-         name='get-exchange'),
-
     path('coins/', views.CoinListAPIView.as_view(), name='get-coins'),
 
     path('portfolios/', views.PortfolioListCreateAPIView.as_view(),
@@ -16,9 +13,9 @@ urlpatterns = [
     path('portfolios/<str:pk>/', views.PortfolioUpdateDestroyAPIView.as_view(),
          name='delete-update-portfolio'),
 
-    path('portfolio_holdings/', views.PortfolioHoldingCreateAPIView.as_view(),
+    path('portfolio-holdings/', views.PortfolioHoldingCreateAPIView.as_view(),
          name='get-portfolio-holdings'),
-    path('portfolio_holdings/<str:pk>/', views.PortfolioHoldingRetrieveUpdateDestroyAPIView.as_view(),
+    path('portfolio-holdings/<str:pk>/', views.PortfolioHoldingRetrieveUpdateDestroyAPIView.as_view(),
          name='get-delete-update-portfolio-holding'),
 
     path('watchlists/', views.WatchlistListCreateAPIView.as_view(),
@@ -26,10 +23,13 @@ urlpatterns = [
     path('watchlists/<str:pk>/', views.WatchlisRetrievetUpdateDestroyAPIView.as_view(),
          name='retrieve-delete-update-portfolio-holding'),
 
+    path('watchlist-coin/<str:pk>/', views.WatchlistCoinDestroyAPIView.as_view(),
+         name='delete-watchlist-coin'),
+
     path('portfolios/<str:pk>/holdings/', views.PortfolioHoldingsByPortfolioAPIView.as_view(),
          name='get-portfolio-holdings-by-portfolio-id'),
     path('portfolios/<str:pk>/snapshots/', views.PortfolioSnapshotListAPIView.as_view(),
-         name='portfolio_snapshots'),
+         name='portfolio-snapshots'),
 
     path('coin-exchange-info/', views.CoinExchangeInfoAPIView.as_view(), name='coin-exchange-info'),
 

@@ -6,6 +6,7 @@ from rest_framework.generics import (ListAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 
 from . import models
 from . import serializers
@@ -19,21 +20,16 @@ from .utils.misc import calculate_portfolio_snapshots
 class ExchangeListAPIView(ListAPIView):
     queryset = models.Exchange.objects.all()
     serializer_class = serializers.ExchangeSerializer
-
-
-class ExchangeRetrieveAPIView(RetrieveAPIView):
-    queryset = models.Exchange.objects.all()
-    serializer_class = serializers.ExchangeSerializer
-    lookup_field = 'slug'
+    permission_classes = [AllowAny]
 
 
 class CoinListAPIView(ListAPIView):
     queryset = models.Coin.objects.all()
     serializer_class = serializers.CoinSerializer
+    permission_classes = [AllowAny]
 
 
 class PortfolioUpdateDestroyAPIView(UpdateAPIView, DestroyAPIView):
-    queryset = models.Portfolio.objects.all()
     serializer_class = serializers.PortfolioSerializer
 
     def get_queryset(self):
@@ -125,24 +121,26 @@ class PortfolioSnapshotListAPIView(ListAPIView):
 
 class CoinExchangeInfoAPIView(APIView):
     def get(self, request):
-        coin_ids = request.query_params.getlist('coin_id')
-        exchange_ids = request.query_params.getlist('exchange_id')
-        
-        if len(coin_ids) != len(exchange_ids):
-            return Response({'error': 'Number of coin_ids must match number of exchange_ids'}, status=status.HTTP_400_BAD_REQUEST)
-        
+        coin_slugs = request.query_params.getlist('coin_slug')
+        exchange_slugs = request.query_params.getlist('exchange_slug')
+
+        if len(coin_slugs) != len(exchange_slugs):
+            return Response({'error': 'Number of coin_slugs must match number of exchange_slugs'}, status=status.HTTP_400_BAD_REQUEST)
+
         coin_exchange_infos = []
-        for coin_id, exchange_id in zip(coin_ids, exchange_ids):
-            try:   
-                coin_exchange_info = models.CoinExchangeInfo.objects.filter(coin_id=coin_id, exchange_id=exchange_id).order_by('-date').first()
-                coin_exchange_infos.append(coin_exchange_info)
+        for coin_slug, exchange_slug in zip(coin_slugs, exchange_slugs):
+            try:
+                coin_exchange_info = models.CoinExchangeInfo.objects.filter(
+                    coin__slug=coin_slug, exchange__slug=exchange_slug).order_by('-date').first()
+                if coin_exchange_info:
+                    coin_exchange_infos.append(coin_exchange_info)
             except models.CoinExchangeInfo.DoesNotExist:
                 pass
 
-        serializer = serializers.CoinExchangeInfoSerializer(coin_exchange_infos, many=True)
-        print(serializer.data)
+        serializer = serializers.CoinExchangeInfoSerializer(
+            coin_exchange_infos, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
 
 
 class CoinExchangeHistoryAPIView(ListAPIView):
@@ -157,6 +155,7 @@ class CoinExchangeHistoryAPIView(ListAPIView):
 
 class TrendingCoinsAPIView(ListAPIView):
     serializer_class = serializers.CoinExchangeInfoExtendedSerializer
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         max_objects = 50
@@ -177,3 +176,11 @@ class TrendingCoinsAPIView(ListAPIView):
                 break
 
         return unique_objects
+
+
+class WatchlistCoinDestroyAPIView(DestroyAPIView):
+    serializer_class = serializers.WatchlistCoinSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return models.WatchlistCoin.objects.filter(watchlist__user=user)
