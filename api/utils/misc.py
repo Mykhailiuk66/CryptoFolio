@@ -17,10 +17,9 @@ def calculate_portfolio_snapshots(portfolio):
 
     holdings = portfolio.holdings.all()
     while calc_date < today:
-
         total_value = Decimal(0)
         for holding in holdings:
-            latest_price = None
+            latest_price = holding.purchase_price
 
             if holding.sale_price:
                 latest_price = holding.sale_price
@@ -34,8 +33,7 @@ def calculate_portfolio_snapshots(portfolio):
                 if latest_price_info:
                     latest_price = latest_price_info.price
 
-            if latest_price:
-                total_value += latest_price * holding.quantity
+            total_value += latest_price * holding.quantity
 
         if total_value > 0:
             new_snapshot = PortfolioSnapshot.objects.create(

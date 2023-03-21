@@ -15,23 +15,37 @@ class CoinSerializer(serializers.ModelSerializer):
         fields = ['id', 'short_name', 'name', 'slug', 'icon']
 
 
-class PortfolioSerializer(serializers.ModelSerializer):
-    username = serializers.SerializerMethodField()
+class CoinExchangeInfoSerializer(serializers.ModelSerializer):
+    turnover = serializers.FloatField(source='get_turnover')
+    price_change = serializers.FloatField(
+        source='get_price_change', read_only=True)
+    price_change_perc = serializers.FloatField(
+        source='get_price_change_perc', read_only=True)
+    coin_short_name = serializers.CharField(
+        source='coin.short_name', read_only=True)
+    exchange_name = serializers.CharField(
+        source='exchange.name', read_only=True)
 
     class Meta:
-        model = models.Portfolio
-        fields = ['id', 'username', 'name', 'notes']
-
-    def get_username(self, obj):
-        return str(obj.user.username)
+        model = models.CoinExchangeInfo
+        fields = ['id', 'coin_short_name', 'exchange_name', 'date', 'price', 'volume', 'prev_price_24h',
+                  'high_price', 'low_price', 'turnover', 'price_change',
+                  'price_change_perc']
 
 
 class PortfolioHoldingSerializer(serializers.ModelSerializer):
+    price = serializers.SerializerMethodField(read_only=True)
+    coin_short_name = serializers.CharField(
+        source='coin.short_name', read_only=True)
+    exchange_name = serializers.CharField(
+        source='exchange.name', read_only=True)
+    value = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.PortfolioHolding
-        fields = ['id', 'portfolio', 'coin', 'exchange', 'quantity',
-                  'purchase_price', 'purchase_date', 'sale_price', 'sale_date']
+        fields = ['id', 'portfolio', 'coin_short_name', 'exchange_name', 'quantity',
+                  'purchase_price', 'purchase_date', 'sale_price', 'sale_date', 'value',
+                  'price']
 
     def validate_quantity(self, value):
         if value <= 0:
@@ -61,16 +75,34 @@ class PortfolioHoldingSerializer(serializers.ModelSerializer):
 
         return data
 
+    def get_price(self, obj):
+        coin_exchange_info = models.CoinExchangeInfo.objects.filter(
+            coin=obj.coin, exchange=obj.exchange).order_by('-date').first()
 
-class PortfolioSnapshotSerializer(serializers.ModelSerializer):
-    portfolio_name = serializers.SerializerMethodField(read_only=True)
+        return None if coin_exchange_info is None else coin_exchange_info.price
+
+    def get_value(self, obj):
+        price = self.get_price(obj)
+        if obj.sale_price:
+            return obj.quantity * obj.sale_price
+        elif price:
+            return obj.quantity * price
+        return obj.quantity * obj.purchase_price
+    
+
+class PortfolioSerializer(serializers.ModelSerializer):
+    holdings = PortfolioHoldingSerializer(
+        many=True, read_only=True)
 
     class Meta:
-        model = models.PortfolioSnapshot
-        fields = ['id', 'portfolio_name', 'created', 'value']
+        model = models.Portfolio
+        fields = ['id', 'name', 'notes', 'holdings']
 
-    def get_portfolio_name(self, obj):
-        return str(obj.portfolio.name)
+
+class PortfolioSnapshotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PortfolioSnapshot
+        fields = ['id', 'created', 'value']
 
 
 class WatchlistCoinSerializer(serializers.ModelSerializer):
@@ -109,24 +141,6 @@ class WatchlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Watchlist
         fields = ['id', 'name', 'coins']
-
-
-class CoinExchangeInfoSerializer(serializers.ModelSerializer):
-    turnover = serializers.FloatField(source='get_turnover')
-    price_change = serializers.FloatField(
-        source='get_price_change', read_only=True)
-    price_change_perc = serializers.FloatField(
-        source='get_price_change_perc', read_only=True)
-    coin_short_name = serializers.CharField(
-        source='coin.short_name', read_only=True)
-    exchange_name = serializers.CharField(
-        source='exchange.name', read_only=True)
-
-    class Meta:
-        model = models.CoinExchangeInfo
-        fields = ['id', 'coin_short_name', 'exchange_name', 'date', 'price', 'volume', 'prev_price_24h',
-                  'high_price', 'low_price', 'turnover', 'price_change',
-                  'price_change_perc']
 
 
 class CoinExchangeInfoExtendedSerializer(serializers.ModelSerializer):
