@@ -50,7 +50,7 @@ const MainNavigation = () => {
         </Link>
 
         <NavbarContent className="hidden md:flex gap-3">
-          <NavbarLink href="/" pathname={pathname}>Home</NavbarLink>
+          <NavbarLink href="/" pathname={pathname}>Explore</NavbarLink>
           <NavbarLink href="/portfolio" pathname={pathname}>Portfolio</NavbarLink>
           <NavbarLink href="/watchlist" pathname={pathname}>Watchlist</NavbarLink>
         </NavbarContent>
@@ -67,7 +67,6 @@ const MainNavigation = () => {
           placeholder="Type to search..."
           size="sm"
           startContent={<FaSearch color="success" size={18}/>}
-          // startContent={<SearchIcon size={18} />}
           type="search"
 
         />
@@ -90,7 +89,7 @@ const MainNavigation = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        <NavbarMenuLink href="/" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Home</NavbarMenuLink>
+        <NavbarMenuLink href="/" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Explore</NavbarMenuLink>
         <NavbarMenuLink href="/portfolio" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Portfolio</NavbarMenuLink>
         <NavbarMenuLink href="/watchlist" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Watchlist</NavbarMenuLink>
 

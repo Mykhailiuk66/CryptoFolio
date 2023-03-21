@@ -49,7 +49,9 @@ const WatchlistTopContent = ({
   } = useContext(WatchlistContext);
 
   useEffect(() => {
-    fetchWatchlists();
+    if (watchlists.length === 0){
+      fetchWatchlists();
+    }
   }, [watchlists.length]);
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -58,15 +60,12 @@ const WatchlistTopContent = ({
 
   const handleSave = (value: string) => {
     modalState === "Creating" ? addWatchlist(value) : editWatchlist(value)
-    setWatchlists([])
+    // setWatchlists([])
   }
 
-  const handleDelete = () => {
-    deleteWatchlist()
-    setSelectedWatchlist(undefined)
-    setWatchlists([])
-  }
-
+  // const handleDelete = () => {
+  //   deleteWatchlist()
+  // }
 
   const watchlist = watchlists.find((w) => w.id === selectedWatchlist)
 
@@ -120,7 +119,7 @@ const WatchlistTopContent = ({
             className="w-full sm:max-w-[25%]"
             placeholder="Search by name..."
             value={filterValue}
-            onClear={() => onClear()}
+            onClear={onSearchChange}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
@@ -154,7 +153,7 @@ const WatchlistTopContent = ({
                   key="delete"
                   className="text-danger"
                   color="danger"
-                  onPress={handleDelete}
+                  onPress={deleteWatchlist}
                   startContent={<MdDeleteOutline size={20} className={"text-danger"} />}
                 >
                   Delete

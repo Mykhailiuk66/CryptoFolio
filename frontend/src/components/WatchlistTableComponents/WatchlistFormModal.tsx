@@ -1,16 +1,11 @@
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input,
+  Modal, ModalContent, ModalHeader, ModalBody,
+  ModalFooter, Button, Input,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 
-type WatchlsitFormModalProps = {
+type WatchlistFormModalProps = {
   title: string;
   value?: string;
   isOpen: boolean;
@@ -18,10 +13,10 @@ type WatchlsitFormModalProps = {
   handleSave: (name: string) => void;
 }
 
-const WatchlsitFormModal = ({ title, value, isOpen, onOpenChange, handleSave }: WatchlsitFormModalProps) => {
+const WatchlistFormModal = ({ title, value, isOpen, onOpenChange, handleSave }: WatchlistFormModalProps) => {
   const [newValue, setNewValue] = useState(value);
 
-  useEffect(()=>{
+  useEffect(() => {
     setNewValue(value)
   }, [value, isOpen])
 
@@ -61,4 +56,4 @@ const WatchlsitFormModal = ({ title, value, isOpen, onOpenChange, handleSave }: 
 }
 
 
-export default WatchlsitFormModal
+export default WatchlistFormModal

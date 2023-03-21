@@ -1,10 +1,11 @@
-import { Selection, SortDescriptor } from "@nextui-org/react";
+import { SortDescriptor } from "@nextui-org/react";
 import Container from "../components/Container/Container";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { CoinData } from "../types";
 import WatchlistTopContent from "../components/WatchlistTableComponents/WatchlistTopContent";
 import CustomTable from "../components/TableComponents/CustomTable";
 import WatchlistContext from "../store/WatchlistContext";
+import WatchlistCell from "../components/WatchlistTableComponents/WatchlistCell";
 import { Column } from "../types";
 
 const columns: Column[] = [
@@ -41,7 +42,7 @@ const Watchlist = () => {
     if (watchlists.length > 0 && selectedWatchlist) {
       fetchWatchlistCoinsData();
     }
-  }, [watchlists.length, selectedWatchlist]);
+  }, [watchlists.length, selectedWatchlist, fetchWatchlistCoinsData]);
 
   const headerColumns = useMemo(() => {
     if (visibleColumns === "all")
@@ -95,14 +96,8 @@ const Watchlist = () => {
         columns={columns}
       />
     );
-  }, [
-    filterValue,
-    visibleColumns,
-    onSearchChange,
-    onClear,
-    watchlists.length,
-    columns
-  ]);
+  }, [filterValue, onSearchChange, onClear]);
+
 
   return (
     <Container>
@@ -112,6 +107,7 @@ const Watchlist = () => {
         topContent={topContent}
         headerColumns={headerColumns}
         sortedItems={sortedItems}
+        CellComponent={WatchlistCell}
       />
     </Container>
   );

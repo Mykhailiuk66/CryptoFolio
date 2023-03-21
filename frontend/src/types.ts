@@ -79,9 +79,11 @@ export type Watchlist = {
 	coins: WatchlistCoin[];
 };
 
+export type ModalState = "Editing" | "Creating" | null;
+
 export type WatchlistContextType = {
 	watchlists: Watchlist[];
-	selectedWatchlist?: string | undefined;
+	selectedWatchlist?: string;
 	watchlistCoinsData: CoinData[];
 	visibleColumns: Selection;
 	setWatchlists: React.Dispatch<React.SetStateAction<Watchlist[]>>;
@@ -93,10 +95,59 @@ export type WatchlistContextType = {
 	fetchWatchlists: () => Promise<void>;
 	fetchWatchlistCoinsData: () => Promise<void>;
 	removeWatchlistCoin: (watchlistcoinId: string) => Promise<void>;
-	addWatchlist: (name:string) => Promise<void>;
-	editWatchlist: (name:string) => Promise<void>;
+	addWatchlist: (name: string) => Promise<void>;
+	editWatchlist: (name: string) => Promise<void>;
 	deleteWatchlist: () => Promise<void>;
 };
 
+export type PortfolioContextType = {
+	portfolios: PortfolioType[];
+	selectedPortfolio?: string;
+	visibleColumns: Selection;
+	portfolioSnapshots: PortfolioSnapshot[];
+	setPortfolioSnapshots: React.Dispatch<
+		React.SetStateAction<PortfolioSnapshot[]>
+	>;
+	setPortfolios: React.Dispatch<React.SetStateAction<PortfolioType[]>>;
+	fetchPortfolios: () => Promise<void>;
+	setSelectedPortfolio: React.Dispatch<
+		React.SetStateAction<string | undefined>
+	>;
+	setVisibleColumns: React.Dispatch<React.SetStateAction<Selection>>;
+	addPortfolio: (newPortfolio: PortfolioFormType) => Promise<void>;
+	editPortfolio: (updatedPortfolio: PortfolioFormType) => Promise<void>;
+	deletePortfolio: () => Promise<void>;
+	fetchPortfolioSnapshots: () => Promise<void>;
+};
 
-export type ModalState = "Editing" | "Creating" | null
+export type ExtendedPortfolioHolding = {
+	id: string;
+	portfolio: string;
+	coin_short_name: string;
+	exchange_name: string;
+	quantity: number;
+	purchase_price: number;
+	purchase_date: string;
+	sale_price: number | null;
+	sale_date: string | null;
+	price: number | null;
+  value: number;
+};
+
+export type PortfolioType = {
+	id: string;
+	name: string;
+	notes: string | null;
+	holdings?: ExtendedPortfolioHolding[];
+};
+
+export type PortfolioFormType = {
+	name: string;
+	notes: string | null;
+};
+
+export type PortfolioSnapshot = {
+	id: number;
+	created: string;
+	value: number;
+};
