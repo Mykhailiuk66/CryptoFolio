@@ -72,7 +72,7 @@ class PortfolioHoldingCreateAPIView(CreateAPIView):
         serializer.save(portfolio=portfolio)
 
 
-class WatchlisRetrievetUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+class WatchlistRetrievetUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.WatchlistReadSerializer
 
     def get_queryset(self):
@@ -179,6 +179,14 @@ class TrendingCoinsAPIView(ListAPIView):
                 break
 
         return unique_objects
+
+
+class WatchlistCoinCreateAPIView(CreateAPIView):
+    serializer_class = serializers.CreateWatchlistCoinSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return models.WatchlistCoin.objects.filter(watchlist__user=user)
 
 
 class WatchlistCoinDestroyAPIView(DestroyAPIView):

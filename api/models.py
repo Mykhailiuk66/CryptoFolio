@@ -171,8 +171,7 @@ class WatchlistCoin(models.Model):
     watchlist = models.ForeignKey(
         Watchlist, on_delete=models.CASCADE, related_name="watchlistcoins")
     coin = models.ForeignKey(Coin, on_delete=models.CASCADE)
-    exchange = models.ForeignKey(Exchange, on_delete=models.SET_NULL,
-                                 default=None, null=True, blank=True)
+    exchange = models.ForeignKey(Exchange, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('watchlist', 'coin', "exchange")

@@ -20,9 +20,11 @@ urlpatterns = [
 
     path('watchlists/', views.WatchlistListCreateAPIView.as_view(),
          name='get-create-portfolio-holdings'),
-    path('watchlists/<str:pk>/', views.WatchlisRetrievetUpdateDestroyAPIView.as_view(),
+    path('watchlists/<str:pk>/', views.WatchlistRetrievetUpdateDestroyAPIView.as_view(),
          name='retrieve-delete-update-portfolio-holding'),
 
+    path('watchlist-coin/', views.WatchlistCoinCreateAPIView.as_view(),
+         name='create-watchlist-coin'),
     path('watchlist-coin/<str:pk>/', views.WatchlistCoinDestroyAPIView.as_view(),
          name='delete-watchlist-coin'),
 
