@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FormEvent, Key } from "react";
 import { Selection } from "@nextui-org/react";
 
 export type AuthTokensType = {
@@ -78,13 +78,14 @@ export type Watchlist = {
 	coins: WatchlistCoin[];
 };
 
-export type ModalState = "Editing" | "Creating" | null;
+export type ModalState = "ADD_WATCHLIST" | "EDIT_WATCHLIST" | "ADD_COIN" | null;
 
 export type WatchlistContextType = {
 	watchlists: Watchlist[];
 	selectedWatchlist?: string;
 	watchlistCoinsData: CoinData[];
 	visibleColumns: Selection;
+  addWatchlistCoin: (coinId: Key, exchangeId: Key) => Promise<void>
 	setWatchlists: React.Dispatch<React.SetStateAction<Watchlist[]>>;
 	setSelectedWatchlist: React.Dispatch<
 		React.SetStateAction<string | undefined>
@@ -166,7 +167,9 @@ export type CoinModalContextType = {
 export type CustomCoinExchangeType = {
 	exchage_name: string;
 	exchage_slug: string;
-	id: string;
+	exchage_id: number;
+	key: string;
+	id: number;
 	short_name: string;
 	name: string | null;
 	slug: string;

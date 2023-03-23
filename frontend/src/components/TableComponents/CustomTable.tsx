@@ -61,10 +61,6 @@ const CustomTable = <T,>({
             {(columnKey) => {
               return (
                 <TableCell align={"left"}>
-                  {/* <WatchlistCell
-                    item={item}
-                    columnKey={columnKey}
-                  /> */}
                   <CellComponent
                     item={item}
                     columnKey={columnKey}

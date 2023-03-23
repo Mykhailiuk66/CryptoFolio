@@ -18,7 +18,6 @@ const CustomRadio = (props: CustomRadioProps) => {
           "data-[selected=true]:border-primary",
         ),
         description: "text-gray-400",
-        // max-w-[300px] 
         wrapper: "invisible",
       }}
     >
