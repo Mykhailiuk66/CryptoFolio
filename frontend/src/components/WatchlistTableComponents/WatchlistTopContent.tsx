@@ -17,6 +17,7 @@ import WatchlistContext from "../../store/WatchlistContext";
 import { Column, ModalState } from "../../types";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import WatchlistFormModal from "./WatchlistFormModal";
+import { FaPlus } from "react-icons/fa6";
 
 
 type WatchlistTopContentType = {
@@ -49,7 +50,7 @@ const WatchlistTopContent = ({
   } = useContext(WatchlistContext);
 
   useEffect(() => {
-    if (watchlists.length === 0){
+    if (watchlists.length === 0) {
       fetchWatchlists();
     }
   }, [watchlists.length]);
@@ -60,12 +61,7 @@ const WatchlistTopContent = ({
 
   const handleSave = (value: string) => {
     modalState === "Creating" ? addWatchlist(value) : editWatchlist(value)
-    // setWatchlists([])
   }
-
-  // const handleDelete = () => {
-  //   deleteWatchlist()
-  // }
 
   const watchlist = watchlists.find((w) => w.id === selectedWatchlist)
 
@@ -123,6 +119,9 @@ const WatchlistTopContent = ({
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
+            <Button color="primary" variant="bordered" endContent={<FaPlus />}>
+              Add coin
+            </Button>
             <ColumnsDropdown
               columns={columns}
               visibleColumns={visibleColumns}

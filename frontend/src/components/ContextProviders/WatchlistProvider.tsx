@@ -84,9 +84,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
         },
       });
 
-      if (response.ok) {
-        console.log("Watchlist coin deleted successfully");
-      } else {
+      if (!response.ok) {
         throw new Error("Failed to delete watchlist coin");
       }
     } catch (error) {

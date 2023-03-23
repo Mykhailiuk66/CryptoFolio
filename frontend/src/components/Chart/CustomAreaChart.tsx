@@ -1,4 +1,4 @@
-import { XAxis, YAxis, Tooltip, AreaChart, Area, Brush, ResponsiveContainer } from "recharts";
+import { XAxis, YAxis, Tooltip, AreaChart, Area, Brush, ResponsiveContainer, CartesianGrid } from "recharts";
 import { Payload } from "recharts/types/component/DefaultLegendContent";
 import { DataKey } from "recharts/types/util/types";
 import { formatCurrency } from "../../utils";
@@ -16,7 +16,8 @@ type CustomizedAxisTickProps = {
 type CustomAreaChartType<T> = {
   data: T[];
   xDataKey: DataKey<T>;
-  yDataKey: DataKey<T>
+  yDataKey: DataKey<T>;
+  showGrid?: boolean;
 }
 type CustomTooltipType = {
   active?: boolean;
@@ -26,7 +27,7 @@ type CustomTooltipType = {
 
 const CustomizedAxisTick = ({ x, y, angle, payload }: CustomizedAxisTickProps) => (
   <g transform={`translate(${x},${y})`}>
-    <text x={0} y={0} dy={12} fontSize={12} textAnchor="end" fill="#82ca9d" transform={`rotate(${angle})`}>
+    <text x={0} y={0} dy={12} fontSize={12} textAnchor="end" fill="#82ca9d" transform={`rotate(${angle ?? 0})`}>
       {payload!.value.toString()}
     </text>
   </g>
@@ -47,7 +48,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipType) => {
 };
 
 
-const CustomAreaChart = <T,>({ data, xDataKey, yDataKey }: CustomAreaChartType<T>) => {
+const CustomAreaChart = <T,>({ data, xDataKey, yDataKey, showGrid }: CustomAreaChartType<T>) => {
   return (
     <ResponsiveContainer width="98%" height={350}>
       <AreaChart
@@ -69,9 +70,13 @@ const CustomAreaChart = <T,>({ data, xDataKey, yDataKey }: CustomAreaChartType<T
           tick={<CustomizedAxisTick />}
           dataKey={yDataKey}
           domain={['auto', (dataMax: number) => (dataMax * 1.05)]} />
+
+        {showGrid && <CartesianGrid strokeDasharray="1 3"/>}
+
         <Tooltip content={<CustomTooltip />} />
-        <Area type="monotone" dataKey={yDataKey} stroke="#82ca9d" fill="#82ca9d" />
-        <Brush dataKey={xDataKey} height={25} fill="#010100" stroke="#82ca9d" />
+        <XAxis dataKey="name" />
+        <Area type="monotone" dataKey={yDataKey} stroke="#12A081" fill="#12A081" />
+        <Brush dataKey={xDataKey} height={25} fill="#010100" stroke="#1ABF8B" />
       </AreaChart>
     </ResponsiveContainer>
   );

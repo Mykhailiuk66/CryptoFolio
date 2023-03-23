@@ -1,18 +1,14 @@
-import { Checkbox } from "@nextui-org/react";
 import Container from "../components/Container/Container";
+import CoinModalContext from "../store/CoinModalContext";
+import { useContext } from "react";
+import { Button } from "@nextui-org/react";
 
 const Home = () => {
+  const { openCoinInfoModal } = useContext(CoinModalContext)
+
   return (
     <Container>
-      <div className="flex gap-4">
-        Main Component
-        <Checkbox defaultSelected color="default">Default</Checkbox>
-        <Checkbox defaultSelected color="primary">Primary</Checkbox>
-        <Checkbox defaultSelected color="secondary">Secondary</Checkbox>
-        <Checkbox defaultSelected color="success">Success</Checkbox>
-        <Checkbox defaultSelected color="warning">Warning</Checkbox>
-        <Checkbox defaultSelected color="danger">Danger</Checkbox>
-      </div>
+      <Button onPress={() => openCoinInfoModal("binance", "btc")}></Button>
     </Container>)
 }
 
