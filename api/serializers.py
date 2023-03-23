@@ -125,7 +125,7 @@ class SimplifiedWatchlistCoinSerializer(serializers.ModelSerializer):
         fields = ['id', 'coin_slug', 'exchange_slug']
 
 
-class WatchlistListSerializer(serializers.ModelSerializer):
+class WatchlistReadSerializer(serializers.ModelSerializer):
     coins = SimplifiedWatchlistCoinSerializer(
         many=True, read_only=True, source='watchlistcoins')
 
