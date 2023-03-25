@@ -5,7 +5,6 @@ import {
   NavbarMenuToggle,
   NavbarContent,
   Link,
-  Input,
   Button
 } from "@nextui-org/react";
 import { Image } from "@nextui-org/image";
@@ -16,7 +15,6 @@ import UserDropdown from "./UserDropdown";
 import NavbarLink from "./NavbarLink";
 import NavbarMenuLink from "./NavbarMenuLink";
 import AuthContext from "../../store/AuthContext";
-import { FaSearch } from "react-icons/fa";
 import CoinSearchInput from "../CoinSearchInput/CoinSearchInput";
 
 

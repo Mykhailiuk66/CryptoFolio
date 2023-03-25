@@ -2,10 +2,10 @@ import { SortDescriptor } from "@nextui-org/react";
 import Container from "../components/Container/Container";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { CoinData } from "../types";
-import WatchlistTopContent from "../components/WatchlistTableComponents/WatchlistTopContent";
+import WatchlistTopContent from "../components/WatchlistComponents/WatchlistTopContent";
 import CustomTable from "../components/TableComponents/CustomTable";
 import WatchlistContext from "../store/WatchlistContext";
-import WatchlistCell from "../components/WatchlistTableComponents/WatchlistCell";
+import WatchlistCell from "../components/WatchlistComponents/WatchlistCell";
 import { Column } from "../types";
 
 const columns: Column[] = [
@@ -83,10 +83,6 @@ const Watchlist = () => {
     }
   }, []);
 
-  const onClear = useCallback(() => {
-    setFilterValue("");
-  }, []);
-
   const topContent = useMemo(() => {
     return (
       <WatchlistTopContent
@@ -95,7 +91,7 @@ const Watchlist = () => {
         columns={columns}
       />
     );
-  }, [filterValue, onSearchChange, onClear]);
+  }, [filterValue, onSearchChange]);
 
 
   return (

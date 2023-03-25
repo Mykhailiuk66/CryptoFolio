@@ -14,7 +14,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
   const [watchlists, setWatchlists] = useState<Watchlist[]>([]);
   const [selectedWatchlist, setSelectedWatchlist] = useState<string>();
   const [visibleColumns, setVisibleColumns] = useState<Selection>("all");
-  const [watchlistCoinsData, setwatchlistCoinsData] = useState<CoinData[]>([]);
+  const [watchlistCoinsData, setWatchlistCoinsData] = useState<CoinData[]>([]);
   const { authTokens } = useContext(AuthContext);
 
 
@@ -46,10 +46,10 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
 
       const params = new URLSearchParams();
       coins!.map((item) =>
-        params.append("coin_slug", item.coin_slug)
+        params.append("cs", item.coin_slug)
       );
       coins!.map((item) =>
-        params.append("exchange_slug", item.exchange_slug)
+        params.append("es", item.exchange_slug)
       );
 
       const response = await fetch(
@@ -64,7 +64,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
       );
       if (response.ok) {
         const data = await response.json();
-        setwatchlistCoinsData(data);
+        setWatchlistCoinsData(data);
       } else {
         throw new Error("Failed to fetch watchlists");
       }
@@ -194,7 +194,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
     if (watchlists.length > 0 && selectedWatchlist === undefined) {
       setSelectedWatchlist(watchlists[0].id.toString());
     }
-  }, [watchlists.length]);
+  }, [selectedWatchlist, watchlists, watchlists.length]);
 
 
   const contextData: WatchlistContextType = {
@@ -204,9 +204,8 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
     visibleColumns,
     addWatchlistCoin,
     setVisibleColumns,
-    setWatchlists,
     setSelectedWatchlist,
-    setwatchlistCoinsData,
+    setWatchlistCoinsData,
     fetchWatchlists,
     fetchWatchlistCoinsData,
     removeWatchlistCoin,

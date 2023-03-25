@@ -28,7 +28,7 @@ const WatchlistCell = ({ item, columnKey }: WatchlistCellProps) => {
     removeWatchlistCoin,
     selectedWatchlist,
     watchlists,
-    setwatchlistCoinsData
+    setWatchlistCoinsData
   } = useContext(WatchlistContext)
   const { coins, exchanges } = useContext(DataContext)
   const { openCoinInfoModal } = useContext(CoinModalContext)
@@ -42,7 +42,7 @@ const WatchlistCell = ({ item, columnKey }: WatchlistCellProps) => {
     const watchCoin = watchlistCoins?.find((wc) => wc.coin_slug === coin?.slug && wc.exchange_slug === exchange?.slug)
 
     removeWatchlistCoin(watchCoin?.id!)
-    setwatchlistCoinsData((prevState) => prevState.filter((wc) => wc.id !== item.id))
+    setWatchlistCoinsData((prevState) => prevState.filter((wc) => wc.id !== item.id))
   }
 
   switch (columnKey) {
