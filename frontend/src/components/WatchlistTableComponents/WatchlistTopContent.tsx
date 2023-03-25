@@ -1,41 +1,32 @@
 import { useContext, useEffect, useState } from "react";
 import {
-  Input,
-  Button,
-  Select,
-  SelectItem,
-  Dropdown,
-  DropdownTrigger,
-  DropdownItem,
-  DropdownMenu,
-  useDisclosure
+  Input, Button, Select, SelectItem, Dropdown, 
+  DropdownTrigger, DropdownItem, DropdownMenu, useDisclosure
 } from "@nextui-org/react";
 import { MdOutlineEdit, MdDeleteOutline, MdAddCircleOutline } from "react-icons/md";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaPlus } from "react-icons/fa6";
 
 import ColumnsDropdown from "../TableComponents/ColumnsDropdown";
 import WatchlistContext from "../../store/WatchlistContext";
-import { Column, ModalState } from "../../types";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import WatchlistModal from "./WatchlistModal";
-import { FaPlus } from "react-icons/fa6";
+import { Column, WatchlistModalState } from "../../types";
+import CustomModal from "../CustomModal/CustomModal";
 import WatchlistFormModalContent from "./WatchlistFormModalContent";
 import WatchlistCoinFormModalContent from "./WatchlistCoinFormModalContent";
 
 
 type WatchlistTopContentType = {
-  onClear: () => void;
   onSearchChange: (value?: string) => void;
   filterValue: string;
   columns: Column[],
 };
 
 const WatchlistTopContent = ({
-  onClear,
   onSearchChange,
   filterValue,
   columns
 }: WatchlistTopContentType) => {
-  const [modalState, setModalState] = useState<ModalState>();
+  const [modalState, setModalState] = useState<WatchlistModalState>();
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
@@ -65,7 +56,7 @@ const WatchlistTopContent = ({
 
   return (
     <>
-      <WatchlistModal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <CustomModal isOpen={isOpen} onOpenChange={onOpenChange}>
         {(onClose) => (
           <>
             {modalState === "ADD_COIN" && (
@@ -86,7 +77,7 @@ const WatchlistTopContent = ({
             )}
           </>
         )}
-      </WatchlistModal>
+      </CustomModal>
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <div className="flex w-full max-w-xs items-center gap-2">

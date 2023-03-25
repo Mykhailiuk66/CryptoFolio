@@ -2,3 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.datepicker-dark.rmdp-wrapper,
+.rmdp-container .datepicker-dark.ep-arrow::after {
+    background-color: #27272a;
+}
+
+.datepicker .rmdp-day:not(.rmdp-day-hidden) span:hover {
+    background-color: #18ac6e !important;
+}
+

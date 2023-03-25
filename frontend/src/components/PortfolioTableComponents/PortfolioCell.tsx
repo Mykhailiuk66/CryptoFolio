@@ -10,9 +10,10 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { IoMdArrowDropup } from "react-icons/io";
 import { formatCurrency, formatProfitLoss } from "../../utils";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { CoinData, ExtendedPortfolioHolding } from "../../types";
+import { ExtendedPortfolioHolding } from "../../types";
 import { Key, useContext } from "react";
 import DataContext from "../../store/DataContext";
+import CoinModalContext from "../../store/CoinModalContext";
 import PortfolioContext from "../../store/ProtfolioContext";
 
 
@@ -23,22 +24,24 @@ type PortfolioCellProps = {
 
 
 const PortfolioCell = ({ item, columnKey }: PortfolioCellProps) => {
-  const {
-    selectedPortfolio,
-    portfolios,
-    setPortfolios
-  } = useContext(PortfolioContext)
   const { coins, exchanges } = useContext(DataContext)
+  const { openCoinInfoModal } = useContext(CoinModalContext)
+  const { removePortfolioHolding, setModalState, onOpen, setSelectedPortfolioHolding } = useContext(PortfolioContext)
+
   const cellValue = item[columnKey as keyof ExtendedPortfolioHolding];
 
-  const handleRemove = () => {
+  const coin = coins.find((c) => c.short_name === item.coin_short_name)
+  const exchange = exchanges.find((e) => e.name === item.exchange_name)
 
+
+  const handleRemove = () => {
+    removePortfolioHolding(item.id)
   }
 
   switch (columnKey) {
     case "coin_short_name":
       return (
-        <p className="font-bold">
+        <p className="font-bold cursor-pointer" onClick={() => openCoinInfoModal(exchange!.slug, coin!.slug)}>
           {cellValue}
         </p>
       );
@@ -83,7 +86,7 @@ const PortfolioCell = ({ item, columnKey }: PortfolioCellProps) => {
             {priceDiff !== 0 && (
               <Chip className="capitalize" color={priceDiff >= 0 ? "success" : "danger"} variant="faded">
                 <p className="flex items-center">
-                  {formatProfitLoss((priceDiff*item.quantity))}
+                  {formatProfitLoss((priceDiff * item.quantity))}
                 </p>
               </Chip>
             )}
@@ -134,6 +137,13 @@ const PortfolioCell = ({ item, columnKey }: PortfolioCellProps) => {
               </Button>
             </DropdownTrigger>
             <DropdownMenu variant="flat" aria-label="Dropdown menu with shortcut">
+              <DropdownItem key="edit" onClick={() => {
+                setSelectedPortfolioHolding(item.id)
+                setModalState("EDIT_COIN")
+                onOpen()
+              }}>
+                Edit
+              </DropdownItem>
               <DropdownItem key="remove" className="text-danger" color="danger" onClick={handleRemove}>
                 Remove
               </DropdownItem>
