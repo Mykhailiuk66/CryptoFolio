@@ -8,7 +8,7 @@ def calculate_portfolio_snapshots(portfolio):
         portfolio=portfolio).order_by('-created').first()
 
     if latest_date is None:
-        latest_date = portfolio.created.date()
+        latest_date = portfolio.created.date() - timedelta(days=1)
     else:
         latest_date = latest_date.created
 
@@ -21,7 +21,7 @@ def calculate_portfolio_snapshots(portfolio):
         for holding in holdings:
             latest_price = holding.purchase_price
 
-            if holding.sale_price:
+            if holding.sale_price and (holding.sale_date >= calc_date):
                 latest_price = holding.sale_price
             else:
                 latest_price_info = CoinExchangeInfo.objects.filter(

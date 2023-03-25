@@ -83,10 +83,3 @@ class ExchangeManagerFactory:
         else:
             raise ValueError(f"Invalid exchange: {exchange}")
 
-
-if __name__ == '__main__':
-    client = BinanceSpotClient()
-    tickers = client.ticker_24hr(symbol='JASMYUSDT')
-    # tickers = client.ticker_price()
-    print(tickers)
-

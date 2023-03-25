@@ -33,19 +33,11 @@ class CoinExchangeInfoSerializer(serializers.ModelSerializer):
                   'price_change_perc']
 
 
-class PortfolioHoldingSerializer(serializers.ModelSerializer):
-    price = serializers.SerializerMethodField(read_only=True)
-    coin_short_name = serializers.CharField(
-        source='coin.short_name', read_only=True)
-    exchange_name = serializers.CharField(
-        source='exchange.name', read_only=True)
-    value = serializers.SerializerMethodField(read_only=True)
-
+class PortfolioHoldingCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.PortfolioHolding
-        fields = ['id', 'portfolio', 'coin_short_name', 'exchange_name', 'quantity',
-                  'purchase_price', 'purchase_date', 'sale_price', 'sale_date', 'value',
-                  'price']
+        fields = ['id', 'portfolio', 'coin', 'exchange', 'quantity',
+                  'purchase_price', 'purchase_date', 'sale_price', 'sale_date']
 
     def validate_quantity(self, value):
         if value <= 0:
@@ -75,6 +67,21 @@ class PortfolioHoldingSerializer(serializers.ModelSerializer):
 
         return data
 
+
+class PortfolioHoldingSerializer(serializers.ModelSerializer):
+    price = serializers.SerializerMethodField(read_only=True)
+    coin_short_name = serializers.CharField(
+        source='coin.short_name', read_only=True)
+    exchange_name = serializers.CharField(
+        source='exchange.name', read_only=True)
+    value = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = models.PortfolioHolding
+        fields = ['id', 'portfolio', 'coin_short_name', 'exchange_name', 'quantity',
+                  'purchase_price', 'purchase_date', 'sale_price', 'sale_date', 'value',
+                  'price']
+
     def get_price(self, obj):
         coin_exchange_info = models.CoinExchangeInfo.objects.filter(
             coin=obj.coin, exchange=obj.exchange).order_by('-date').first()
@@ -88,7 +95,7 @@ class PortfolioHoldingSerializer(serializers.ModelSerializer):
         elif price:
             return obj.quantity * price
         return obj.quantity * obj.purchase_price
-    
+
 
 class PortfolioSerializer(serializers.ModelSerializer):
     holdings = PortfolioHoldingSerializer(
@@ -112,6 +119,7 @@ class WatchlistCoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.WatchlistCoin
         fields = ['id', 'coin', 'exchange']
+
 
 class CreateWatchlistCoinSerializer(serializers.ModelSerializer):
     class Meta:

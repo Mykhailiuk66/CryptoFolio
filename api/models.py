@@ -61,7 +61,7 @@ class Coin(models.Model):
 class CoinExchangeInfo(models.Model):
     coin = models.ForeignKey(Coin, on_delete=models.CASCADE)
     exchange = models.ForeignKey(Exchange, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=date.today, blank=True)
     price = models.DecimalField(max_digits=40, decimal_places=20)
 
     volume = models.DecimalField(
@@ -120,8 +120,7 @@ class PortfolioHolding(models.Model):
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE,
                                   related_name='holdings')
     coin = models.ForeignKey(Coin, on_delete=models.CASCADE)
-    exchange = models.ForeignKey(Exchange, on_delete=models.SET_NULL,
-                                 default=None, null=True, blank=True)
+    exchange = models.ForeignKey(Exchange, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=40, decimal_places=20)
 
     purchase_price = models.DecimalField(max_digits=40, decimal_places=20)
