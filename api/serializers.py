@@ -154,19 +154,3 @@ class WatchlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Watchlist
         fields = ['id', 'name', 'coins']
-
-
-class CoinExchangeInfoExtendedSerializer(serializers.ModelSerializer):
-    coin = CoinSerializer()
-    exchange = ExchangeSerializer()
-    turnover = serializers.FloatField(source='get_turnover', read_only=True)
-    price_change = serializers.FloatField(
-        source='get_price_change', read_only=True)
-    price_change_perc = serializers.FloatField(
-        source='get_price_change_perc', read_only=True)
-
-    class Meta:
-        model = models.CoinExchangeInfo
-        fields = ['coin', 'exchange', 'date', 'price', 'volume', 'prev_price_24h',
-                  'high_price', 'low_price', 'turnover', 'price_change',
-                  'price_change_perc']

@@ -35,11 +35,10 @@ def calculate_portfolio_snapshots(portfolio):
 
             total_value += latest_price * holding.quantity
 
-        if total_value > 0:
-            new_snapshot = PortfolioSnapshot.objects.create(
-                portfolio=portfolio,
-                created=calc_date,
-                value=total_value
-            )
+        PortfolioSnapshot.objects.create(
+            portfolio=portfolio,
+            created=calc_date,
+            value=total_value
+        )
 
         calc_date += timedelta(days=1)
