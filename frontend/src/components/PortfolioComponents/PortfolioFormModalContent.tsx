@@ -4,6 +4,7 @@ import {
   ModalFooter,
   Button,
   Input,
+  Textarea,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { PortfolioFormType, PortfolioType } from "../../types";
@@ -51,13 +52,14 @@ const PortfolioFormModalContent = ({ title, portfolio, handleSave, onClose }: Po
           value={name}
           onValueChange={setName}
         />
-        <Input
+        <Textarea
           label="Notes"
           placeholder="Add notes..."
           name="notes"
           value={notes}
           onValueChange={setNotes}
           className="mt-2"
+          maxLength={500}
         />
       </ModalBody>
       <ModalFooter>

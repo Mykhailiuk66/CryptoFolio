@@ -21,7 +21,6 @@ const PortfolioCharts = () => {
 
 
   const portfolio = portfolios.find((p) => p.id === selectedPortfolio)
-
   return (
     <div className="grid grid-cols-5 gap-4" >
       <Card className="py-5 mb-5 col-span-5 xl:col-span-3">

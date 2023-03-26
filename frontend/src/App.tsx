@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./components/RootLayout/RootLayout";
-import Home from "./pages/Home";
+import Explore from "./pages/Explore";
 import Watchlist from "./pages/Watchlist";
 import Portfolios from "./pages/Portfolios";
 import Authentication from "./pages/Authentication";
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <Home />,
+        element: <Explore />,
       },
       {
         path: 'portfolio',

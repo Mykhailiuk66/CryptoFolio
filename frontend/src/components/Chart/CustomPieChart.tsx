@@ -16,7 +16,7 @@ type CustomPieChartType<T> = {
 const renderActiveShape = (props: CustomPieSectorDataItem) => {
   const RADIAN = Math.PI / 180;
   const { cx, cy, midAngle, innerRadius, outerRadius, startAngle,
-    endAngle, fill, payload, percent, value, middleLabelKey } = props;
+    endAngle, fill, payload, value, middleLabelKey } = props;
   const sin = Math.sin(-RADIAN * midAngle!);
   const cos = Math.cos(-RADIAN * midAngle!);
   const sx = cx! + (outerRadius! + 10) * cos;
