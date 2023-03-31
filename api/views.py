@@ -161,6 +161,7 @@ class CoinExchangeInfoAPIView(APIView):
 
 class CoinExchangeHistoryAPIView(ListAPIView):
     serializer_class = serializers.CoinExchangeInfoSerializer
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         coin_slug = self.kwargs['coin_slug']
@@ -178,7 +179,7 @@ class TrendingCoinsAPIView(ListAPIView):
 
         yesterday = date.today() - timedelta(days=1)
 
-        coin_exchange_infos = models.CoinExchangeInfo.objects.filter(date=yesterday).order_by('-date')
+        coin_exchange_infos = models.CoinExchangeInfo.objects.filter(date__gte=yesterday).order_by('-date')
         coin_exchange_infos = sorted(coin_exchange_infos,
                                      key=lambda o: o.get_turnover if o.get_turnover else 0, reverse=True)
 
