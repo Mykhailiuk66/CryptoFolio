@@ -3,7 +3,7 @@ from .models import Coin, Exchange, CoinExchangeInfo
 
 from .utils.exchange_managers import ExchangeManagerFactory
 
-exchanges = ['binance', 'bybit']
+exchanges = ('binance', 'bybit', 'okx', 'kucoin', 'bitget', )
 
 
 def update_coins_info():
@@ -13,7 +13,7 @@ def update_coins_info():
 
             tickers = manager.get_tickers_info()
             for ticker in tickers:
-                if 'USDT' in ticker['symbol']:
+                if 'USDT' in manager.get_symbol(ticker):
                     formatted_t = manager.format_ticker_info(ticker)
                     create_or_update_coin_exchange_info(formatted_t, e)
         except Exception as ex:

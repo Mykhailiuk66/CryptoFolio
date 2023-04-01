@@ -34,8 +34,6 @@ const Explore = () => {
         console.error("Error fetching trending:", error);
       }
     };
-
-
     fetchTrending();
   }, []);
 
@@ -55,21 +53,9 @@ const Explore = () => {
               key={item.id}
               isPressable
               isHoverable
-              className="px-5 pb-2 pt-6"
+              className="px-5 pb-1 pt-6"
             >
-              {/* <CardHeader className="text-small justify-between">
-                <Chip className="capitalize" color="success" size="md" variant="faded">
-                  {item.coin_short_name}
-                </Chip>
-                <span className="text-default-500">
-                  <Chip className="capitalize" color="success" size="sm" variant="flat">
-                    {item.exchange_name}
-                  </Chip>
-                </span>
-              </CardHeader> */}
               <CardBody className="overflow-visible p-0">
-                {/* <Divider className="mb-3" /> */}
-
                 <div className="flex flex-col gap-2">
                   <InfoField label="Price:" value={"$" + formatCurrency(item?.price)} className="text-base" />
                   <InfoField label="Volume (24h):" value={formatCurrency(item?.volume)} className="text-base" />
