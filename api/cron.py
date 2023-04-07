@@ -20,16 +20,14 @@ def update_coins_info():
             print(ex)
 
 
-def create_or_update_coin_exchange_info(ticker_info, exchange_name):
+def create_or_update_coin_exchange_info(ticker_info, exchange_name, date=date.today()):
     coin, c_created = Coin.objects.get_or_create(short_name=ticker_info['coin']) 
     exchange, ex_created = Exchange.objects.get_or_create(slug=exchange_name, defaults={'name': exchange_name.capitalize()})
-
-    today = date.today()
-
+    
     coin_exchange_info, cx_created = CoinExchangeInfo.objects.update_or_create(
         coin=coin,
         exchange=exchange,
-        date=today,
+        date=date,
         defaults={
             'price': float(ticker_info['price']),
             'volume': float(ticker_info['volume']),
