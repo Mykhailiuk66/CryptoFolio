@@ -2,7 +2,6 @@ import { Card, CardBody, CardFooter, Chip, Divider } from "@nextui-org/react";
 import Container from "../components/Container/Container";
 import CoinModalContext from "../store/CoinModalContext";
 import { useContext, useEffect, useState } from "react";
-import BASE_URL from "../http";
 import { CoinData } from "../types";
 import InfoField from "../components/CoinInfoModal/InfoField";
 import { formatCurrency, formatProfitLoss } from "../utils";
@@ -17,7 +16,7 @@ const Explore = () => {
   useEffect(() => {
     const fetchTrending = async () => {
       try {
-        const response = await fetch(`${BASE_URL}/api/trending/`,
+        const response = await fetch(`/api/trending/`,
           {
             method: "GET",
             headers: {

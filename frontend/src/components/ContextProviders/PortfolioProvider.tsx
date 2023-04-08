@@ -3,7 +3,7 @@ import { Selection, useDisclosure } from "@nextui-org/react";
 import PortfolioContext from "../../store/ProtfolioContext";
 import { PortfolioContextType, PortfolioFormType, PortfolioHoldingForm, PortfolioModalState, PortfolioSnapshot, PortfolioType } from "../../types";
 import AuthContext from "../../store/AuthContext";
-import BASE_URL from "../../http";
+
 
 
 type PortfolioProviderProps = {
@@ -23,7 +23,7 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
 
   const fetchPortfolios = useCallback(async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/portfolios/`, {
+      const response = await fetch(`/api/portfolios/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,7 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
 
   const addPortfolio = useCallback(async (submittedPortfolio: PortfolioFormType) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/portfolios/`, {
+      const response = await fetch(`/api/portfolios/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +64,7 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
 
   const editPortfolio = useCallback(async (submittedPortfolio: PortfolioFormType) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/portfolios/${selectedPortfolio}/`, {
+      const response = await fetch(`/api/portfolios/${selectedPortfolio}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +89,7 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
 
   const deletePortfolio = useCallback(async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/portfolios/${selectedPortfolio}/`, {
+      const response = await fetch(`/api/portfolios/${selectedPortfolio}/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +109,7 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
 
   const fetchPortfolioSnapshots = useCallback(async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/portfolios/${selectedPortfolio}/snapshots/`, {
+      const response = await fetch(`/api/portfolios/${selectedPortfolio}/snapshots/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -129,7 +129,7 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
 
   const removePortfolioHolding = useCallback(async (portfolioHoldingId: string) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/portfolio-holdings/${portfolioHoldingId}/`, {
+      const response = await fetch(`/api/portfolio-holdings/${portfolioHoldingId}/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -160,7 +160,7 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
 
   const addPortfolioHolding = useCallback(async (formData: PortfolioHoldingForm) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/portfolio-holdings/`, {
+      const response = await fetch(`/api/portfolio-holdings/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -180,7 +180,7 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
 
   const editPortfolioHolding = useCallback(async (formData: PortfolioHoldingForm, holdingId: string) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/portfolio-holdings/${holdingId}/`, {
+      const response = await fetch(`/api/portfolio-holdings/${holdingId}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
