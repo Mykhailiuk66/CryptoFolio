@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter as createRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./components/RootLayout/RootLayout";
 import Explore from "./pages/Explore";
 import Watchlist from "./pages/Watchlist";
@@ -8,7 +8,7 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import WatchlistProvider from "./components/ContextProviders/WatchlistProvider";
 import PortfolioProvider from "./components/ContextProviders/PortfolioProvider";
 
-const router = createBrowserRouter([
+const router = createRouter([
   {
     path: '/',
     element: (
