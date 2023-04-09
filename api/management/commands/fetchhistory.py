@@ -1,7 +1,8 @@
 import time
+from datetime import date
 from django.core.management.base import BaseCommand
 from ...utils.exchange_managers import ExchangeManagerFactory
-from ...cron import create_or_update_coin_exchange_info
+from ...cron import create_or_update_coin_exchange_info_bulk
 
 
 class Command(BaseCommand):
@@ -20,10 +21,21 @@ class Command(BaseCommand):
             counter = 0
             for symbol in symbols:
                 try:
+                    infos_list = []
+
                     history_prices = manager.get_history_prices(symbol=symbol)
-                    for h in history_prices[:-1]:
-                        ticker_info, info_date = manager.format_ticker_history(symbol, h)
-                        create_or_update_coin_exchange_info(ticker_info, e_name, date=info_date)
+                    for i, h in enumerate(history_prices[:-1]):
+                        ticker_info, info_date = manager.format_ticker_history(
+                            symbol, h)
+
+                        info = {'ticker_info': ticker_info,
+                                'exchange_name': e_name,
+                                'info_date': info_date}
+
+                        if info_date > date(2023, 1, 1) or (i % 4 == 0):
+                            infos_list.append(info)
+
+                    create_or_update_coin_exchange_info_bulk(infos_list)
                 except Exception as ex:
                     print(ex)
                 finally:
