@@ -39,7 +39,7 @@ const MainNavigation = () => {
           <NavbarBrand className="mr-4">
             <Image
               width={60}
-              src="/logo.png"
+              src="static/logo.png"
               className="hidden sm:block "
             />
             CRYPTO

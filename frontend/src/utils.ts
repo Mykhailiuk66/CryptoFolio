@@ -6,7 +6,7 @@ let currencyFormatter = new Intl.NumberFormat("en-US", {
 let fractionCurrencyFormatter = new Intl.NumberFormat("en-US", {
 	style: "currency",
 	currency: "USD",
-	maximumFractionDigits: 30,
+	maximumFractionDigits: 5,
 });
 
 export function formatFieldName(inputString: string): string {

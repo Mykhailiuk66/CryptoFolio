@@ -33,7 +33,7 @@ const Authentication = () => {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex items-center justify-center">
           <Image
             width={280}
-            src="/logo.png"
+            src="static/logo.png"
             onClick={() => navigate('/')}
             className="cursor-pointer"
           />

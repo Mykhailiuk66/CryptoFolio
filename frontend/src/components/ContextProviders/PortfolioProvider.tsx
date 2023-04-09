@@ -53,14 +53,14 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
       });
       if (response.ok) {
         const data = await response.json();
-        setPortfolios([...portfolios, data]);
+        setPortfolios((prevState) => [...prevState, data]);
       } else {
         throw new Error("Failed to add portfolio");
       }
     } catch (error) {
       console.error("Error adding portfolio:", error);
     }
-  }, [authTokens?.access, portfolios]);
+  }, [authTokens?.access]);
 
   const editPortfolio = useCallback(async (submittedPortfolio: PortfolioFormType) => {
     try {

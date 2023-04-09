@@ -1,4 +1,4 @@
-import { Card, CardBody, CardFooter, Chip, Divider } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Chip, Divider, Skeleton } from "@nextui-org/react";
 import Container from "../components/Container/Container";
 import CoinModalContext from "../store/CoinModalContext";
 import { useContext, useEffect, useState } from "react";
@@ -41,7 +41,22 @@ const Explore = () => {
     <Container>
       <h1 className="text-4xl font-bold mb-4">Trending</h1>
       <div className="gap-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {trendingCoins.map((item) => {
+
+        {(trendingCoins.length === 0) && [...Array(12)].map((e, i) => {
+          return (
+            <Card className="px-5 pb-1 pt-6">
+              <Skeleton className="rounded-lg">
+                <div className="h-44 rounded-lg bg-default-300"></div>
+              </Skeleton>
+              <Skeleton className="my-3 rounded-lg">
+                <div className="h-10 rounded-lg bg-default-200"></div>
+              </Skeleton>
+            </Card>
+          )
+        })}
+
+
+        {(trendingCoins.length !== 0) && trendingCoins.map((item) => {
           let coin = coins.find((c) => c.short_name === item.coin_short_name)
           let exchange = exchanges.find((e) => e.name === item.exchange_name)
 

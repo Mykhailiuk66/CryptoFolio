@@ -26,6 +26,7 @@ const PortfolioTopContent = ({
 }: PortfolioTopContentType) => {
   const {
     visibleColumns,
+    selectedPortfolio,
     setVisibleColumns,
     deletePortfolio,
     onOpen,
@@ -52,7 +53,7 @@ const PortfolioTopContent = ({
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Button
+            {selectedPortfolio && (<Button
               color="primary"
               variant="bordered"
               endContent={<FaPlus />}
@@ -63,44 +64,48 @@ const PortfolioTopContent = ({
             >
               Add asset
             </Button>
+            )}
 
             <ColumnsDropdown
               columns={columns}
               visibleColumns={visibleColumns}
               setVisibleColumns={setVisibleColumns}
             />
-            <Dropdown>
-              <DropdownTrigger>
-                <Button
-                  isIconOnly
-                  variant="bordered"
-                >
-                  <BsThreeDotsVertical />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu variant="faded" aria-label="Dropdown menu with icons">
-                <DropdownItem
-                  key="edit"
-                  showDivider
-                  onPress={() => {
-                    setModalState("EDIT_PORTFOLIO")
-                    onOpen()
-                  }}
-                  startContent={<MdOutlineEdit size={20} />}
-                >
-                  Edit
-                </DropdownItem>
-                <DropdownItem
-                  key="delete"
-                  className="text-danger"
-                  color="danger"
-                  onPress={deletePortfolio}
-                  startContent={<MdDeleteOutline size={20} className={"text-danger"} />}
-                >
-                  Delete
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+            {selectedPortfolio && (
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button
+                    isIconOnly
+                    variant="bordered"
+                  >
+                    <BsThreeDotsVertical />
+                  </Button>
+                </DropdownTrigger>
+
+                <DropdownMenu variant="faded" aria-label="Dropdown menu with icons">
+                  <DropdownItem
+                    key="edit"
+                    showDivider
+                    onPress={() => {
+                      setModalState("EDIT_PORTFOLIO")
+                      onOpen()
+                    }}
+                    startContent={<MdOutlineEdit size={20} />}
+                  >
+                    Edit
+                  </DropdownItem>
+                  <DropdownItem
+                    key="delete"
+                    className="text-danger"
+                    color="danger"
+                    onPress={deletePortfolio}
+                    startContent={<MdDeleteOutline size={20} className={"text-danger"} />}
+                  >
+                    Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            )}
           </div>
         </div>
       </div >
