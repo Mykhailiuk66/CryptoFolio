@@ -2,7 +2,7 @@ import time
 from datetime import date
 from django.core.management.base import BaseCommand
 from ...utils.exchange_managers import ExchangeManagerFactory
-from ...cron import create_or_update_coin_exchange_info_bulk
+from ...utils.misc import create_or_update_coin_exchange_info_bulk
 
 
 class Command(BaseCommand):

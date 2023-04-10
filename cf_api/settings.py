@@ -16,6 +16,9 @@ from decouple import config
 
 DEVELOPMENT_MODE = config('DEVELOPMENT_MODE', cast=bool)
 
+print(config('DEVELOPMENT_MODE', cast=bool))
+print(config('DEBUG', cast=bool))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,7 +51,6 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
 
     'corsheaders',
-    'django_crontab',    
 
     'api',
     'account',
@@ -183,9 +185,6 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'account.CustomUser'
 
-CRONJOBS = [
-    ('* * * * *', 'api.cron.update_coins_info'),
-]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
