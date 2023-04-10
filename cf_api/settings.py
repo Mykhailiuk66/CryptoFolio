@@ -14,7 +14,7 @@ from datetime import timedelta
 from pathlib import Path
 from decouple import config
 
-DEVELOPMENT_MODE = config('DEVELOPMENT_MODE') == "True"
+DEVELOPMENT_MODE = config('DEVELOPMENT_MODE', cast=bool)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG')
+DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = [
     '*'
