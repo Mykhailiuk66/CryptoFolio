@@ -12,7 +12,7 @@ class ExchangeManager:
 
     def get_tickers_info(self):
         raise NotImplementedError(
-            "Subclasses must implement fetch_prices method.")
+            "Subclasses must implement get_tickers_info method.")
 
     def get_symbol(self):
         raise NotImplementedError(
@@ -20,7 +20,7 @@ class ExchangeManager:
 
     def get_symbols(self):
         raise NotImplementedError(
-            "Subclasses must implement symbols_generator method.")
+            "Subclasses must implement get_symbols method.")
 
     def get_history_prices(self):
         raise NotImplementedError(
@@ -34,7 +34,7 @@ class ExchangeManager:
     @staticmethod
     def format_ticker_info(data):
         raise NotImplementedError(
-            "Subclasses must implement format_tickers_info method.")
+            "Subclasses must implement format_ticker_info method.")
 
 
 class BinanceManager(ExchangeManager):
