@@ -1,5 +1,4 @@
 from datetime import date, timedelta
-import time
 from binance.spot import Spot as BinanceSpotClient
 from pybit.unified_trading import HTTP as BybitClient
 from okx.MarketData import MarketAPI as OkxClient
@@ -63,8 +62,9 @@ class BinanceManager(ExchangeManager):
 
     @staticmethod
     def format_ticker_history(symbol, ticker_data):
+        coin = symbol.replace(ExchangeManager.SETTLE_COIN, '').strip()
         formatted_info = {
-            'coin': symbol.replace(ExchangeManager.SETTLE_COIN, ''),
+            'coin': coin,
             'price': float(ticker_data[4]),
             'volume': float(ticker_data[5]),
             'prev_price_24h': float(ticker_data[1]),
@@ -82,11 +82,11 @@ class BinanceManager(ExchangeManager):
 
         return {
             'coin': coin,
-            'volume': data.get('volume'),
-            'price': data.get('lastPrice'),
-            'prev_price_24h': data.get('prevClosePrice'),
-            'high_price': data.get('highPrice'),
-            'low_price': data.get('lowPrice'),
+            'volume': float(data.get('volume')),
+            'price': float(data.get('lastPrice')),
+            'prev_price_24h': float(data.get('prevClosePrice')),
+            'high_price': float(data.get('highPrice')),
+            'low_price': float(data.get('lowPrice')),
         }
 
 
@@ -117,8 +117,9 @@ class BybitManager(ExchangeManager):
 
     @staticmethod
     def format_ticker_history(symbol, ticker_data):
+        coin = symbol.replace(ExchangeManager.SETTLE_COIN, '').strip()
         formatted_info = {
-            'coin': symbol.replace(ExchangeManager.SETTLE_COIN, ''),
+            'coin': coin,
             'price': float(ticker_data[4]),
             'volume': float(ticker_data[5]),
             'prev_price_24h': float(ticker_data[1]),
@@ -138,17 +139,17 @@ class BybitManager(ExchangeManager):
 
         return {
             'coin': coin,
-            'volume': data.get('volume24h'),
-            'price': data.get('lastPrice'),
-            'prev_price_24h': data.get('prevPrice24h'),
-            'high_price': data.get('highPrice24h'),
-            'low_price': data.get('lowPrice24h'),
+            'volume': float(data.get('volume24h')),
+            'price': float(data.get('lastPrice')),
+            'prev_price_24h': float(data.get('prevPrice24h')),
+            'high_price': float(data.get('highPrice24h')),
+            'low_price': float(data.get('lowPrice24h')),
         }
 
 
 class OkxManager(ExchangeManager):
     def __init__(self):
-        self.client = OkxClient(debug=False)
+        self.client = OkxClient(debug=False, flag='0')
 
     def get_tickers_info(self):
         try:
@@ -182,8 +183,11 @@ class OkxManager(ExchangeManager):
 
     @staticmethod
     def format_ticker_history(symbol, ticker_data):
+        coin = symbol.replace(
+            f'-{ExchangeManager.SETTLE_COIN}', '').strip()
+
         formatted_info = {
-            'coin': symbol.replace(f'-{ExchangeManager.SETTLE_COIN}', ''),
+            'coin': coin,
             'price': float(ticker_data[4]),
             'volume': float(ticker_data[5]),
             'prev_price_24h': float(ticker_data[1]),
@@ -200,13 +204,14 @@ class OkxManager(ExchangeManager):
     def format_ticker_info(data: dict):
         coin = data.get('instId').replace(
             f'-{ExchangeManager.SETTLE_COIN}', '').strip()
+
         return {
             'coin': coin,
-            'volume': data.get('vol24h'),
-            'price': data.get('last'),
-            'prev_price_24h': data.get('open24h'),
-            'high_price': data.get('high24h'),
-            'low_price': data.get('low24h'),
+            'volume': float(data.get('vol24h')),
+            'price': float(data.get('last')),
+            'prev_price_24h': float(data.get('open24h')),
+            'high_price': float(data.get('high24h')),
+            'low_price': float(data.get('low24h')),
         }
 
 
@@ -234,8 +239,9 @@ class KucoinManager(ExchangeManager):
 
     @staticmethod
     def format_ticker_history(symbol, ticker_data):
+        coin = symbol.replace(f'-{ExchangeManager.SETTLE_COIN}', '').strip()
         formatted_info = {
-            'coin': symbol.replace(f'-{ExchangeManager.SETTLE_COIN}', ''),
+            'coin': coin,
             'price': float(ticker_data[2]),
             'volume': float(ticker_data[5]),
             'prev_price_24h': float(ticker_data[1]),
@@ -254,11 +260,11 @@ class KucoinManager(ExchangeManager):
             f'-{ExchangeManager.SETTLE_COIN}', '').strip()
         return {
             'coin': coin,
-            'volume': data.get('vol'),
-            'price': data.get('last'),
+            'volume': float(data.get('vol')),
+            'price': float(data.get('last')),
             'prev_price_24h': float(data.get('last')) + float(data.get('changePrice')),
-            'high_price': data.get('high'),
-            'low_price': data.get('low'),
+            'high_price': float(data.get('high')),
+            'low_price': float(data.get('low')),
         }
 
 
@@ -291,8 +297,9 @@ class BitgetManager(ExchangeManager):
 
     @staticmethod
     def format_ticker_history(symbol, ticker_data):
+        coin = symbol.replace(ExchangeManager.SETTLE_COIN, '').strip()
         formatted_info = {
-            'coin': symbol.replace(ExchangeManager.SETTLE_COIN, ''),
+            'coin': coin,
             'price': float(ticker_data[4]),
             'volume': float(ticker_data[5]),
             'prev_price_24h': float(ticker_data[1]),
@@ -311,11 +318,11 @@ class BitgetManager(ExchangeManager):
             ExchangeManager.SETTLE_COIN, '').strip()
         return {
             'coin': coin,
-            'volume': data.get('baseVol'),
-            'price': data.get('close'),
-            'prev_price_24h': data.get('openUtc0'),
-            'high_price': data.get('high24h'),
-            'low_price': data.get('low24h'),
+            'volume': float(data.get('baseVol')),
+            'price': float(data.get('close')),
+            'prev_price_24h': float(data.get('openUtc0')),
+            'high_price': float(data.get('high24h')),
+            'low_price': float(data.get('low24h')),
         }
 
 
