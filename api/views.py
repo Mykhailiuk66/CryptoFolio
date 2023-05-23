@@ -173,27 +173,16 @@ class TrendingCoinsAPIView(ListAPIView):
 
         today = date.today()
         coin_exchange_infos = models.CoinExchangeInfo.objects.filter(
-            date__gte=today).exclude(coin__short_name__icontains='usd').order_by('-date')
+            date__gte=today).exclude(coin__short_name__icontains='usd').order_by('-date')[:max_objects]
         if not coin_exchange_infos.exists():
             yesterday = date.today() - timedelta(days=1)
             coin_exchange_infos = models.CoinExchangeInfo.objects.filter(
-                date__gte=yesterday).exclude(coin__short_name__icontains='usd').order_by('-date')
+                date__gte=yesterday).exclude(coin__short_name__icontains='usd').order_by('-date')[:max_objects]
 
         coin_exchange_infos = sorted(coin_exchange_infos,
                                      key=lambda o: o.get_turnover if o.get_turnover else 0, reverse=True)
 
-        unique_short_names = set()
-        unique_objects = []
-        for obj in coin_exchange_infos:
-            short_name = obj.coin.short_name
-            if short_name not in unique_short_names:
-                unique_short_names.add(short_name)
-                unique_objects.append(obj)
-
-            if len(unique_objects) >= max_objects:
-                break
-
-        return unique_objects
+        return coin_exchange_infos
 
 
 class WatchlistCoinCreateAPIView(CreateAPIView):
