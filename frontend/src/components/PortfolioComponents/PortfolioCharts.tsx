@@ -38,7 +38,7 @@ const PortfolioCharts = () => {
           </div>)
         }
       </Card>
-      <Card className="mb-5 col-span-5 xl:col-span-2">
+      <Card className="mb-5 col-span-5 xl:col-span-2 min-h-96">
         {portfolio?.holdings!.length! > 0 &&
 
           <CustomPieChart
