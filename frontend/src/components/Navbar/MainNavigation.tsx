@@ -29,6 +29,8 @@ const MainNavigation = () => {
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="full"
+      className="bg-default-100/20"
+      isBlurred
     >
       <NavbarContent justify="start">
         <NavbarContent className="md:hidden" justify="start">

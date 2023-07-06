@@ -22,7 +22,7 @@ def calculate_portfolio_snapshots(portfolio):
         for holding in holdings:
             latest_price = holding.purchase_price
 
-            if holding.sale_price and (holding.sale_date >= calc_date):
+            if holding.sale_price and (holding.sale_date <= calc_date):
                 latest_price = holding.sale_price
             else:
                 latest_price_info = CoinExchangeInfo.objects.filter(

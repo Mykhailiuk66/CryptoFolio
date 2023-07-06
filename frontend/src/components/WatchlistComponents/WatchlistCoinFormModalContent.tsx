@@ -56,7 +56,7 @@ const WatchlistCoinFormModalContent = ({ title, handleSave, onClose }: Watchlist
       <ModalFooter>
         <Button
           isDisabled={selectedCoinId === null && selectedExchangeId === null}
-          color="primary"
+          className="bg-primary-600" 
           onPress={handleSubmit}>
           Submit
         </Button>

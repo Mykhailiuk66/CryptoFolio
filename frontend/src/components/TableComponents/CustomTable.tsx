@@ -31,9 +31,10 @@ const CustomTable = <T,>({
     <Table
       aria-label="table"
       selectionMode="single"
-      className="pb-11 w-full"
+      className="pb-1 w-full"
       classNames={{
         th: ["bg-transparent", "text-green-400", "border-b", "border-divider"],
+        wrapper: ["border-solid", "border-1", "border-default-200/50", "bg-default-100/40"],
       }}
       sortDescriptor={sortDescriptor}
       topContent={topContent}
@@ -57,7 +58,7 @@ const CustomTable = <T,>({
       </TableHeader>
       <TableBody emptyContent={"No coins found"} items={sortedItems}>
         {(item: T) => (
-          <TableRow key={(item as any).id}>
+          <TableRow key={(item as any).id} className="hober:bg-green-100">
             {(columnKey) => {
               return (
                 <TableCell align={"left"}>

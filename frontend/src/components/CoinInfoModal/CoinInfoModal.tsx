@@ -71,7 +71,7 @@ const CoinInfoModal = () => {
               {isLoading === false && historyPrices.length > 0 && (
                 <div className="grid grid-cols-12 gap-4 mb-5">
                   <div className="col-span-12 md:col-span-8">
-                    <Card className="py-10 mb-5 col-span-5 xl:col-span-3 min-h-full">
+                    <Card className="py-10 mb-5 col-span-5 xl:col-span-3 min-h-full border-solid border-1 border-default-200/50 bg-default-100/10">
                       <CustomAreaChart
                         data={historyPrices}
                         xDataKey='date'
@@ -81,7 +81,7 @@ const CoinInfoModal = () => {
                     </Card>
                   </div>
                   <div className="col-span-12 md:col-span-4">
-                    <Card className="max-w-[600px] min-h-full">
+                    <Card className="max-w-[600px] min-h-full border-solid border-1 border-default-200/50 bg-default-100/10">
                       <CardHeader className="flex gap-3">
                         <div className="flex w-full justify-between items-end">
                           <Chip className="capitalize" color="success" size="lg" variant="faded">
@@ -109,7 +109,7 @@ const CoinInfoModal = () => {
                           )}
                         </div>
                       </CardBody>
-                      <Divider />
+                      {/* <Divider /> */}
                     </Card>
                   </div>
                 </div>

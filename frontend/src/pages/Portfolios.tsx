@@ -111,62 +111,58 @@ const Portfolios = () => {
 
   return (
     <Container>
-      <>
-        <CustomModal isOpen={isOpen} onOpenChange={onOpenChange}>
-          {(onClose) => (
-            <>
-              {modalState === "ADD_PORTFOLIO" &&
-                (<PortfolioFormModalContent
-                  title="Add Portfolio"
-                  portfolio={{} as PortfolioType}
-                  handleSave={addPortfolio}
-                  onClose={onClose}
-                />)}
-              {modalState === "EDIT_PORTFOLIO" && (
-                <PortfolioFormModalContent
-                  title="Edit Portfolio"
-                  portfolio={portfolio}
-                  handleSave={editPortfolio}
-                  onClose={onClose}
-                />
-              )}
-              {modalState === "ADD_COIN" && (
-                <PortfolioHoldingFormModalContent
-                  title="Add new asset"
-                  onClose={onClose}
-                />
-              )}
-              {modalState === "EDIT_COIN" && (
-                <PortfolioHoldingFormModalContent
-                  title="Edit asset"
-                  holdingId={selectedPortfolioHolding}
-                  value={portfolio?.holdings?.find((h) => h.id === selectedPortfolioHolding)}
-                  onClose={onClose}
-                />
-              )}
-            </>
-          )}
-        </CustomModal>
-        <div className="grid grid-cols-12 gap-4">
-          <div className="col-span-12 xl:col-span-2 lg:col-span-3">
-            <PortfolioSidebar />
-          </div>
-          <div className="col-span-12 xl:col-span-10 lg:col-span-9">
-            <PortfolioCharts />
-            <Divider className="my-4" />
-            <div>
-              <CustomTable
-                sortDescriptor={sortDescriptor}
-                setSortDescriptor={setSortDescriptor}
-                topContent={topContent}
-                headerColumns={headerColumns}
-                sortedItems={sortedItems}
-                CellComponent={PortfolioCell}
+      <CustomModal isOpen={isOpen} onOpenChange={onOpenChange}>
+        {(onClose) => (
+          <>
+            {modalState === "ADD_PORTFOLIO" &&
+              (<PortfolioFormModalContent
+                title="Add Portfolio"
+                portfolio={{} as PortfolioType}
+                handleSave={addPortfolio}
+                onClose={onClose}
+              />)}
+            {modalState === "EDIT_PORTFOLIO" && (
+              <PortfolioFormModalContent
+                title="Edit Portfolio"
+                portfolio={portfolio}
+                handleSave={editPortfolio}
+                onClose={onClose}
               />
-            </div>
-          </div>
+            )}
+            {modalState === "ADD_COIN" && (
+              <PortfolioHoldingFormModalContent
+                title="Add new asset"
+                onClose={onClose}
+              />
+            )}
+            {modalState === "EDIT_COIN" && (
+              <PortfolioHoldingFormModalContent
+                title="Edit asset"
+                holdingId={selectedPortfolioHolding}
+                value={portfolio?.holdings?.find((h) => h.id === selectedPortfolioHolding)}
+                onClose={onClose}
+              />
+            )}
+          </>
+        )}
+      </CustomModal>
+      <div className="grid grid-cols-12 gap-4">
+        <div className="col-span-12 xl:col-span-2 lg:col-span-3">
+          <PortfolioSidebar />
         </div>
-      </>
+        <div className="col-span-12 xl:col-span-10 lg:col-span-9">
+          <PortfolioCharts />
+          <Divider className="my-4" />
+          <CustomTable
+            sortDescriptor={sortDescriptor}
+            setSortDescriptor={setSortDescriptor}
+            topContent={topContent}
+            headerColumns={headerColumns}
+            sortedItems={sortedItems}
+            CellComponent={PortfolioCell}
+          />
+        </div>
+      </div>
     </Container>
   );
 }
