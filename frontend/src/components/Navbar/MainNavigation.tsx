@@ -15,8 +15,7 @@ import UserDropdown from "./UserDropdown";
 import NavbarLink from "./NavbarLink";
 import NavbarMenuLink from "./NavbarMenuLink";
 import AuthContext from "../../store/AuthContext";
-import CoinSearchInput from "../CoinSearchInput/CoinSearchInput";
-
+import NavSearch from "./NavSearch";
 
 const MainNavigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,7 +57,7 @@ const MainNavigation = () => {
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
-        <CoinSearchInput />
+        <NavSearch />
 
         {!user &&
           (<Button

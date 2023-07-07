@@ -55,7 +55,7 @@ const CoinInfoModal = () => {
       backdrop="blur"
       isOpen={isOpen}
       onClose={onClose}
-      className="max-w-[1300px]"
+      className="max-w-[1300px] bg-primary-background"
     >
       <ModalContent>
         {(onClose) => (
@@ -84,10 +84,10 @@ const CoinInfoModal = () => {
                     <Card className="max-w-[600px] min-h-full border-solid border-1 border-default-200/50 bg-default-100/10">
                       <CardHeader className="flex gap-3">
                         <div className="flex w-full justify-between items-end">
-                          <Chip className="capitalize" color="success" size="lg" variant="faded">
+                          <Chip className="capitalize bg-primary-background" color="success" size="lg" variant="faded">
                             {coin?.short_name}
                           </Chip>
-                          <Chip className="capitalize" color="success" size="sm" variant="flat">
+                          <Chip className="capitalize bg-primary-background" color="success" size="md" variant="faded">
                             {exchange?.name}
                           </Chip>
                         </div>
@@ -109,7 +109,6 @@ const CoinInfoModal = () => {
                           )}
                         </div>
                       </CardBody>
-                      {/* <Divider /> */}
                     </Card>
                   </div>
                 </div>

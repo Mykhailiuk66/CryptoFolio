@@ -13,6 +13,7 @@ const RegisterForm = ({ handleLoginClick }: RegisterFormProps) => {
     <form className="flex flex-col gap-4 h-[370]" method="POST" onSubmit={registerUser}>
       <Input
         isRequired
+        variant="bordered"
         label="Name"
         placeholder="Enter your name"
         name="username"
@@ -20,6 +21,7 @@ const RegisterForm = ({ handleLoginClick }: RegisterFormProps) => {
       />
       <Input
         isRequired
+        variant="bordered"
         label="Email"
         placeholder="Enter your email"
         type="email"
@@ -28,6 +30,7 @@ const RegisterForm = ({ handleLoginClick }: RegisterFormProps) => {
         />
       <Input
         isRequired
+        variant="bordered"
         label="Password"
         placeholder="Enter your password"
         type="password"
@@ -36,6 +39,7 @@ const RegisterForm = ({ handleLoginClick }: RegisterFormProps) => {
       />
       <Input
         isRequired
+        variant="bordered"
         label="Repeat Password"
         placeholder="Repeat your password"
         type="password"

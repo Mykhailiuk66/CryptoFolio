@@ -4,8 +4,6 @@ import {
   ModalFooter,
   Button,
   Input,
-  AutocompleteItem,
-  Autocomplete,
   Divider,
 } from "@nextui-org/react";
 import { useContext, useEffect, useState } from "react";
@@ -14,6 +12,8 @@ import DataContext from "../../store/DataContext";
 import DatePicker from "react-multi-date-picker"
 import type { DateObject } from "react-multi-date-picker"
 import PortfolioContext from "../../store/ProtfolioContext";
+import CoinAutocomplete from "../Autocomplete/CoinAutocomplete";
+import ExchangeAutoComplete from "../Autocomplete/ExchangeAutoComplete";
 
 
 type PortfolioHoldingFormModalContentType = {
@@ -75,38 +75,27 @@ const PortfolioHoldingFormModalContent = ({ title, value, holdingId, onClose }: 
     })
   }, [coins, exchanges, selectedPortfolio, value])
 
+
   return (
     <>
       <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
       <ModalBody>
-        <Autocomplete
+        <CoinAutocomplete
           label="Coin *"
           className="mb-2"
-          defaultItems={coins}
           selectedKey={formData.coin}
           onSelectionChange={(value) => handleChange('coin', value)}
-        >
-          {(c) => (
-            <AutocompleteItem key={c.id} textValue={c.short_name}>
-              {c.short_name}
-            </AutocompleteItem>)}
-        </Autocomplete>
-        <Autocomplete
+        />
+        <ExchangeAutoComplete 
           label="Exchange *"
-          defaultItems={exchanges}
           selectedKey={formData.exchange}
           onSelectionChange={(value) => handleChange('exchange', value)}
-        >
-          {(e) => (
-            <AutocompleteItem key={e.id} textValue={e.name}>
-              {e.name}
-            </AutocompleteItem>)}
-        </Autocomplete>
+        />
         <Divider />
-
         <Input
           label="Quantity *"
           type="number"
+          variant="bordered"
           value={formData.quantity?.toString()}
           onValueChange={(value) => handleChange('quantity', value)}
         />
@@ -116,6 +105,7 @@ const PortfolioHoldingFormModalContent = ({ title, value, holdingId, onClose }: 
             <Input
               label="Purchase Price *"
               type="number"
+              variant="bordered"
               value={formData.purchase_price?.toString()}
               onValueChange={(value) => handleChange('purchase_price', value)}
               className="pb-3"
@@ -128,7 +118,7 @@ const PortfolioHoldingFormModalContent = ({ title, value, holdingId, onClose }: 
               calendarPosition='top-start'
               fixMainPosition={true}
               highlightToday={false}
-              render={<Input label="Purchase Date *" />}
+              render={<Input label="Purchase Date *" variant="bordered" />}
               minDate="1900-01-01"
 
               className="bg-dark green datepicker datepicker-dark"
@@ -139,6 +129,7 @@ const PortfolioHoldingFormModalContent = ({ title, value, holdingId, onClose }: 
             <Input
               label="Sale Price"
               type="number"
+              variant="bordered"
               value={formData.sale_price?.toString()}
               onValueChange={(value) => handleChange('sale_price', value)}
               className="pb-3"
@@ -146,8 +137,7 @@ const PortfolioHoldingFormModalContent = ({ title, value, holdingId, onClose }: 
 
             <DatePicker
               value={formData.sale_date}
-              render={<Input label="Sale Date" />}
-
+              render={<Input label="Sale Date" variant="bordered" />}
               format="YYYY-MM-DD"
               onChange={(date: DateObject) => handleChange('sale_date', date)}
               calendarPosition='top-end'
@@ -160,12 +150,12 @@ const PortfolioHoldingFormModalContent = ({ title, value, holdingId, onClose }: 
           </div>
         </div>
       </ModalBody >
-      <ModalFooter className="flex justify-between">
-        {isError && <p className="text-red-500">
+      <ModalFooter className="grid grid-cols-5 items-center">
+        {isError && <p className="text-red-500 col-span-4">
           Please fill out all required fields
         </p>}
-        <Button className="bg-primary-600" onPress={onSave}>
-          Save Changes
+        <Button className="bg-primary-600 text-background col-span-1 col-end-6" onPress={onSave}>
+          Save
         </Button>
       </ModalFooter>
     </>

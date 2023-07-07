@@ -15,7 +15,7 @@ const CustomModal = ({ children, isOpen, onOpenChange }: CustomModalProps) => {
       isOpen={isOpen}
       onOpenChange={onOpenChange}
       placement="top-center"
-      // backdrop="blur"
+      className="bg-primary-background"
     >
       <ModalContent>
         {(onClose) => children(onClose)}

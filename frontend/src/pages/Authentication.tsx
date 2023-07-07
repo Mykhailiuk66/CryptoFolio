@@ -50,6 +50,11 @@ const Authentication = () => {
             fullWidth
             size="md"
             aria-label="Tabs form"
+            color="primary"
+            variant="light"
+            classNames={{
+              tabList: "border-solid border-1 border-default-200/50 bg-default-100/40",
+            }}
             selectedKey={selected}
             onSelectionChange={setSelected}
           >

@@ -55,6 +55,7 @@ const PortfolioFormModalContent = ({ title, portfolio, handleSave, onClose }: Po
         <Textarea
           label="Notes"
           placeholder="Add notes..."
+          variant="bordered"
           name="notes"
           value={notes}
           onValueChange={setNotes}
@@ -63,11 +64,14 @@ const PortfolioFormModalContent = ({ title, portfolio, handleSave, onClose }: Po
         />
       </ModalBody>
       <ModalFooter>
-        <Button className="bg-primary-600" onPress={() => {
-          onSave()
-          onClose()
-        }}>
-          Save Changes
+        <Button
+          isDisabled={!name}
+          className="bg-primary-600 text-background"
+          onPress={() => {
+            onSave()
+            onClose()
+          }}>
+          Save
         </Button>
       </ModalFooter>
     </>

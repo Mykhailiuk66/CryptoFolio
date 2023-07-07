@@ -1,7 +1,6 @@
 import {
   Button,
   DropdownTrigger,
-  Dropdown,
   DropdownMenu,
   DropdownItem,
   Chip,
@@ -15,6 +14,7 @@ import { Key, useContext } from "react";
 import DataContext from "../../store/DataContext";
 import CoinModalContext from "../../store/CoinModalContext";
 import PortfolioContext from "../../store/ProtfolioContext";
+import CustomDropdown from "../CustomNextUIComponents/CustomDropdown";
 
 
 type PortfolioCellProps = {
@@ -84,7 +84,7 @@ const PortfolioCell = ({ item, columnKey }: PortfolioCellProps) => {
           <div className="text-bold text-small capitalize">
             {priceDiff === 0 && "-"}
             {priceDiff !== 0 && (
-              <Chip className="capitalize" color={priceDiff >= 0 ? "success" : "danger"} variant="faded">
+              <Chip className="capitalize bg-primary-background" color={priceDiff >= 0 ? "success" : "danger"} variant="faded">
                 <p className="flex items-center">
                   {formatProfitLoss((priceDiff * item.quantity))}
                 </p>
@@ -130,7 +130,7 @@ const PortfolioCell = ({ item, columnKey }: PortfolioCellProps) => {
     case "actions":
       return (
         <div className="relative flex justify-end items-center gap-2">
-          <Dropdown>
+          <CustomDropdown>
             <DropdownTrigger aria-label="dropdown-trigger">
               <Button isIconOnly size="sm" variant="light">
                 <BsThreeDotsVertical />
@@ -148,7 +148,7 @@ const PortfolioCell = ({ item, columnKey }: PortfolioCellProps) => {
                 Remove
               </DropdownItem>
             </DropdownMenu>
-          </Dropdown>
+          </CustomDropdown>
         </div>
       );
     default:

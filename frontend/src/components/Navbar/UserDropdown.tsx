@@ -1,13 +1,14 @@
-import { DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Button } from "@nextui-org/react";
+import { DropdownItem, DropdownTrigger, DropdownMenu, Button } from "@nextui-org/react";
 import { CgProfile } from "react-icons/cg";
 import { useContext } from "react";
 import AuthContext from "../../store/AuthContext";
+import CustomDropdown from "../CustomNextUIComponents/CustomDropdown";
 
 const UserDropdown = () => {
-  const {user, logoutUser} = useContext(AuthContext)
+  const { user, logoutUser } = useContext(AuthContext)
 
   return (
-    <Dropdown placement="bottom-end">
+    <CustomDropdown placement="bottom-end">
       <DropdownTrigger>
         <Button isIconOnly color="primary" variant="faded">
           <CgProfile size={24} />
@@ -22,7 +23,7 @@ const UserDropdown = () => {
           Log Out
         </DropdownItem>
       </DropdownMenu>
-    </Dropdown>
+    </CustomDropdown>
   )
 }
 

@@ -1,11 +1,11 @@
 import { Radio, RadioProps, cn } from "@nextui-org/react";
 
 
-interface CustomRadioProps extends RadioProps {
+interface PortfolioRadioProps extends RadioProps {
   children: React.ReactNode;
 }
 
-const CustomRadio = (props: CustomRadioProps) => {
+const PortfolioRadio = (props: PortfolioRadioProps) => {
   const { children, ...otherProps } = props;
 
   return (
@@ -27,4 +27,4 @@ const CustomRadio = (props: CustomRadioProps) => {
 };
 
 
-export default CustomRadio
+export default PortfolioRadio

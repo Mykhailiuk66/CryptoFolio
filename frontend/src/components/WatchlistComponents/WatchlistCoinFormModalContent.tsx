@@ -1,8 +1,8 @@
-import { Autocomplete, AutocompleteItem, Button, Divider, ModalBody, ModalFooter, ModalHeader } from "@nextui-org/react";
-import { useContext, useState } from "react";
+import { Button, Divider, ModalBody, ModalFooter, ModalHeader } from "@nextui-org/react";
+import { useState } from "react";
 import { Key } from '@react-types/shared';
-
-import DataContext from "../../store/DataContext";
+import CoinAutocomplete from "../Autocomplete/CoinAutocomplete";
+import ExchangeAutoComplete from "../Autocomplete/ExchangeAutoComplete";
 
 
 type WatchlistCoinFormModalContentType = {
@@ -12,7 +12,6 @@ type WatchlistCoinFormModalContentType = {
 }
 
 const WatchlistCoinFormModalContent = ({ title, handleSave, onClose }: WatchlistCoinFormModalContentType) => {
-  const { coins, exchanges } = useContext(DataContext)
   const [selectedCoinId, setSelectedCoinId] = useState<Key | null | undefined>(null);
   const [selectedExchangeId, setSelectedExchangeId] = useState<Key | null | undefined>(null);
 
@@ -26,39 +25,27 @@ const WatchlistCoinFormModalContent = ({ title, handleSave, onClose }: Watchlist
       <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
       <ModalBody>
         <div>
-          <Autocomplete
+          <CoinAutocomplete
             label="Coin"
             className="mb-3"
-            defaultItems={coins}
             selectedKey={selectedCoinId}
             onSelectionChange={setSelectedCoinId}
-          >
-            {(c) => (
-              <AutocompleteItem key={c.id} textValue={c.short_name}>
-                {c.short_name}
-              </AutocompleteItem>)}
-          </Autocomplete>
+          />
           <Divider />
-          <Autocomplete
+          <ExchangeAutoComplete
             label="Exchange"
             className="mt-3"
-            defaultItems={exchanges}
             selectedKey={selectedExchangeId}
             onSelectionChange={setSelectedExchangeId}
-          >
-            {(e) => (
-              <AutocompleteItem key={e.id} textValue={e.name}>
-                {e.name}
-              </AutocompleteItem>)}
-          </Autocomplete>
+          />
         </div>
       </ModalBody>
       <ModalFooter>
         <Button
-          isDisabled={selectedCoinId === null && selectedExchangeId === null}
-          className="bg-primary-600" 
+          isDisabled={selectedCoinId === null || selectedExchangeId === null}
+          className="bg-primary-600 text-background"
           onPress={handleSubmit}>
-          Submit
+          Save
         </Button>
       </ModalFooter >
     </>
