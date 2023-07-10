@@ -180,7 +180,7 @@ class TrendingCoinsAPIView(ListAPIView):
                 date__gte=yesterday).exclude(coin__short_name__icontains='usd').order_by('-date')
 
         coin_exchange_infos = sorted(coin_exchange_infos,
-                                     key=lambda o: o.get_turnover if o.get_turnover else 0, reverse=True)[:max_objects]
+                                     key=lambda o: o.turnover if o.turnover else 0, reverse=True)[:max_objects]
         
         return coin_exchange_infos
 

@@ -16,7 +16,6 @@ class CoinSerializer(serializers.ModelSerializer):
 
 
 class CoinExchangeInfoSerializer(serializers.ModelSerializer):
-    turnover = serializers.FloatField(source='get_turnover')
     price_change = serializers.FloatField(
         source='get_price_change', read_only=True)
     price_change_perc = serializers.FloatField(
