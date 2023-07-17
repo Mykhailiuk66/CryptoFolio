@@ -10,7 +10,7 @@ type ExchangeAutocompleteType = {
   onSelectionChange?: (key: Key) => any
 }
 
-const ExchangeAutoComplete = ({ label, className, selectedKey, onSelectionChange }: ExchangeAutocompleteType) => {
+const ExchangeAutocomplete = ({ label, className, selectedKey, onSelectionChange }: ExchangeAutocompleteType) => {
   const { exchanges } = useContext(DataContext)
 
   return (
@@ -34,4 +34,4 @@ const ExchangeAutoComplete = ({ label, className, selectedKey, onSelectionChange
 }
 
 
-export default ExchangeAutoComplete
+export default ExchangeAutocomplete

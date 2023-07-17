@@ -51,8 +51,10 @@ const CoinInfoModal = () => {
 
   return (
     <Modal
+      scrollBehavior="inside"
       size="5xl"
       backdrop="blur"
+      placement="center"
       isOpen={isOpen}
       onClose={onClose}
       className="max-w-[1300px] bg-primary-background"

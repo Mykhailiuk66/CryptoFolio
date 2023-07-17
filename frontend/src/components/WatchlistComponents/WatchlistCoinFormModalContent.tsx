@@ -2,7 +2,7 @@ import { Button, Divider, ModalBody, ModalFooter, ModalHeader } from "@nextui-or
 import { useState } from "react";
 import { Key } from '@react-types/shared';
 import CoinAutocomplete from "../Autocomplete/CoinAutocomplete";
-import ExchangeAutoComplete from "../Autocomplete/ExchangeAutoComplete";
+import ExchangeAutocomplete from "../Autocomplete/ExchangeAutocomplete";
 
 
 type WatchlistCoinFormModalContentType = {
@@ -32,7 +32,7 @@ const WatchlistCoinFormModalContent = ({ title, handleSave, onClose }: Watchlist
             onSelectionChange={setSelectedCoinId}
           />
           <Divider />
-          <ExchangeAutoComplete
+          <ExchangeAutocomplete
             label="Exchange"
             className="mt-3"
             selectedKey={selectedExchangeId}
