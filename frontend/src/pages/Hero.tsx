@@ -19,7 +19,7 @@ const Hero = () => {
             loading="eager"
             disableSkeleton
             src="static/portfolio.png"
-            alt="NextUI Album Cover"
+            alt="Portfolio"
             className="md:hidden max-w-[80vw] md:max-w-[66vw] lg:max-w-[66vw]"
           />
 
@@ -33,10 +33,10 @@ const Hero = () => {
             <Button
               href="/explore"
               as={Link}
-              color="primary" 
+              color="primary"
               variant="shadow"
               className="w-56 text-lg font-medium"
-              >
+            >
               Get Started
             </Button>
           </div>

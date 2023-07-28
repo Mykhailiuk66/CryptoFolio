@@ -1,8 +1,10 @@
 import { Tabs, Tab, Card, CardBody, Image } from "@nextui-org/react";
 import { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Toaster, toast } from 'sonner'
+
 import LoginForm from "../components/Authentication/LoginForm";
 import RegisterForm from "../components/Authentication/RegisterForm";
-import { useNavigate } from "react-router-dom";
 import AuthContext from "../store/AuthContext";
 
 
@@ -17,6 +19,23 @@ const Authentication = () => {
     }
   }, [navigate, user])
 
+  useEffect(() => {
+    toast(
+      'Test Login Credentials',
+      {
+        dismissible: true,
+        duration: 600000,
+        style: {
+          border: '1px solid #24DF91',
+          background: '#010100',
+          color: '#24DF91',
+        },
+        description: <div>
+          <p>Email: test@gmail.com</p>
+          <p>Password: test_pass</p>
+        </div>
+      })
+  }, [])
 
   const handleSignUpSelect = () => {
     setSelected('sign-up');
@@ -29,6 +48,7 @@ const Authentication = () => {
 
   return (
     <>
+      <Toaster richColors position="top-right" />
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 pb-0 pt-2 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex items-center justify-center">
           <Image
