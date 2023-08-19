@@ -198,8 +198,16 @@ export type CoinInfoModalParams = {
 export type CoinModalContextType = {
 	isOpen: boolean;
 	coinInfo: CoinInfoModalParams;
+	historyPrices: CoinData[];
+	isLoading: boolean;
 	onClose: () => void;
 	openCoinInfoModal: (exchangeSlug: string, coinSlug: string) => void;
+	setHistoryPrices: React.Dispatch<React.SetStateAction<CoinData[]>>;
+	setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	fetchHistoryPrices: (
+		exchangeSlug: string,
+		coinSlug: string
+	) => Promise<void>;
 };
 
 export type CustomCoinExchangeType = {
