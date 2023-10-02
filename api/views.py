@@ -68,10 +68,9 @@ class PortfolioHoldingCreateAPIView(CreateAPIView):
         return models.PortfolioHolding.objects.filter(portfolio__user=user)
 
     def perform_create(self, serializer):
-        portfolio = self.request.data.get('portfolio')
+        portfolio_id = self.request.data.get('portfolio')
         user = self.request.user
-        portfolio = models.Portfolio.objects.filter(id=portfolio,
-                                                    user=user).first()
+        portfolio = models.Portfolio.objects.get(id=portfolio_id, user=user)
 
         if not portfolio:
             raise ValidationError("Portfolio not found.")
@@ -181,7 +180,7 @@ class TrendingCoinsAPIView(ListAPIView):
 
         coin_exchange_infos = sorted(coin_exchange_infos,
                                      key=lambda o: o.turnover if o.turnover else 0, reverse=True)[:max_objects]
-        
+
         return coin_exchange_infos
 
 
