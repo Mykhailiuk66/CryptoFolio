@@ -12,12 +12,21 @@ class ExchangeSerializer(serializers.ModelSerializer):
 class CoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Coin
-        fields = ['id', 'name', 'short_name', 'logo']
+        fields = ['id', 'name', 'short_name', 'icon']
+
+
+class PortfolioSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Portfolio
+        fields = ['id', 'username', 'name', 'notes']
+
+    def get_username(self, obj):
+        return str(obj.user.username)
 
 
 class PortfolioHoldingSerializer(serializers.ModelSerializer):
-    coin = CoinSerializer(read_only=True)
-    exchange = ExchangeSerializer(read_only=True)
 
     class Meta:
         model = models.PortfolioHolding
@@ -37,7 +46,7 @@ class PortfolioHoldingSerializer(serializers.ModelSerializer):
         return value
 
     def validate_sale_price(self, value):
-        if value <= 0:
+        if value and value <= 0:
             raise serializers.ValidationError(
                 "Sale price must be greater than zero.")
         return value
@@ -51,17 +60,6 @@ class PortfolioHoldingSerializer(serializers.ModelSerializer):
                 "Sale date cannot be before purchase date.")
 
         return data
-
-
-class PortfolioSerializer(serializers.ModelSerializer):
-    username = serializers.SerializerMethodField()
-
-    class Meta:
-        model = models.Portfolio
-        fields = ['id', 'username', 'name', 'notes']
-
-    def get_username(self, obj):
-        return str(obj.user.username)
 
 
 class PortfolioSnapshotSerializer(serializers.ModelSerializer):

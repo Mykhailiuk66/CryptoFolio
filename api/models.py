@@ -2,7 +2,6 @@ from datetime import date
 import uuid
 
 from django.db import models
-# from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -20,7 +19,7 @@ class Exchange(models.Model):
 class Coin(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=20)
-    logo = models.ImageField(upload_to='coins/',
+    icon = models.ImageField(upload_to='coins/',
                              blank=True, null=True,
                              default='coins/default.png')
 

@@ -17,15 +17,10 @@ urlpatterns = [
     path('portfolios/<str:pk>/', views.PortfolioRetrieveUpdateDestroyAPIView.as_view(),
          name='get-delete-update-portfolio'),
 
-    path('portfolio_holdings/', views.PortfolioHoldingListCreateAPIView.as_view(),
-         name='get-create-portfolio-holdings'),
+    path('portfolio_holdings/', views.PortfolioHoldingCreateAPIView.as_view(),
+         name='get-portfolio-holdings'),
     path('portfolio_holdings/<str:pk>/', views.PortfolioHoldingRetrieveUpdateDestroyAPIView.as_view(),
          name='get-delete-update-portfolio-holding'),
-
-    path('portfolio_snapshots/', views.PortfolioSnapshotListCreateAPIView.as_view(),
-         name='get-create-portfolio-holdings'), ## ??
-    path('portfolio_snapshots/<str:pk>/', views.PortfolioSnapshotgRetrieveUpdateDestroyAPIView.as_view(),
-         name='get-delete-update-portfolio-holding'), ## ??
 
     path('watchlists/', views.WatchlistListCreateAPIView.as_view(),
          name='get-create-portfolio-holdings'),
