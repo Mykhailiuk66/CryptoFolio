@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
 
+    'django_crontab',    
 
     'api',
     'account',
@@ -165,6 +166,9 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'account.CustomUser'
 
+CRONJOBS = [
+    ('* * * * *', 'api.cron.update_coins_info'),
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

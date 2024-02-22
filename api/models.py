@@ -3,22 +3,31 @@ import uuid
 
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils.text import slugify
 
 User = get_user_model()
 
+
 class Exchange(models.Model):
     name = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True, max_length=200, null=False, blank=True)
     logo = models.ImageField(upload_to='exchanges/',
                              blank=True, null=True,
                              default='exchanges/default.png')
 
     def __str__(self):
         return str(self.name)
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
 
 
 class Coin(models.Model):
-    name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=20)
+    name = models.CharField(max_length=100, null=True, blank=True)
     icon = models.ImageField(upload_to='coins/',
                              blank=True, null=True,
                              default='coins/default.png')
@@ -27,7 +36,43 @@ class Coin(models.Model):
         unique_together = ('name', 'short_name',)
 
     def __str__(self):
-        return f"{self.short_name} - {self.name}"
+        return f"{self.short_name}"
+
+
+class CoinExchangeInfo(models.Model):
+    coin = models.ForeignKey(Coin, on_delete=models.CASCADE)
+    exchange = models.ForeignKey(Exchange, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    price = models.DecimalField(max_digits=40, decimal_places=20)
+
+    volume = models.DecimalField(max_digits=40, decimal_places=10, null=True, blank=True)
+    prev_price_24h = models.DecimalField(max_digits=40, decimal_places=20, null=True, blank=True)
+    high_price = models.DecimalField(max_digits=40, decimal_places=20, null=True, blank=True)
+    low_price = models.DecimalField(max_digits=40, decimal_places=20, null=True, blank=True)
+
+    @property
+    def get_turnover(self):
+        if self.volume:
+            return self.volume * self.price
+        return None
+
+    @property
+    def get_price_change(self):
+        if self.price and self.prev_price_24h:
+            return self.price - self.prev_price_24h
+        return None
+
+    @property
+    def get_price_change_perc(self):
+        if self.prev_price_24h:
+            return ((self.price - self.prev_price_24h) / self.prev_price_24h) * 100
+        return None
+
+    class Meta:
+        unique_together = ('coin', 'exchange', 'date')
+
+    def __str__(self):
+        return f"{self.coin.short_name} - {self.exchange.name} - {self.date}"
 
 
 class Portfolio(models.Model):
@@ -54,7 +99,7 @@ class PortfolioHolding(models.Model):
     coin = models.ForeignKey(Coin, on_delete=models.RESTRICT)
     exchange = models.ForeignKey(Exchange, on_delete=models.SET_NULL,
                                  default=None, null=True, blank=True)
-    quantity = models.DecimalField(max_digits=20, decimal_places=2)
+    quantity = models.DecimalField(max_digits=40, decimal_places=20)
 
     purchase_price = models.DecimalField(max_digits=40, decimal_places=20)
     purchase_date = models.DateField(default=date.today, blank=True, null=True)

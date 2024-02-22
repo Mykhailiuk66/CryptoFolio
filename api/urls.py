@@ -6,7 +6,7 @@ urlpatterns = [
     path('account/', include('account.urls')),
     
     path('exchanges/', views.ExchangeListAPIView.as_view(), name='get-exchanges'),
-    path('exchanges/<int:pk>/', views.ExchangeRetrieveAPIView.as_view(),
+    path('exchanges/<slug:slug>/', views.ExchangeRetrieveAPIView.as_view(),
          name='get-exchange'),
 
     path('coins/', views.CoinListAPIView.as_view(), name='get-coins'),
