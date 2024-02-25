@@ -1,16 +1,17 @@
-from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import UpdateModelMixin, DestroyModelMixin
 from rest_framework.generics import (GenericAPIView, ListAPIView, RetrieveAPIView,
                                      RetrieveUpdateDestroyAPIView, ListCreateAPIView,
                                      CreateAPIView)
-from rest_framework import status
 
 from . import models
 from . import serializers
 
+from .cron import update_coins_info
+from .util.misc import calculate_portfolio_snapshots
+
+update_coins_info()
+print('update_coins_info******************************************')
 
 class ExchangeListAPIView(ListAPIView):
     queryset = models.Exchange.objects.all()
@@ -20,6 +21,7 @@ class ExchangeListAPIView(ListAPIView):
 class ExchangeRetrieveAPIView(RetrieveAPIView):
     queryset = models.Exchange.objects.all()
     serializer_class = serializers.ExchangeSerializer
+    lookup_field = 'slug'
 
 
 class CoinListAPIView(ListAPIView):
@@ -35,6 +37,10 @@ class CoinRetrieveAPIView(RetrieveAPIView):
 class PortfolioRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
     queryset = models.Portfolio.objects.all()
     serializer_class = serializers.PortfolioSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        calculate_portfolio_snapshots(self.get_object())
+        return super().retrieve(request, *args, **kwargs)
 
     def get_queryset(self):
         user = self.request.user

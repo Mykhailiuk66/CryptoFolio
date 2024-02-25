@@ -10,19 +10,19 @@ User = get_user_model()
 
 class Exchange(models.Model):
     name = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True, max_length=200, null=False, blank=True)
+    slug = models.SlugField(unique=True, max_length=200,
+                            null=False, blank=True)
     logo = models.ImageField(upload_to='exchanges/',
                              blank=True, null=True,
                              default='exchanges/default.png')
 
     def __str__(self):
         return str(self.name)
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
-
 
 
 class Coin(models.Model):
@@ -45,10 +45,14 @@ class CoinExchangeInfo(models.Model):
     date = models.DateField(auto_now_add=True)
     price = models.DecimalField(max_digits=40, decimal_places=20)
 
-    volume = models.DecimalField(max_digits=40, decimal_places=10, null=True, blank=True)
-    prev_price_24h = models.DecimalField(max_digits=40, decimal_places=20, null=True, blank=True)
-    high_price = models.DecimalField(max_digits=40, decimal_places=20, null=True, blank=True)
-    low_price = models.DecimalField(max_digits=40, decimal_places=20, null=True, blank=True)
+    volume = models.DecimalField(
+        max_digits=40, decimal_places=10, null=True, blank=True)
+    prev_price_24h = models.DecimalField(
+        max_digits=40, decimal_places=20, null=True, blank=True)
+    high_price = models.DecimalField(
+        max_digits=40, decimal_places=20, null=True, blank=True)
+    low_price = models.DecimalField(
+        max_digits=40, decimal_places=20, null=True, blank=True)
 
     @property
     def get_turnover(self):
@@ -80,7 +84,7 @@ class Portfolio(models.Model):
                           primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              null=True, blank=True)
-    name = models.CharField(max_length=300)
+    name = models.CharField(max_length=100)
     notes = models.TextField(blank=True, null=True, max_length=500)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -107,8 +111,15 @@ class PortfolioHolding(models.Model):
                                      null=True)
     sale_date = models.DateField(blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        if self.sale_price is not None and self.sale_date is None:
+            raise ValueError("Sale date is mandatory when sale price is set.")
+        if self.sale_date is not None and self.sale_price is None:
+            raise ValueError("Sale price is mandatory when sale date is set.")
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"{self.portfolio.name} - {self.coin.name} - {self.exchange.name}"
+        return f"{self.portfolio.name} - {self.coin.short_name} - {self.exchange.name}"
 
 
 class PortfolioSnapshot(models.Model):
@@ -126,7 +137,20 @@ class Watchlist(models.Model):
                           primary_key=True, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              null=True, blank=True)
-    coins = models.ManyToManyField(Coin)
+    name = models.CharField(max_length=100)
 
     def __str__(self):
-        return str(self.user.username)
+        return f"{self.user.username} - {self.name}"
+
+
+class WatchlistCoin(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, unique=True,
+                          primary_key=True, editable=False)
+    watchlist = models.ForeignKey(Watchlist, on_delete=models.CASCADE,
+                                  related_name='coins')
+    coin = models.ForeignKey(Coin, on_delete=models.RESTRICT)
+    exchange = models.ForeignKey(Exchange, on_delete=models.SET_NULL,
+                                 default=None, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.watchlist.user.username} - {self.coin.short_name} - {self.exchange.name}"
