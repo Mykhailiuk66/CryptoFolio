@@ -73,13 +73,49 @@ class PortfolioSnapshotSerializer(serializers.ModelSerializer):
         return str(obj.portfolio.name)
 
 
+class WatchlistListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Watchlist
+        fields = ['id', 'name']
+
+
 class WatchlistSerializer(serializers.ModelSerializer):
-    username = serializers.SerializerMethodField()
-    coins = CoinSerializer(many=True, read_only=True)
+    coins = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Watchlist
-        fields = ['id', 'username', 'coins']
+        fields = ['id', 'name', 'coins']
 
-    def get_username(self, obj):
-        return str(obj.user.username)
+    def get_coins(self, obj):
+        watchlist_coins = obj.watchlistcoins.all()
+        coins = [watchlist_coin.coin for watchlist_coin in watchlist_coins]
+
+        coin_data = CoinSerializer(coins, many=True)
+
+        return coin_data.data
+
+
+class CoinExchangeInfoSerializer(serializers.ModelSerializer):
+    turnover = serializers.FloatField(source='get_turnover')
+    price_change = serializers.FloatField(source='get_price_change')
+    price_change_perc = serializers.FloatField(source='get_price_change_perc')
+
+    class Meta:
+        model = models.CoinExchangeInfo
+        fields = ['date', 'price', 'volume', 'prev_price_24h',
+                  'high_price', 'low_price', 'turnover', 'price_change',
+                  'price_change_perc']
+
+
+class CoinExchangeInfoExtendedSerializer(serializers.ModelSerializer):
+    coin = CoinSerializer()
+    exchange = ExchangeSerializer()
+    turnover = serializers.FloatField(source='get_turnover')
+    price_change = serializers.FloatField(source='get_price_change')
+    price_change_perc = serializers.FloatField(source='get_price_change_perc')
+
+    class Meta:
+        model = models.CoinExchangeInfo
+        fields = ['coin', 'exchange', 'date', 'price', 'volume', 'prev_price_24h',
+                  'high_price', 'low_price', 'turnover', 'price_change',
+                  'price_change_perc']
