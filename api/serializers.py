@@ -63,7 +63,7 @@ class PortfolioHoldingSerializer(serializers.ModelSerializer):
 
 
 class PortfolioSnapshotSerializer(serializers.ModelSerializer):
-    portfolio_name = serializers.SerializerMethodField()
+    portfolio_name = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.PortfolioSnapshot
@@ -97,8 +97,8 @@ class WatchlistSerializer(serializers.ModelSerializer):
 
 class CoinExchangeInfoSerializer(serializers.ModelSerializer):
     turnover = serializers.FloatField(source='get_turnover')
-    price_change = serializers.FloatField(source='get_price_change')
-    price_change_perc = serializers.FloatField(source='get_price_change_perc')
+    price_change = serializers.FloatField(source='get_price_change', read_only=True)
+    price_change_perc = serializers.FloatField(source='get_price_change_perc', read_only=True)
 
     class Meta:
         model = models.CoinExchangeInfo
@@ -110,9 +110,9 @@ class CoinExchangeInfoSerializer(serializers.ModelSerializer):
 class CoinExchangeInfoExtendedSerializer(serializers.ModelSerializer):
     coin = CoinSerializer()
     exchange = ExchangeSerializer()
-    turnover = serializers.FloatField(source='get_turnover')
-    price_change = serializers.FloatField(source='get_price_change')
-    price_change_perc = serializers.FloatField(source='get_price_change_perc')
+    turnover = serializers.FloatField(source='get_turnover', read_only=True)
+    price_change = serializers.FloatField(source='get_price_change', read_only=True)
+    price_change_perc = serializers.FloatField(source='get_price_change_perc', read_only=True)
 
     class Meta:
         model = models.CoinExchangeInfo

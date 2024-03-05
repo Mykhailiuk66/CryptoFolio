@@ -13,8 +13,8 @@ urlpatterns = [
 
     path('portfolios/', views.PortfolioListCreateAPIView.as_view(),
          name='get-create-portfolios'),
-    path('portfolios/<str:pk>/', views.PortfolioRetrieveUpdateDestroyAPIView.as_view(),
-         name='get-delete-update-portfolio'),
+    path('portfolios/<str:pk>/', views.PortfolioUpdateDestroyAPIView.as_view(),
+         name='delete-update-portfolio'),
 
     path('portfolio_holdings/', views.PortfolioHoldingCreateAPIView.as_view(),
          name='get-portfolio-holdings'),
