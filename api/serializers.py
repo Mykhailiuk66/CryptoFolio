@@ -79,30 +79,38 @@ class WatchlistListSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
+class WatchlistCoinSerializer(serializers.ModelSerializer):
+    coin = CoinSerializer(read_only=True)
+    exchange = ExchangeSerializer(read_only=True)
+
+    class Meta:
+        model = models.WatchlistCoin
+        fields = ['id', 'coin', 'exchange']
+
+
 class WatchlistSerializer(serializers.ModelSerializer):
-    coins = serializers.SerializerMethodField()
+    coins = WatchlistCoinSerializer(
+        many=True, read_only=True, source='watchlistcoins')
 
     class Meta:
         model = models.Watchlist
         fields = ['id', 'name', 'coins']
 
-    def get_coins(self, obj):
-        watchlist_coins = obj.watchlistcoins.all()
-        coins = [watchlist_coin.coin for watchlist_coin in watchlist_coins]
-
-        coin_data = CoinSerializer(coins, many=True)
-
-        return coin_data.data
-
 
 class CoinExchangeInfoSerializer(serializers.ModelSerializer):
     turnover = serializers.FloatField(source='get_turnover')
-    price_change = serializers.FloatField(source='get_price_change', read_only=True)
-    price_change_perc = serializers.FloatField(source='get_price_change_perc', read_only=True)
+    price_change = serializers.FloatField(
+        source='get_price_change', read_only=True)
+    price_change_perc = serializers.FloatField(
+        source='get_price_change_perc', read_only=True)
+    coin_short_name = serializers.CharField(
+        source='coin.short_name', read_only=True)
+    exchange_name = serializers.CharField(
+        source='exchange.name', read_only=True)
 
     class Meta:
         model = models.CoinExchangeInfo
-        fields = ['date', 'price', 'volume', 'prev_price_24h',
+        fields = ['coin_short_name', 'exchange_name', 'date', 'price', 'volume', 'prev_price_24h',
                   'high_price', 'low_price', 'turnover', 'price_change',
                   'price_change_perc']
 
@@ -111,8 +119,10 @@ class CoinExchangeInfoExtendedSerializer(serializers.ModelSerializer):
     coin = CoinSerializer()
     exchange = ExchangeSerializer()
     turnover = serializers.FloatField(source='get_turnover', read_only=True)
-    price_change = serializers.FloatField(source='get_price_change', read_only=True)
-    price_change_perc = serializers.FloatField(source='get_price_change_perc', read_only=True)
+    price_change = serializers.FloatField(
+        source='get_price_change', read_only=True)
+    price_change_perc = serializers.FloatField(
+        source='get_price_change_perc', read_only=True)
 
     class Meta:
         model = models.CoinExchangeInfo
