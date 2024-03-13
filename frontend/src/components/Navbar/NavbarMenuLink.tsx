@@ -3,7 +3,7 @@ import { MouseEventHandler } from "react";
 
 
 type NavbarMenuLinkProps = {
-  text: string;
+  children: string;
   href: string;
   pathname: string;
   color?: "primary" | "foreground" | "secondary" | "success" | "warning" | "danger" | undefined;
@@ -11,7 +11,7 @@ type NavbarMenuLinkProps = {
 }
 
 
-const NavbarMenuLink = ({ text, href, pathname, color, onClick }: NavbarMenuLinkProps) => {
+const NavbarMenuLink = ({ children, href, pathname, color, onClick }: NavbarMenuLinkProps) => {
   return (
     <NavbarMenuItem isActive={href === pathname ? true : false}>
       <Link
@@ -20,7 +20,7 @@ const NavbarMenuLink = ({ text, href, pathname, color, onClick }: NavbarMenuLink
         className="w-full"
         size="lg"
         onClick={onClick}>
-        {text}
+        {children}
       </Link>
     </NavbarMenuItem>
   )
