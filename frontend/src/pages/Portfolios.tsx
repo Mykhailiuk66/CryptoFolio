@@ -1,7 +1,7 @@
 import { Button } from "@nextui-org/react"
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css"
 import "react-multi-date-picker/styles/colors/green.css"
-import Container from "../components/Container";
+import Container from "../components/Container/Container";
 
 const Portfolios = () => {
   return (<Container>
