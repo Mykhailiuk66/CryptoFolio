@@ -14,7 +14,7 @@ urlpatterns = [
          name='delete-update-portfolio'),
 
     path('portfolio-holdings/', views.PortfolioHoldingCreateAPIView.as_view(),
-         name='get-portfolio-holdings'),
+         name='create-portfolio-holdings'),
     path('portfolio-holdings/<str:pk>/', views.PortfolioHoldingRetrieveUpdateDestroyAPIView.as_view(),
          name='get-delete-update-portfolio-holding'),
 

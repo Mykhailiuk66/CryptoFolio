@@ -158,6 +158,9 @@ class Watchlist(models.Model):
                              null=True, blank=True)
     name = models.CharField(max_length=100)
 
+    class Meta:
+        unique_together = ('user', 'name',)
+
     def __str__(self):
         return f"{self.user.username} - {self.name}"
 
@@ -170,6 +173,10 @@ class WatchlistCoin(models.Model):
     coin = models.ForeignKey(Coin, on_delete=models.CASCADE)
     exchange = models.ForeignKey(Exchange, on_delete=models.SET_NULL,
                                  default=None, null=True, blank=True)
+
+    class Meta:
+        unique_together = ('watchlist', 'coin', "exchange")
+
 
     def __str__(self):
         return f"{self.watchlist.name} - {self.watchlist.user.username} - {self.coin.short_name} - {self.exchange.name}"
