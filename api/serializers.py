@@ -12,7 +12,7 @@ class ExchangeSerializer(serializers.ModelSerializer):
 class CoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Coin
-        fields = ['id', 'short_name', 'name', 'icon']
+        fields = ['id', 'short_name', 'name', 'slug', 'icon']
 
 
 class PortfolioSerializer(serializers.ModelSerializer):
@@ -73,12 +73,6 @@ class PortfolioSnapshotSerializer(serializers.ModelSerializer):
         return str(obj.portfolio.name)
 
 
-class WatchlistListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Watchlist
-        fields = ['id', 'name']
-
-
 class WatchlistCoinSerializer(serializers.ModelSerializer):
     coin = CoinSerializer(read_only=True)
     exchange = ExchangeSerializer(read_only=True)
@@ -86,6 +80,26 @@ class WatchlistCoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.WatchlistCoin
         fields = ['id', 'coin', 'exchange']
+
+
+class SimplifiedWatchlistCoinSerializer(serializers.ModelSerializer):
+    coin_slug = serializers.SlugRelatedField(
+        source='coin', slug_field='slug', read_only=True)
+    exchange_slug = serializers.SlugRelatedField(
+        source='exchange', slug_field='slug', read_only=True)
+
+    class Meta:
+        model = models.WatchlistCoin
+        fields = ['id', 'coin_slug', 'exchange_slug']
+
+
+class WatchlistListSerializer(serializers.ModelSerializer):
+    coins = SimplifiedWatchlistCoinSerializer(
+        many=True, read_only=True, source='watchlistcoins')
+
+    class Meta:
+        model = models.Watchlist
+        fields = ['id', 'name', 'coins']
 
 
 class WatchlistSerializer(serializers.ModelSerializer):
@@ -110,7 +124,7 @@ class CoinExchangeInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.CoinExchangeInfo
-        fields = ['coin_short_name', 'exchange_name', 'date', 'price', 'volume', 'prev_price_24h',
+        fields = ['id', 'coin_short_name', 'exchange_name', 'date', 'price', 'volume', 'prev_price_24h',
                   'high_price', 'low_price', 'turnover', 'price_change',
                   'price_change_perc']
 
