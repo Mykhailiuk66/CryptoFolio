@@ -7,24 +7,26 @@ import {
   TableCell,
   SortDescriptor,
 } from "@nextui-org/react";
-import WatchlistCell from "../WatchlistTableComponents/WatchlistCell";
-import { CoinData, Column } from "../../types";
+import { Key } from "react";
+import { Column } from "../../types";
 
-type CustomTableProps = {
+type CustomTableProps<T> = {
   sortDescriptor: SortDescriptor;
   setSortDescriptor: React.Dispatch<React.SetStateAction<SortDescriptor>>;
   topContent: React.ReactNode;
   headerColumns: Column[];
-  sortedItems: CoinData[];
+  sortedItems: T[];
+  CellComponent: React.ComponentType<{ item: T; columnKey: Key }>;
 };
 
-const CustomTable = ({
+const CustomTable = <T,>({
   sortDescriptor,
   setSortDescriptor,
   topContent,
   headerColumns,
   sortedItems,
-}: CustomTableProps) => {
+  CellComponent
+}: CustomTableProps<T>) => {
   return (
     <Table
       aria-label="table"
@@ -53,13 +55,17 @@ const CustomTable = ({
           );
         }}
       </TableHeader>
-      <TableBody emptyContent={"No coins added yet"} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
+      <TableBody emptyContent={"No coins found"} items={sortedItems}>
+        {(item: T) => (
+          <TableRow key={(item as any).id}>
             {(columnKey) => {
               return (
                 <TableCell align={"left"}>
-                  <WatchlistCell
+                  {/* <WatchlistCell
+                    item={item}
+                    columnKey={columnKey}
+                  /> */}
+                  <CellComponent
                     item={item}
                     columnKey={columnKey}
                   />

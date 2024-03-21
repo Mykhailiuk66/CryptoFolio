@@ -106,10 +106,10 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
         },
         body: JSON.stringify({ name }),
       });
-  
+
       if (response.ok) {
-        const newWatchlist: Watchlist = await response.json();
-        console.log("Watchlist added successfully:", newWatchlist);
+        const data = await response.json();
+        setWatchlists([...watchlists, data]);
       } else {
         throw new Error("Failed to add watchlist");
       }
@@ -117,7 +117,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
       console.error("Error adding watchlist:", error);
     }
   };
-  
+
   const editWatchlist = async (name: string) => {
     try {
       if (name.length === 0) return
@@ -129,9 +129,14 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
         },
         body: JSON.stringify({ name: name }),
       });
-  
+
       if (response.ok) {
-        console.log("Watchlist updated successfully");
+        const data = await response.json();
+        setWatchlists((prevState) => {
+          return prevState.map((w) =>
+            w.id === selectedWatchlist ? data : w
+          );
+        });
       } else {
         throw new Error("Failed to update watchlist");
       }
@@ -149,9 +154,10 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
           Authorization: "Bearer " + authTokens?.access,
         },
       });
-  
+
       if (response.ok) {
-        console.log("Watchlist deleted successfully");
+        setWatchlists((prevState) => prevState.filter((w) => w.id !== selectedWatchlist))
+        setSelectedWatchlist(undefined)
       } else {
         throw new Error("Failed to delete watchlist");
       }
@@ -159,7 +165,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
       console.error("Error deleting watchlist:", error);
     }
   };
-  
+
 
 
   useEffect(() => {
@@ -168,21 +174,22 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
     }
   }, [watchlists.length]);
 
+
   const contextData: WatchlistContextType = {
-    watchlists: watchlists,
-    selectedWatchlist: selectedWatchlist,
-    watchlistCoinsData: watchlistCoinsData,
-    visibleColumns: visibleColumns,
-    setVisibleColumns: setVisibleColumns,
-    setWatchlists: setWatchlists,
-    setSelectedWatchlist: setSelectedWatchlist,
-    setwatchlistCoinsData: setwatchlistCoinsData,
-    fetchWatchlists: fetchWatchlists,
-    fetchWatchlistCoinsData: fetchWatchlistCoinsData,
-    removeWatchlistCoin: removeWatchlistCoin,
-    addWatchlist: addWatchlist,
-    editWatchlist: editWatchlist,
-    deleteWatchlist: deleteWatchlist,
+    watchlists,
+    selectedWatchlist,
+    watchlistCoinsData,
+    visibleColumns,
+    setVisibleColumns,
+    setWatchlists,
+    setSelectedWatchlist,
+    setwatchlistCoinsData,
+    fetchWatchlists,
+    fetchWatchlistCoinsData,
+    removeWatchlistCoin,
+    addWatchlist,
+    editWatchlist,
+    deleteWatchlist,
   };
 
   return (

@@ -24,3 +24,8 @@ export function formatCurrency(value: number){
   if (value < 1) return value.toString()
   return currencyFormatter.format(value).replace("$", "")
 }
+
+
+export function formatProfitLoss(value: number){
+  return currencyFormatter.format(value)
+}
