@@ -89,7 +89,7 @@ const CustomPieChart = <T,>({ data, middleLabelKey, labelKey }: CustomPieChartTy
           cy="50%"
           innerRadius={80}
           outerRadius={100}
-          fill="#82ca9d"
+          fill="#12A081"
           dataKey={labelKey}
           onMouseEnter={onPieEnter}
         />

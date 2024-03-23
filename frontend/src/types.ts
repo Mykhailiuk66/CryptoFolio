@@ -38,7 +38,6 @@ export type CoinData = {
 	turnover: number;
 	price_change: number;
 	price_change_perc: number;
-	image?: string;
 };
 
 export type Column = {
@@ -131,7 +130,7 @@ export type ExtendedPortfolioHolding = {
 	sale_price: number | null;
 	sale_date: string | null;
 	price: number | null;
-  value: number;
+	value: number;
 };
 
 export type PortfolioType = {
@@ -150,4 +149,26 @@ export type PortfolioSnapshot = {
 	id: number;
 	created: string;
 	value: number;
+};
+
+export type CoinInfoModalParams = {
+	exchangeSlug: string;
+	coinSlug: string;
+};
+
+export type CoinModalContextType = {
+	isOpen: boolean;
+	coinInfo: CoinInfoModalParams;
+	onClose: () => void;
+	openCoinInfoModal: (exchangeSlug: string, coinSlug: string) => void;
+};
+
+export type CustomCoinExchangeType = {
+	exchage_name: string;
+	exchage_slug: string;
+	id: string;
+	short_name: string;
+	name: string | null;
+	slug: string;
+	icon: string;
 };

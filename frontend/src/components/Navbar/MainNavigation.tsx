@@ -17,6 +17,7 @@ import NavbarLink from "./NavbarLink";
 import NavbarMenuLink from "./NavbarMenuLink";
 import AuthContext from "../../store/AuthContext";
 import { FaSearch } from "react-icons/fa";
+import CoinSearchInput from "../CoinSearchInput/CoinSearchInput";
 
 
 const MainNavigation = () => {
@@ -57,19 +58,7 @@ const MainNavigation = () => {
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
-        <Input
-          classNames={{
-            base: "max-w-full sm:max-w-[17rem] h-10 hidden md:block",
-            mainWrapper: "h-full",
-            input: "text-small",
-            inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-          }}
-          placeholder="Type to search..."
-          size="sm"
-          startContent={<FaSearch color="success" size={18}/>}
-          type="search"
-
-        />
+        <CoinSearchInput />
 
         {!user &&
           (<Button

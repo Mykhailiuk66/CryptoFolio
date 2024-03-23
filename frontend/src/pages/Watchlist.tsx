@@ -42,7 +42,7 @@ const Watchlist = () => {
     if (watchlists.length > 0 && selectedWatchlist) {
       fetchWatchlistCoinsData();
     }
-  }, [watchlists.length, selectedWatchlist, fetchWatchlistCoinsData]);
+  }, [watchlists.length, selectedWatchlist, fetchWatchlistCoinsData, watchlists]);
 
   const headerColumns = useMemo(() => {
     if (visibleColumns === "all")
