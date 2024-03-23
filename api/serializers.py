@@ -113,6 +113,11 @@ class WatchlistCoinSerializer(serializers.ModelSerializer):
         model = models.WatchlistCoin
         fields = ['id', 'coin', 'exchange']
 
+class CreateWatchlistCoinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.WatchlistCoin
+        fields = ['watchlist', 'coin', 'exchange']
+
 
 class SimplifiedWatchlistCoinSerializer(serializers.ModelSerializer):
     coin_slug = serializers.SlugRelatedField(
