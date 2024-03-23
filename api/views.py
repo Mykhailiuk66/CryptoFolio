@@ -73,7 +73,7 @@ class PortfolioHoldingCreateAPIView(CreateAPIView):
 
 
 class WatchlisRetrievetUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = serializers.WatchlistSerializer
+    serializer_class = serializers.WatchlistReadSerializer
 
     def get_queryset(self):
         user = self.request.user
@@ -89,7 +89,7 @@ class WatchlistListCreateAPIView(ListCreateAPIView):
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
-            return serializers.WatchlistListSerializer
+            return serializers.WatchlistReadSerializer
         elif self.request.method == 'POST':
             return serializers.WatchlistSerializer
     
