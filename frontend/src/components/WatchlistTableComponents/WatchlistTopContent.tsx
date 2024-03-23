@@ -16,8 +16,10 @@ import ColumnsDropdown from "../TableComponents/ColumnsDropdown";
 import WatchlistContext from "../../store/WatchlistContext";
 import { Column, ModalState } from "../../types";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import WatchlistFormModal from "./WatchlistFormModal";
+import WatchlistModal from "./WatchlistModal";
 import { FaPlus } from "react-icons/fa6";
+import WatchlistFormModalContent from "./WatchlistFormModalContent";
+import WatchlistCoinFormModalContent from "./WatchlistCoinFormModalContent";
 
 
 type WatchlistTopContentType = {
@@ -38,11 +40,11 @@ const WatchlistTopContent = ({
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     watchlists,
-    setWatchlists,
     fetchWatchlists,
     setSelectedWatchlist,
     selectedWatchlist,
     visibleColumns,
+    addWatchlistCoin,
     setVisibleColumns,
     addWatchlist,
     editWatchlist,
@@ -53,27 +55,38 @@ const WatchlistTopContent = ({
     if (watchlists.length === 0) {
       fetchWatchlists();
     }
-  }, [watchlists.length]);
+  }, [watchlists.length, watchlists, fetchWatchlists]);
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedWatchlist(e.target.value);
   };
 
-  const handleSave = (value: string) => {
-    modalState === "Creating" ? addWatchlist(value) : editWatchlist(value)
-  }
-
   const watchlist = watchlists.find((w) => w.id === selectedWatchlist)
 
   return (
     <>
-      <WatchlistFormModal
-        title={modalState === "Creating" ? "Add Watchlist" : "Edit Watchlist"}
-        value={modalState === "Editing" ? watchlist?.name : ""}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        handleSave={handleSave}
-      />
+      <WatchlistModal isOpen={isOpen} onOpenChange={onOpenChange}>
+        {(onClose) => (
+          <>
+            {modalState === "ADD_COIN" && (
+              <WatchlistCoinFormModalContent
+                title="Add Coin"
+                handleSave={addWatchlistCoin}
+                onClose={onClose}
+              />
+            )}
+
+            {modalState !== "ADD_COIN" && (
+              <WatchlistFormModalContent
+                title={modalState === "ADD_WATCHLIST" ? "Add Watchlist" : "Edit Watchlist"}
+                value={modalState === "EDIT_WATCHLIST" ? watchlist?.name : ""}
+                handleSave={modalState === "ADD_WATCHLIST" ? addWatchlist : editWatchlist}
+                onClose={onClose}
+              />
+            )}
+          </>
+        )}
+      </WatchlistModal>
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <div className="flex w-full max-w-xs items-center gap-2">
@@ -96,7 +109,7 @@ const WatchlistTopContent = ({
               isIconOnly
               variant="bordered"
               onPress={() => {
-                setModalState("Creating")
+                setModalState("ADD_WATCHLIST")
                 onOpen()
               }}
             >
@@ -119,7 +132,15 @@ const WatchlistTopContent = ({
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Button color="primary" variant="bordered" endContent={<FaPlus />}>
+            <Button
+              color="primary"
+              variant="bordered"
+              endContent={<FaPlus />}
+              onPress={() => {
+                setModalState("ADD_COIN")
+                onOpen()
+              }}
+            >
               Add coin
             </Button>
             <ColumnsDropdown
@@ -141,7 +162,7 @@ const WatchlistTopContent = ({
                   key="edit"
                   showDivider
                   onPress={() => {
-                    setModalState("Editing")
+                    setModalState("EDIT_WATCHLIST")
                     onOpen()
                   }}
                   startContent={<MdOutlineEdit size={20} />}

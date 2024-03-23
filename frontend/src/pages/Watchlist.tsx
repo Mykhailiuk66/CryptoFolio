@@ -9,18 +9,18 @@ import WatchlistCell from "../components/WatchlistTableComponents/WatchlistCell"
 import { Column } from "../types";
 
 const columns: Column[] = [
-	{ name: "Id", id: "id", visible: false },
-	{ name: "Coin", id: "coin_short_name" },
-	{ name: "Exchange", id: "exchange_name" },
-	{ name: "Date", id: "date", visible: false },
-	{ name: "Price", id: "price" },
-	{ name: "Volume", id: "volume" },
-	{ name: "Previous Price (24h)", id: "prev_price_24h" },
-	{ name: "High Price", id: "high_price" },
-	{ name: "Low Price", id: "low_price" },
-	{ name: "Turnover", id: "turnover" },
-	{ name: "Price Change", id: "price_change_perc" },
-	{ name: "Actions", id: "actions" },
+  { name: "Id", id: "id", visible: false },
+  { name: "Coin", id: "coin_short_name" },
+  { name: "Exchange", id: "exchange_name" },
+  { name: "Date", id: "date", visible: false },
+  { name: "Price", id: "price" },
+  { name: "Volume", id: "volume" },
+  { name: "Previous Price (24h)", id: "prev_price_24h" },
+  { name: "High Price", id: "high_price" },
+  { name: "Low Price", id: "low_price" },
+  { name: "Turnover", id: "turnover" },
+  { name: "Price Change", id: "price_change_perc" },
+  { name: "Actions", id: "actions" },
 ];
 
 

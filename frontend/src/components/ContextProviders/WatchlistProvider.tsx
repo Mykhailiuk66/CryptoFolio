@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { Key, useCallback, useContext, useEffect, useState } from "react";
 import { Selection } from "@nextui-org/react";
 
 import WatchlistContext from "../../store/WatchlistContext";
@@ -73,7 +73,6 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
     }
   }, [authTokens?.access, selectedWatchlist, watchlists]);
 
-
   const removeWatchlistCoin = async (watchlistcoinId: string) => {
     try {
       const response = await fetch(`${BASE_URL}/api/watchlist-coin/${watchlistcoinId}/`, {
@@ -92,6 +91,31 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
     }
   };
 
+  const addWatchlistCoin = async (coinId: Key, exchangeId: Key) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/watchlist-coin/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authTokens?.access,
+        },
+        body: JSON.stringify({
+          coin: coinId,
+          exchange: exchangeId,
+          watchlist: selectedWatchlist
+        }),
+      });
+
+      if (response.ok) {
+        fetchWatchlists()
+      }
+      else {
+        throw new Error("Failed to add watchlist coin");
+      }
+    } catch (error) {
+      console.error("Error adding watchlist coin:", error);
+    }
+  };
 
   const addWatchlist = async (name: string) => {
     try {
@@ -178,6 +202,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
     selectedWatchlist,
     watchlistCoinsData,
     visibleColumns,
+    addWatchlistCoin,
     setVisibleColumns,
     setWatchlists,
     setSelectedWatchlist,

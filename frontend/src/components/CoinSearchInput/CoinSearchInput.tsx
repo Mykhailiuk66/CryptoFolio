@@ -22,9 +22,10 @@ const CoinSearchInput = () => {
         return exchanges.map((e) => {
           return {
             ...c,
-            id: c.slug + e.slug,
+            key: c.slug + e.slug,
             exchage_name: e.name,
             exchage_slug: e.slug,
+            exchage_id: e.id,
           }
         })
       }))
@@ -36,7 +37,7 @@ const CoinSearchInput = () => {
   const autocompleteItems = useMemo(() => {
     return coinExchange.map((ce) => (
       <AutocompleteItem
-        key={ce.id}
+        key={ce.key}
         textValue={ce.short_name}
         onPress={() => {
           openCoinInfoModal(ce.exchage_slug, ce.short_name)

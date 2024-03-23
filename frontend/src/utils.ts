@@ -21,11 +21,13 @@ export function formatFieldName(inputString: string): string {
 
 
 export function formatCurrency(value: number){
+  if (!value) return ""
   if (value < 1) return value.toString()
   return currencyFormatter.format(value).replace("$", "")
 }
 
 
 export function formatProfitLoss(value: number){
+  if (!value) return ""
   return currencyFormatter.format(value)
 }
