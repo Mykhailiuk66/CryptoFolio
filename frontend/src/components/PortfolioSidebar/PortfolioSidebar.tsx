@@ -4,15 +4,13 @@ import { MdAddCircleOutline } from "react-icons/md"
 import { useContext } from "react";
 import PortfolioContext from "../../store/ProtfolioContext";
 
-type PortfolioSidebarType = {
-  onOpen: () => void;
-}
-
-const PortfolioSidebar = ({ onOpen }: PortfolioSidebarType) => {
+const PortfolioSidebar = () => {
   const {
     portfolios,
     selectedPortfolio,
     setSelectedPortfolio,
+    setModalState,
+    onOpen
   } = useContext(PortfolioContext);
 
   return (
@@ -26,7 +24,10 @@ const PortfolioSidebar = ({ onOpen }: PortfolioSidebarType) => {
             <Button
               isIconOnly
               variant="light"
-              onPress={onOpen}
+              onPress={() => {
+                setModalState("ADD_PORTFOLIO")
+                onOpen()
+              }}
             >
               <MdAddCircleOutline size={25} />
             </Button>

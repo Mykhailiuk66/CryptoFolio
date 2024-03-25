@@ -3,13 +3,13 @@ import {
 } from "@nextui-org/react";
 
 
-type WatchlistFormModalProps = {
+type CustomModalProps = {
   children: (onClose: () => void) => React.ReactNode;
   isOpen: boolean;
   onOpenChange: () => void;
 }
 
-const WatchlistModal = ({ children, isOpen, onOpenChange }: WatchlistFormModalProps) => {
+const CustomModal = ({ children, isOpen, onOpenChange }: CustomModalProps) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -24,4 +24,4 @@ const WatchlistModal = ({ children, isOpen, onOpenChange }: WatchlistFormModalPr
 }
 
 
-export default WatchlistModal
+export default CustomModal

@@ -6,6 +6,13 @@ let currencyFormatter = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
+let fractionCurrencyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 30,
+});
+
+
 export function formatFieldName(inputString: string): string {
   const words: string[] = inputString.split('_');
 
@@ -22,12 +29,13 @@ export function formatFieldName(inputString: string): string {
 
 export function formatCurrency(value: number){
   if (!value) return ""
-  if (value < 1) return value.toString()
+  if (Math.abs(value) < 1) return fractionCurrencyFormatter.format(value).replace("$", "")
   return currencyFormatter.format(value).replace("$", "")
 }
 
 
 export function formatProfitLoss(value: number){
   if (!value) return ""
+  if (Math.abs(value) < 1) return fractionCurrencyFormatter.format(value)
   return currencyFormatter.format(value)
 }

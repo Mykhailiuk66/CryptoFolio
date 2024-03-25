@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { Selection } from "@nextui-org/react";
+import { Selection, useDisclosure } from "@nextui-org/react";
 import PortfolioContext from "../../store/ProtfolioContext";
-import { PortfolioContextType, PortfolioFormType, PortfolioSnapshot, PortfolioType } from "../../types";
+import { PortfolioContextType, PortfolioFormType, PortfolioHoldingForm, PortfolioModalState, PortfolioSnapshot, PortfolioType } from "../../types";
 import AuthContext from "../../store/AuthContext";
 import BASE_URL from "../../http";
 
@@ -14,10 +14,12 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
   const [portfolios, setPortfolios] = useState<PortfolioType[]>([])
   const [portfolioSnapshots, setPortfolioSnapshots] = useState<PortfolioSnapshot[]>([])
   const [selectedPortfolio, setSelectedPortfolio] = useState<string>();
+  const [selectedPortfolioHolding, setSelectedPortfolioHolding] = useState<string>();
   const [visibleColumns, setVisibleColumns] = useState<Selection>("all");
+  const [modalState, setModalState] = useState<PortfolioModalState>();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const { authTokens } = useContext(AuthContext);
-
 
   const fetchPortfolios = useCallback(async () => {
     try {
@@ -125,17 +127,89 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
     }
   }, [authTokens?.access, selectedPortfolio]);
 
+  const removePortfolioHolding = useCallback(async (portfolioHoldingId: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/portfolio-holdings/${portfolioHoldingId}/`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authTokens?.access,
+        },
+      });
+      if (response.ok) {
+        setPortfolios((prevState) => {
+          return prevState.map((p) => {
+            return p.id !== selectedPortfolio ?
+              {
+                ...p,
+                holdings: [...p.holdings!],
+              } :
+              {
+                ...p,
+                holdings: p.holdings?.filter((ph) => ph.id !== portfolioHoldingId)
+              }
+          })
+        })
+      } else {
+        throw new Error("Failed to delete portfolio");
+      }
+    } catch (error) {
+      console.error("Error deleting portfolio:", error);
+    }
+  }, [authTokens?.access, selectedPortfolio]);
+
+  const addPortfolioHolding = useCallback(async (formData: PortfolioHoldingForm) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/portfolio-holdings/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authTokens?.access,
+        },
+        body: JSON.stringify({ ...formData, portfolio: selectedPortfolio }),
+      });
+      if (response.ok) {
+        setPortfolios([])
+      } else {
+        throw new Error("Failed to add portfolio holding");
+      }
+    } catch (error) {
+      console.error("Error adding portfolio holding:", error);
+    }
+  }, [authTokens?.access, selectedPortfolio]);
+
+  const editPortfolioHolding = useCallback(async (formData: PortfolioHoldingForm, holdingId: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/portfolio-holdings/${holdingId}/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + authTokens?.access,
+        },
+        body: JSON.stringify({ ...formData, portfolio: selectedPortfolio }),
+      });
+      if (response.ok) {
+        setPortfolios([])
+      } else {
+        throw new Error("Failed to edit portfolio holding");
+      }
+    } catch (error) {
+      console.error("Error editting portfolio holding:", error);
+    }
+  }, [authTokens?.access, selectedPortfolio]);
 
 
   useEffect(() => {
-    fetchPortfolios()
-  }, [fetchPortfolios])
+    if (portfolios.length === 0) {
+      fetchPortfolios()
+    }
+  }, [fetchPortfolios, portfolios.length])
 
   useEffect(() => {
     if (portfolios.length > 0 && selectedPortfolio === undefined) {
       setSelectedPortfolio(portfolios[0].id!.toString());
     }
-  }, [portfolios.length]);
+  }, [portfolios, portfolios.length, selectedPortfolio]);
 
 
   const contextData: PortfolioContextType = {
@@ -143,6 +217,10 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
     selectedPortfolio,
     visibleColumns,
     portfolioSnapshots,
+    selectedPortfolioHolding,
+    modalState,
+    setModalState,
+    setSelectedPortfolioHolding,
     setPortfolioSnapshots,
     setVisibleColumns,
     setPortfolios,
@@ -152,6 +230,12 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
     editPortfolio,
     deletePortfolio,
     fetchPortfolioSnapshots,
+    removePortfolioHolding,
+    addPortfolioHolding,
+    editPortfolioHolding,
+    isOpen,
+    onOpen,
+    onOpenChange
   };
 
   return (

@@ -90,7 +90,6 @@ const Watchlist = () => {
   const topContent = useMemo(() => {
     return (
       <WatchlistTopContent
-        onClear={onClear}
         onSearchChange={onSearchChange}
         filterValue={filterValue}
         columns={columns}

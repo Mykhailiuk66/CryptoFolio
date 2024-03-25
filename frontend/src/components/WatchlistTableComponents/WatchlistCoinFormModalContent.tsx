@@ -1,5 +1,7 @@
 import { Autocomplete, AutocompleteItem, Button, Divider, ModalBody, ModalFooter, ModalHeader } from "@nextui-org/react";
-import { Key, useContext, useState } from "react";
+import { useContext, useState } from "react";
+import { Key } from '@react-types/shared';
+
 import DataContext from "../../store/DataContext";
 
 
@@ -11,11 +13,11 @@ type WatchlistCoinFormModalContentType = {
 
 const WatchlistCoinFormModalContent = ({ title, handleSave, onClose }: WatchlistCoinFormModalContentType) => {
   const { coins, exchanges } = useContext(DataContext)
-  const [selectedCoinName, setSelectedCoinName] = useState<Key | null>(null);
-  const [selectedExchangeName, setSelectedExchangeName] = useState<Key | null>(null);
+  const [selectedCoinId, setSelectedCoinId] = useState<Key | null | undefined>(null);
+  const [selectedExchangeId, setSelectedExchangeId] = useState<Key | null | undefined>(null);
 
   const handleSubmit = () => {
-    handleSave(selectedCoinName!, selectedExchangeName!)
+    handleSave(selectedCoinId!, selectedExchangeId!)
     onClose()
   }
 
@@ -28,8 +30,8 @@ const WatchlistCoinFormModalContent = ({ title, handleSave, onClose }: Watchlist
             label="Coin"
             className="mb-3"
             defaultItems={coins}
-            onSelectionChange={setSelectedCoinName}
-            required
+            selectedKey={selectedCoinId}
+            onSelectionChange={setSelectedCoinId}
           >
             {(c) => (
               <AutocompleteItem key={c.id} textValue={c.short_name}>
@@ -40,9 +42,9 @@ const WatchlistCoinFormModalContent = ({ title, handleSave, onClose }: Watchlist
           <Autocomplete
             label="Exchange"
             className="mt-3"
-            items={exchanges}
-            onSelectionChange={setSelectedExchangeName}
-            required
+            defaultItems={exchanges}
+            selectedKey={selectedExchangeId}
+            onSelectionChange={setSelectedExchangeId}
           >
             {(e) => (
               <AutocompleteItem key={e.id} textValue={e.name}>
@@ -53,7 +55,7 @@ const WatchlistCoinFormModalContent = ({ title, handleSave, onClose }: Watchlist
       </ModalBody>
       <ModalFooter>
         <Button
-          isDisabled={selectedCoinName === null && selectedExchangeName === null}
+          isDisabled={selectedCoinId === null && selectedExchangeId === null}
           color="primary"
           onPress={handleSubmit}>
           Submit

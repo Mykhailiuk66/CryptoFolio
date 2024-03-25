@@ -7,7 +7,6 @@ import { CustomCoinExchangeType } from "../../types";
 import CoinModalContext from "../../store/CoinModalContext";
 
 
-
 const CoinSearchInput = () => {
   const { coins, exchanges } = useContext(DataContext)
   const [coinExchange, setCoinExchange] = useState<CustomCoinExchangeType[]>([])
@@ -74,6 +73,7 @@ const CoinSearchInput = () => {
         }}
         aria-label="coin-search"
         startContent={<FaSearch color="success" size={20} />}
+        allowsCustomValue
         inputValue={searchText}
         onInputChange={setSearchText}
       >

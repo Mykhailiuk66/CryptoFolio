@@ -1,14 +1,14 @@
 import { useContext } from "react";
 import {
   Input, Button, Dropdown, DropdownTrigger,
-  DropdownItem, DropdownMenu, useDisclosure
+  DropdownItem, DropdownMenu
 } from "@nextui-org/react";
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
 import ColumnsDropdown from "../TableComponents/ColumnsDropdown";
 import { Column } from "../../types";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import PortfolioContext from "../../store/ProtfolioContext";
-import PortfolioFormModal from "./PortfolioFormModal";
+import { FaPlus } from "react-icons/fa6";
 
 
 type PortfolioTopContentType = {
@@ -24,26 +24,16 @@ const PortfolioTopContent = ({
   filterValue,
   columns
 }: PortfolioTopContentType) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
-    portfolios,
-    selectedPortfolio,
     visibleColumns,
     setVisibleColumns,
     deletePortfolio,
-    editPortfolio
+    onOpen,
+    setModalState,
   } = useContext(PortfolioContext);
 
-  const portfolio = portfolios.find((p) => p.id === selectedPortfolio)
   return (
     <>
-      <PortfolioFormModal
-        title={"Edit Portfolio"}
-        portfolio={portfolio}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        handleSave={editPortfolio}
-      />
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <Input
@@ -62,6 +52,18 @@ const PortfolioTopContent = ({
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
+            <Button
+              color="primary"
+              variant="bordered"
+              endContent={<FaPlus />}
+              onPress={() => {
+                setModalState("ADD_COIN")
+                onOpen()
+              }}
+            >
+              Add asset
+            </Button>
+
             <ColumnsDropdown
               columns={columns}
               visibleColumns={visibleColumns}
@@ -80,7 +82,10 @@ const PortfolioTopContent = ({
                 <DropdownItem
                   key="edit"
                   showDivider
-                  onPress={onOpen}
+                  onPress={() => {
+                    setModalState("EDIT_PORTFOLIO")
+                    onOpen()
+                  }}
                   startContent={<MdOutlineEdit size={20} />}
                 >
                   Edit

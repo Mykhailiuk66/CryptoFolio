@@ -14,6 +14,7 @@ import { CoinData } from "../../types";
 import { Key, useContext } from "react";
 import WatchlistContext from "../../store/WatchlistContext";
 import DataContext from "../../store/DataContext";
+import CoinModalContext from "../../store/CoinModalContext";
 
 
 type WatchlistCellProps = {
@@ -30,22 +31,24 @@ const WatchlistCell = ({ item, columnKey }: WatchlistCellProps) => {
     setwatchlistCoinsData
   } = useContext(WatchlistContext)
   const { coins, exchanges } = useContext(DataContext)
+  const { openCoinInfoModal } = useContext(CoinModalContext)
+
   const cellValue = item[columnKey as keyof CoinData];
+  const coin = coins.find((c) => c.short_name === item.coin_short_name)
+  const exchange = exchanges.find((e) => e.name === item.exchange_name)
 
   const handleRemove = () => {
-    const coin = coins.find((c) => c.short_name === item.coin_short_name)
-    const exchange = exchanges.find((e) => e.name === item.exchange_name)
     const watchlistCoins = watchlists.find((w) => w.id === selectedWatchlist)?.coins
     const watchCoin = watchlistCoins?.find((wc) => wc.coin_slug === coin?.slug && wc.exchange_slug === exchange?.slug)
 
-    setwatchlistCoinsData((prevState) => prevState.filter((wc) => wc.id !== item.id))
     removeWatchlistCoin(watchCoin?.id!)
+    setwatchlistCoinsData((prevState) => prevState.filter((wc) => wc.id !== item.id))
   }
 
   switch (columnKey) {
     case "coin_short_name":
       return (
-        <p className="font-bold">
+        <p className="font-bold cursor-pointer" onClick={() => openCoinInfoModal(exchange!.slug, coin!.slug)}>
           {cellValue}
         </p>
       );

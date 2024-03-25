@@ -78,14 +78,24 @@ export type Watchlist = {
 	coins: WatchlistCoin[];
 };
 
-export type ModalState = "ADD_WATCHLIST" | "EDIT_WATCHLIST" | "ADD_COIN" | null;
+export type WatchlistModalState =
+	| "ADD_WATCHLIST"
+	| "EDIT_WATCHLIST"
+	| "ADD_COIN"
+	| null;
+export type PortfolioModalState =
+	| "ADD_PORTFOLIO"
+	| "EDIT_PORTFOLIO"
+	| "ADD_COIN"
+	| "EDIT_COIN"
+	| null;
 
 export type WatchlistContextType = {
 	watchlists: Watchlist[];
 	selectedWatchlist?: string;
 	watchlistCoinsData: CoinData[];
 	visibleColumns: Selection;
-  addWatchlistCoin: (coinId: Key, exchangeId: Key) => Promise<void>
+	addWatchlistCoin: (coinId: Key, exchangeId: Key) => Promise<void>;
 	setWatchlists: React.Dispatch<React.SetStateAction<Watchlist[]>>;
 	setSelectedWatchlist: React.Dispatch<
 		React.SetStateAction<string | undefined>
@@ -105,6 +115,14 @@ export type PortfolioContextType = {
 	selectedPortfolio?: string;
 	visibleColumns: Selection;
 	portfolioSnapshots: PortfolioSnapshot[];
+	selectedPortfolioHolding?: string;
+	modalState?: PortfolioModalState;
+	setModalState: React.Dispatch<
+		React.SetStateAction<PortfolioModalState | undefined>
+	>;
+	setSelectedPortfolioHolding: React.Dispatch<
+		React.SetStateAction<string | undefined>
+	>;
 	setPortfolioSnapshots: React.Dispatch<
 		React.SetStateAction<PortfolioSnapshot[]>
 	>;
@@ -118,6 +136,16 @@ export type PortfolioContextType = {
 	editPortfolio: (updatedPortfolio: PortfolioFormType) => Promise<void>;
 	deletePortfolio: () => Promise<void>;
 	fetchPortfolioSnapshots: () => Promise<void>;
+	removePortfolioHolding: (portfolioHoldingId: string) => Promise<void>;
+	addPortfolioHolding: (formData: PortfolioHoldingForm) => Promise<void>;
+	editPortfolioHolding: (
+		formData: PortfolioHoldingForm,
+		holdingId: string
+	) => Promise<void>;
+
+	isOpen: boolean;
+	onOpen: () => void;
+	onOpenChange: () => void;
 };
 
 export type ExtendedPortfolioHolding = {
@@ -132,6 +160,17 @@ export type ExtendedPortfolioHolding = {
 	sale_date: string | null;
 	price: number | null;
 	value: number;
+};
+
+export type PortfolioHoldingForm = {
+	portfolio?: string;
+	coin: number | string;
+	exchange: number | string;
+	quantity: number;
+	purchase_price: number;
+	purchase_date: string;
+	sale_price?: number;
+	sale_date?: string;
 };
 
 export type PortfolioType = {

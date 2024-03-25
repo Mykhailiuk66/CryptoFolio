@@ -1,4 +1,4 @@
-import { Divider, SortDescriptor, useDisclosure } from "@nextui-org/react";
+import { Divider, SortDescriptor } from "@nextui-org/react";
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css"
 import "react-multi-date-picker/styles/colors/green.css"
 import Container from "../components/Container/Container";
@@ -8,9 +8,11 @@ import PortfolioContext from "../store/ProtfolioContext";
 import CustomTable from "../components/TableComponents/CustomTable";
 import PortfolioCell from "../components/PortfolioTableComponents/PortfolioCell";
 import PortfolioTopContent from "../components/PortfolioTableComponents/PortfolioTopContent";
-import PortfolioFormModal from "../components/PortfolioTableComponents/PortfolioFormModal";
+import PortfolioFormModalContent from "../components/PortfolioTableComponents/PortfolioFormModalContent";
 import PortfolioCharts from "../components/PortfolioCharts/PortfolioCharts";
 import PortfolioSidebar from "../components/PortfolioSidebar/PortfolioSidebar";
+import CustomModal from "../components/CustomModal/CustomModal";
+import PortfolioHoldingFormModalContent from "../components/PortfolioTableComponents/PortfolioHoldingFormModalContent";
 
 
 const columns: Column[] = [
@@ -37,9 +39,13 @@ const Portfolios = () => {
     portfolios,
     selectedPortfolio,
     visibleColumns,
+    selectedPortfolioHolding,
     addPortfolio,
+    modalState,
+    isOpen,
+    onOpenChange,
+    editPortfolio,
   } = useContext(PortfolioContext);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const portfolio = portfolios.find((p) => p.id === selectedPortfolio)
 
@@ -101,18 +107,48 @@ const Portfolios = () => {
   return (
     <Container>
       <>
-        <PortfolioFormModal
-          title={"Add Portfolio"}
-          portfolio={{} as PortfolioType}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          handleSave={addPortfolio}
-        />
+        <CustomModal isOpen={isOpen} onOpenChange={onOpenChange}>
+          {(onClose) => (
+            <>
+              {modalState === "ADD_PORTFOLIO" &&
+                (<PortfolioFormModalContent
+                  title="Add Portfolio"
+                  portfolio={{} as PortfolioType}
+                  handleSave={addPortfolio}
+                  onClose={onClose}
+                />)}
+              {modalState === "EDIT_PORTFOLIO" && (
+                <PortfolioFormModalContent
+                  title="Edit Portfolio"
+                  portfolio={portfolio}
+                  handleSave={editPortfolio}
+                  onClose={onClose}
+                />
+              )}
+              {modalState === "ADD_COIN" && (
+                <PortfolioHoldingFormModalContent
+                  title="Add new asset"
+                  onClose={onClose}
+                />
+              )}
+              {modalState === "EDIT_COIN" && (
+                <PortfolioHoldingFormModalContent
+                  title="Eddit asset"
+                  holdingId={selectedPortfolioHolding}
+                  value={portfolio?.holdings?.find((h) => h.id === selectedPortfolioHolding)}
+                  onClose={onClose}
+                />
+              )}
+
+
+            </>
+
+          )}
+        </CustomModal>
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-12 xl:col-span-2 lg:col-span-3">
-            <PortfolioSidebar onOpen={onOpen} />
+            <PortfolioSidebar />
           </div>
-
           <div className="col-span-12 xl:col-span-10 lg:col-span-9">
             <PortfolioCharts />
             <Divider className="my-4" />

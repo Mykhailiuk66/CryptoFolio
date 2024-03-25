@@ -37,7 +37,6 @@ const CoinInfoModal = () => {
           throw new Error("Failed to fetch history prices");
         }
         const data = await response.json();
-        console.log("data", data)
         setHistoryPrices(data);
         setIsLoading(false)
 
