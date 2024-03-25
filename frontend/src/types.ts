@@ -83,6 +83,7 @@ export type WatchlistModalState =
 	| "EDIT_WATCHLIST"
 	| "ADD_COIN"
 	| null;
+  
 export type PortfolioModalState =
 	| "ADD_PORTFOLIO"
 	| "EDIT_PORTFOLIO"
@@ -96,11 +97,10 @@ export type WatchlistContextType = {
 	watchlistCoinsData: CoinData[];
 	visibleColumns: Selection;
 	addWatchlistCoin: (coinId: Key, exchangeId: Key) => Promise<void>;
-	setWatchlists: React.Dispatch<React.SetStateAction<Watchlist[]>>;
 	setSelectedWatchlist: React.Dispatch<
 		React.SetStateAction<string | undefined>
 	>;
-	setwatchlistCoinsData: React.Dispatch<React.SetStateAction<CoinData[]>>;
+	setWatchlistCoinsData: React.Dispatch<React.SetStateAction<CoinData[]>>;
 	setVisibleColumns: React.Dispatch<React.SetStateAction<Selection>>;
 	fetchWatchlists: () => Promise<void>;
 	fetchWatchlistCoinsData: () => Promise<void>;
@@ -126,8 +126,6 @@ export type PortfolioContextType = {
 	setPortfolioSnapshots: React.Dispatch<
 		React.SetStateAction<PortfolioSnapshot[]>
 	>;
-	setPortfolios: React.Dispatch<React.SetStateAction<PortfolioType[]>>;
-	fetchPortfolios: () => Promise<void>;
 	setSelectedPortfolio: React.Dispatch<
 		React.SetStateAction<string | undefined>
 	>;

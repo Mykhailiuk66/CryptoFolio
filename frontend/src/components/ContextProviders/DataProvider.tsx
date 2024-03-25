@@ -1,8 +1,7 @@
 import DataContext from "../../store/DataContext"
 import { Coin, DataContextType, Exchange } from "../../types"
 import BASE_URL from "../../http";
-import { useCallback, useContext, useEffect, useState } from "react";
-import AuthContext from "../../store/AuthContext";
+import { useCallback, useEffect, useState } from "react";
 
 
 type DataProviderProps = {
@@ -12,7 +11,6 @@ type DataProviderProps = {
 const DataProvider = ({ children }: DataProviderProps) => {
   const [coins, setCoins] = useState<Coin[]>([])
   const [exchanges, setExchanges] = useState<Exchange[]>([])
-  const { authTokens } = useContext(AuthContext)
 
   const fetchCoins = useCallback(async () => {
     try {

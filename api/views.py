@@ -136,8 +136,8 @@ class PortfolioSnapshotListAPIView(ListAPIView):
 
 class CoinExchangeInfoAPIView(APIView):
     def get(self, request):
-        coin_slugs = request.query_params.getlist('coin_slug')
-        exchange_slugs = request.query_params.getlist('exchange_slug')
+        coin_slugs = request.query_params.getlist('cs')
+        exchange_slugs = request.query_params.getlist('es')
 
         if len(coin_slugs) != len(exchange_slugs):
             return Response({'error': 'Number of coin_slugs must match number of exchange_slugs'}, status=status.HTTP_400_BAD_REQUEST)

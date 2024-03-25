@@ -6,13 +6,13 @@ import { Column, ExtendedPortfolioHolding, PortfolioType } from "../types";
 import { useCallback, useContext, useMemo, useState } from "react";
 import PortfolioContext from "../store/ProtfolioContext";
 import CustomTable from "../components/TableComponents/CustomTable";
-import PortfolioCell from "../components/PortfolioTableComponents/PortfolioCell";
-import PortfolioTopContent from "../components/PortfolioTableComponents/PortfolioTopContent";
-import PortfolioFormModalContent from "../components/PortfolioTableComponents/PortfolioFormModalContent";
-import PortfolioCharts from "../components/PortfolioCharts/PortfolioCharts";
-import PortfolioSidebar from "../components/PortfolioSidebar/PortfolioSidebar";
+import PortfolioCell from "../components/PortfolioComponents/PortfolioCell";
+import PortfolioTopContent from "../components/PortfolioComponents/PortfolioTopContent";
+import PortfolioFormModalContent from "../components/PortfolioComponents/PortfolioFormModalContent";
+import PortfolioCharts from "../components/PortfolioComponents/PortfolioCharts";
+import PortfolioSidebar from "../components/PortfolioComponents/PortfolioSidebar";
 import CustomModal from "../components/CustomModal/CustomModal";
-import PortfolioHoldingFormModalContent from "../components/PortfolioTableComponents/PortfolioHoldingFormModalContent";
+import PortfolioHoldingFormModalContent from "../components/PortfolioComponents/PortfolioHoldingFormModalContent";
 
 
 const columns: Column[] = [
@@ -68,7 +68,7 @@ const Portfolios = () => {
     }
 
     return filteredData;
-  }, [filterValue, portfolio?.holdings]);
+  }, [filterValue, portfolio, portfolio?.holdings?.length]);
 
   const sortedItems = useMemo(() => {
     return [...filteredItems].sort((a, b) => {

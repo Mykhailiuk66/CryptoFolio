@@ -223,8 +223,6 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
     setSelectedPortfolioHolding,
     setPortfolioSnapshots,
     setVisibleColumns,
-    setPortfolios,
-    fetchPortfolios,
     setSelectedPortfolio,
     addPortfolio,
     editPortfolio,
