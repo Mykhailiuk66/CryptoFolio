@@ -49,7 +49,14 @@ class PortfolioListCreateAPIView(ListCreateAPIView):
 
 
 class PortfolioHoldingRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
-    serializer_class = serializers.PortfolioHoldingSerializer
+    # serializer_class = serializers.PortfolioHoldingSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'PUT':
+            return serializers.PortfolioHoldingCreateSerializer
+        else:
+            return serializers.PortfolioHoldingSerializer
+
 
     def get_queryset(self):
         user = self.request.user
@@ -57,8 +64,13 @@ class PortfolioHoldingRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView)
 
 
 class PortfolioHoldingCreateAPIView(CreateAPIView):
-    queryset = models.PortfolioHolding.objects.all()
-    serializer_class = serializers.PortfolioHoldingSerializer
+    serializer_class = serializers.PortfolioHoldingCreateSerializer
+
+
+    def get_queryset(self):
+        user = self.request.user
+        return models.PortfolioHolding.objects.filter(portfolio__user=user)
+
 
     def perform_create(self, serializer):
         portfolio = self.request.data.get('portfolio')
@@ -153,7 +165,7 @@ class CoinExchangeHistoryAPIView(ListAPIView):
         coin_slug = self.kwargs['coin_slug']
         exchange_slug = self.kwargs['exchange_slug']
 
-        return models.CoinExchangeInfo.objects.filter(coin__slug__iexact=coin_slug, exchange__slug=exchange_slug)
+        return models.CoinExchangeInfo.objects.filter(coin__slug__iexact=coin_slug, exchange__slug=exchange_slug).order_by("date")
 
 
 class TrendingCoinsAPIView(ListAPIView):
