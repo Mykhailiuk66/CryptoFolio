@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import (ListAPIView, RetrieveAPIView, UpdateAPIView,
@@ -169,13 +170,15 @@ class CoinExchangeHistoryAPIView(ListAPIView):
 
 
 class TrendingCoinsAPIView(ListAPIView):
-    serializer_class = serializers.CoinExchangeInfoExtendedSerializer
+    serializer_class = serializers.CoinExchangeInfoSerializer
     permission_classes = [AllowAny]
 
     def get_queryset(self):
-        max_objects = 50
+        max_objects = 12
 
-        coin_exchange_infos = models.CoinExchangeInfo.objects.order_by('-date')
+        yesterday = date.today() - timedelta(days=1)
+
+        coin_exchange_infos = models.CoinExchangeInfo.objects.filter(date=yesterday).order_by('-date')
         coin_exchange_infos = sorted(coin_exchange_infos,
                                      key=lambda o: o.get_turnover if o.get_turnover else 0, reverse=True)
 
