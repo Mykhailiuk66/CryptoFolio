@@ -42,7 +42,6 @@ const CoinInfoModal = () => {
 
       } catch (error) {
         console.error("Error fetching history prices:", error);
-        return null;
       }
     };
 
