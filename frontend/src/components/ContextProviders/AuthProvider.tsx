@@ -21,6 +21,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   );
   const [loading, setLoading] = useState(true);
   const [registerErrors, setRegisterErrors] = useState<Record<string, string[]>>({});
+  const [isLoginUnsuccessful, setIsLoginUnsuccessful] = useState<boolean>();
 
   const registerUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,7 +76,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       localStorage.setItem("authTokens", JSON.stringify(data));
       navigate("/");
     } else {
-      alert("Something went wrong!");
+      setIsLoginUnsuccessful(true)
     }
   };
 
@@ -143,6 +144,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     logoutUser: logoutUser,
     registerUser: registerUser,
     registerErrors: registerErrors,
+    isLoginUnsuccessful: isLoginUnsuccessful
   };
 
   return (

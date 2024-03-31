@@ -23,6 +23,7 @@ export type AuthContextType = {
 	logoutUser: () => void;
 	registerUser: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 	registerErrors: Record<string, string[]>;
+  isLoginUnsuccessful: boolean | undefined
 };
 
 export type CoinData = {
