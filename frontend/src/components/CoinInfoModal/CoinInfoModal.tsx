@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from "react";
 import CustomAreaChart from "../Chart/CustomAreaChart";
 import BASE_URL from "../../http";
 import { CoinData } from "../../types";
-import AuthContext from "../../store/AuthContext";
 import DataContext from "../../store/DataContext";
 import InfoField from "./InfoField";
 import { formatCurrency, formatProfitLoss } from "../../utils";
@@ -14,7 +13,6 @@ import CoinModalContext from "../../store/CoinModalContext";
 const CoinInfoModal = () => {
   const [historyPrices, setHistoryPrices] = useState<CoinData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>()
-  const { authTokens } = useContext(AuthContext);
   const { coins, exchanges } = useContext(DataContext);
   const { isOpen, coinInfo, onClose } = useContext(CoinModalContext)
 
@@ -30,7 +28,6 @@ const CoinInfoModal = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + authTokens?.access,
             },
           });
         if (!response.ok) {
@@ -38,10 +35,10 @@ const CoinInfoModal = () => {
         }
         const data = await response.json();
         setHistoryPrices(data);
-        setIsLoading(false)
-
       } catch (error) {
         console.error("Error fetching history prices:", error);
+      } finally {
+        setIsLoading(false)
       }
     };
 
