@@ -68,7 +68,7 @@ const Portfolios = () => {
     }
 
     return filteredData;
-  }, [filterValue, portfolio, portfolio?.holdings?.length]);
+  }, [filterValue, portfolio]);
 
   const sortedItems = useMemo(() => {
     return [...filteredItems].sort((a, b) => {
@@ -139,10 +139,7 @@ const Portfolios = () => {
                   onClose={onClose}
                 />
               )}
-
-
             </>
-
           )}
         </CustomModal>
         <div className="grid grid-cols-12 gap-4">
