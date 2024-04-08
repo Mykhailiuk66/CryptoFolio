@@ -2,7 +2,6 @@ import { Card, CardBody, CardHeader, Chip, Divider, Modal, ModalBody, ModalConte
 import { useContext, useEffect, useState } from "react";
 
 import CustomAreaChart from "../Chart/CustomAreaChart";
-import BASE_URL from "../../http";
 import { CoinData } from "../../types";
 import DataContext from "../../store/DataContext";
 import InfoField from "./InfoField";
@@ -23,7 +22,7 @@ const CoinInfoModal = () => {
   useEffect(() => {
     const fetchHistoryPrices = async (exchangeSlug: string, coinSlug: string) => {
       try {
-        const response = await fetch(`${BASE_URL}/api/history-prices/${exchangeSlug}/${coinSlug}/`,
+        const response = await fetch(`/api/history-prices/${exchangeSlug}/${coinSlug}/`,
           {
             method: "GET",
             headers: {

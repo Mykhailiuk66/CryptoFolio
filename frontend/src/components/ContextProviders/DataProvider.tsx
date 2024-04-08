@@ -1,6 +1,6 @@
 import DataContext from "../../store/DataContext"
 import { Coin, DataContextType, Exchange } from "../../types"
-import BASE_URL from "../../http";
+
 import { useCallback, useEffect, useState } from "react";
 
 
@@ -14,7 +14,7 @@ const DataProvider = ({ children }: DataProviderProps) => {
 
   const fetchCoins = useCallback(async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/coins/`, {
+      const response = await fetch(`/api/coins/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const DataProvider = ({ children }: DataProviderProps) => {
 
   const fetchExchanges = useCallback(async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/exchanges/`, {
+      const response = await fetch(`/api/exchanges/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

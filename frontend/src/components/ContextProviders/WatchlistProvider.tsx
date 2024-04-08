@@ -3,7 +3,7 @@ import { Selection } from "@nextui-org/react";
 
 import WatchlistContext from "../../store/WatchlistContext";
 import { CoinData, Watchlist, WatchlistContextType } from "../../types";
-import BASE_URL from "../../http";
+
 import AuthContext from "../../store/AuthContext";
 
 type WatchlistContextProps = {
@@ -20,7 +20,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
 
   const fetchWatchlists = useCallback(async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/watchlists/`, {
+      const response = await fetch(`/api/watchlists/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +53,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
       );
 
       const response = await fetch(
-        `${BASE_URL}/api/coin-exchange-info/?${params}`,
+        `/api/coin-exchange-info/?${params}`,
         {
           method: "GET",
           headers: {
@@ -75,7 +75,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
 
   const removeWatchlistCoin = async (watchlistcoinId: string) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/watchlist-coin/${watchlistcoinId}/`, {
+      const response = await fetch(`/api/watchlist-coin/${watchlistcoinId}/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +93,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
 
   const addWatchlistCoin = async (coinId: Key, exchangeId: Key) => {
     try {
-      const response = await fetch(`${BASE_URL}/api/watchlist-coin/`, {
+      const response = await fetch(`/api/watchlist-coin/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -120,7 +120,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
   const addWatchlist = async (name: string) => {
     try {
       if (name.length === 0) return
-      const response = await fetch(`${BASE_URL}/api/watchlists/`, {
+      const response = await fetch(`/api/watchlists/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,7 +143,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
   const editWatchlist = async (name: string) => {
     try {
       if (name.length === 0) return
-      const response = await fetch(`${BASE_URL}/api/watchlists/${selectedWatchlist}/`, {
+      const response = await fetch(`/api/watchlists/${selectedWatchlist}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -169,7 +169,7 @@ const WatchlistProvider = ({ children }: WatchlistContextProps) => {
 
   const deleteWatchlist = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/watchlists/${selectedWatchlist}/`, {
+      const response = await fetch(`/api/watchlists/${selectedWatchlist}/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

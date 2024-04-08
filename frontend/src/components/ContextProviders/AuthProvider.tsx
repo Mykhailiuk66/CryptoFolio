@@ -3,7 +3,7 @@ import AuthContext from "../../store/AuthContext";
 import { AuthContextType, AuthTokensType, UserType } from "../../types";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import BASE_URL from "../../http";
+
 
 type AuthProviderProps = {
   children: React.ReactNode;
@@ -29,7 +29,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const formData = e.target as HTMLFormElement;
 
-    const response = await fetch(`${BASE_URL}/api/account/register/`, {
+    const response = await fetch(`/api/account/register/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const formData = e.target as HTMLFormElement;
 
-    const response = await fetch(`${BASE_URL}/api/account/token/`, {
+    const response = await fetch(`/api/account/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -87,7 +87,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const updateToken = useCallback(async () => {
-    const response = await fetch(`${BASE_URL}/api/account/token/refresh/`, {
+    const response = await fetch(`/api/account/token/refresh/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
