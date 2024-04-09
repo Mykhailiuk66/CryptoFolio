@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import {
-  Input, Button, Select, SelectItem, Dropdown, 
+  Input, Button, Select, SelectItem, Dropdown,
   DropdownTrigger, DropdownItem, DropdownMenu, useDisclosure
 } from "@nextui-org/react";
 import { MdOutlineEdit, MdDeleteOutline, MdAddCircleOutline } from "react-icons/md";
@@ -46,7 +46,7 @@ const WatchlistTopContent = ({
     if (watchlists.length === 0) {
       fetchWatchlists();
     }
-  }, [watchlists.length, watchlists, fetchWatchlists]);
+  }, [watchlists.length, fetchWatchlists]);
 
   const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedWatchlist(e.target.value);
@@ -123,7 +123,7 @@ const WatchlistTopContent = ({
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Button
+            {selectedWatchlist && (<Button
               color="primary"
               variant="bordered"
               endContent={<FaPlus />}
@@ -134,12 +134,13 @@ const WatchlistTopContent = ({
             >
               Add coin
             </Button>
+            )}
             <ColumnsDropdown
               columns={columns}
               visibleColumns={visibleColumns}
               setVisibleColumns={setVisibleColumns}
             />
-            <Dropdown>
+            {selectedWatchlist && (<Dropdown>
               <DropdownTrigger>
                 <Button
                   isIconOnly
@@ -171,6 +172,7 @@ const WatchlistTopContent = ({
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
+            )}
           </div>
         </div>
       </div >
