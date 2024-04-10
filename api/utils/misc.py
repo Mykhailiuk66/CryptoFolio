@@ -1,6 +1,7 @@
 from decimal import Decimal
 from datetime import date, timedelta
-from ..models import PortfolioSnapshot, CoinExchangeInfo
+from ..models import PortfolioSnapshot, CoinExchangeInfo, Coin, Exchange
+from typing import Dict, List
 
 
 def calculate_portfolio_snapshots(portfolio):
@@ -42,3 +43,31 @@ def calculate_portfolio_snapshots(portfolio):
         )
 
         calc_date += timedelta(days=1)
+
+
+
+# [ticker_info: dict, exchange_name: str, date: date]
+def create_or_update_coin_exchange_info_bulk(infos_list: List[Dict[str, any]]):
+    bulk_instances = []
+
+    for info in infos_list:
+        ticker_info = info['ticker_info']
+        coin, c_created = Coin.objects.get_or_create(
+            short_name=ticker_info['coin'])
+        exchange, ex_created = Exchange.objects.get_or_create(
+            slug=info['exchange_name'], defaults={'name': info['exchange_name'].capitalize()})
+
+        coin_exchange_info = CoinExchangeInfo(
+            coin=coin,
+            exchange=exchange,
+            date=info['info_date'],
+            price=float(ticker_info['price']),
+            volume=float(ticker_info['volume']),
+            prev_price_24h=float(ticker_info['prev_price_24h']),
+            high_price=float(ticker_info['high_price']),
+            low_price=float(ticker_info['low_price']),
+        )
+
+        bulk_instances.append(coin_exchange_info)
+
+    CoinExchangeInfo.objects.bulk_create(bulk_instances, ignore_conflicts=True)

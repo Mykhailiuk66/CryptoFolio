@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
-from rest_framework.generics import (ListAPIView, RetrieveAPIView, UpdateAPIView,
+from rest_framework.generics import (ListAPIView, UpdateAPIView,
                                      DestroyAPIView, RetrieveUpdateDestroyAPIView,
                                      ListCreateAPIView, CreateAPIView)
 from rest_framework.views import APIView
@@ -12,10 +12,7 @@ from rest_framework.permissions import AllowAny
 from . import models
 from . import serializers
 
-from .cron import update_coins_info
 from .utils.misc import calculate_portfolio_snapshots
-
-# update_coins_info() # temp
 
 
 class ExchangeListAPIView(ListAPIView):
