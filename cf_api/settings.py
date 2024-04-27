@@ -16,8 +16,6 @@ from decouple import config
 
 DEVELOPMENT_MODE = config('DEVELOPMENT_MODE', cast=bool)
 
-print(config('DEVELOPMENT_MODE', cast=bool))
-print(config('DEBUG', cast=bool))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

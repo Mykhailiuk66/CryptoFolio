@@ -9,10 +9,10 @@ class Command(BaseCommand):
     help = "Fetches history prices for all coins"
 
     def add_arguments(self, parser):
-        parser.add_argument("exchange_names", nargs="+", type=str)
+        parser.add_argument("exchanges_names", nargs="+", type=str)
 
     def handle(self, *args, **options):
-        for e_name in options["exchange_names"]:
+        for e_name in options["exchanges_names"]:
             manager = ExchangeManagerFactory.create(e_name)
 
             symbols = manager.get_symbols()
