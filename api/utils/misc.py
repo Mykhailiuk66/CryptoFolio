@@ -45,7 +45,6 @@ def calculate_portfolio_snapshots(portfolio):
         calc_date += timedelta(days=1)
 
 
-
 # [ticker_info: dict, exchange_name: str, date: date]
 def create_or_update_coin_exchange_info_bulk(infos_list: List[Dict[str, any]]):
     bulk_instances = []
@@ -70,4 +69,8 @@ def create_or_update_coin_exchange_info_bulk(infos_list: List[Dict[str, any]]):
 
         bulk_instances.append(coin_exchange_info)
 
-    CoinExchangeInfo.objects.bulk_create(bulk_instances, ignore_conflicts=True)
+    CoinExchangeInfo.objects.bulk_create(objs=bulk_instances,
+                                         update_conflicts=True,
+                                         update_fields=["price", "volume", "prev_price_24h",
+                                                        "high_price", "low_price"],
+                                         unique_fields=["coin", "exchange", "date"])
