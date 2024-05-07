@@ -55,7 +55,6 @@ class PortfolioHoldingRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView)
         else:
             return serializers.PortfolioHoldingSerializer
 
-
     def get_queryset(self):
         user = self.request.user
         return models.PortfolioHolding.objects.filter(portfolio__user=user)
@@ -64,11 +63,9 @@ class PortfolioHoldingRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView)
 class PortfolioHoldingCreateAPIView(CreateAPIView):
     serializer_class = serializers.PortfolioHoldingCreateSerializer
 
-
     def get_queryset(self):
         user = self.request.user
         return models.PortfolioHolding.objects.filter(portfolio__user=user)
-
 
     def perform_create(self, serializer):
         portfolio = self.request.data.get('portfolio')
@@ -102,7 +99,7 @@ class WatchlistListCreateAPIView(ListCreateAPIView):
             return serializers.WatchlistReadSerializer
         elif self.request.method == 'POST':
             return serializers.WatchlistSerializer
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -174,9 +171,14 @@ class TrendingCoinsAPIView(ListAPIView):
     def get_queryset(self):
         max_objects = 12
 
-        yesterday = date.today() - timedelta(days=1)
+        today = date.today()
+        coin_exchange_infos = models.CoinExchangeInfo.objects.filter(
+            date__gte=today).exclude(coin__short_name__icontains='usd').order_by('-date')
+        if not coin_exchange_infos.exists():
+            yesterday = date.today() - timedelta(days=1)
+            coin_exchange_infos = models.CoinExchangeInfo.objects.filter(
+                date__gte=yesterday).exclude(coin__short_name__icontains='usd').order_by('-date')
 
-        coin_exchange_infos = models.CoinExchangeInfo.objects.filter(date__gte=yesterday).order_by('-date')
         coin_exchange_infos = sorted(coin_exchange_infos,
                                      key=lambda o: o.get_turnover if o.get_turnover else 0, reverse=True)
 
