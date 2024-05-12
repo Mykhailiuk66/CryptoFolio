@@ -55,8 +55,8 @@ const CustomAreaChart = <T,>({ data, xDataKey, yDataKey, showGrid }: CustomAreaC
         data={data}
         margin={{
           top: 10,
-          right: 90,
-          left: 50,
+          right: 20,
+          left: 20,
           bottom: 0,
         }}
         stackOffset="wiggle"
@@ -71,12 +71,12 @@ const CustomAreaChart = <T,>({ data, xDataKey, yDataKey, showGrid }: CustomAreaC
           dataKey={yDataKey}
           domain={['auto', (dataMax: number) => (dataMax * 1.05)]} />
 
-        {showGrid && <CartesianGrid strokeDasharray="1 3"/>}
+        {showGrid && <CartesianGrid strokeDasharray="1 3" />}
 
         <Tooltip content={<CustomTooltip />} />
         <XAxis dataKey="name" />
         <Area type="monotone" dataKey={yDataKey} stroke="#12A081" fill="#12A081" />
-        <Brush dataKey={xDataKey} height={25} fill="#010100" stroke="#1ABF8B" />
+        <Brush dataKey={xDataKey} height={25} fill="#010100" stroke="#1ABF8B" tickFormatter={() => ""} />
       </AreaChart>
     </ResponsiveContainer>
   );

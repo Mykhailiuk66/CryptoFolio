@@ -49,8 +49,15 @@ def calculate_portfolio_snapshots(portfolio):
 def create_or_update_coin_exchange_info_bulk(infos_list: List[Dict[str, any]]):
     bulk_instances = []
 
+    coins_num = {}
     for info in infos_list:
         ticker_info = info['ticker_info']
+        coin = ticker_info['coin']
+
+        coins_num[coin] = coins_num.get(coin, 0) + 1
+        if coins_num[coin] > 1:
+            continue
+
         coin, c_created = Coin.objects.get_or_create(
             short_name=ticker_info['coin'])
         exchange, ex_created = Exchange.objects.get_or_create(
