@@ -35,7 +35,7 @@ class Command(BaseCommand):
                         if info_date > date(2023, 1, 1) or (i % 4 == 0):
                             infos_list.append(info)
 
-                    create_or_update_coin_exchange_info_bulk(infos_list)
+                    create_or_update_coin_exchange_info_bulk(infos_list, True)
                 except Exception as ex:
                     print(ex)
                 finally:
