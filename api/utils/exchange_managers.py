@@ -63,13 +63,26 @@ class BinanceManager(ExchangeManager):
     @staticmethod
     def format_ticker_history(symbol, ticker_data):
         coin = symbol.replace(ExchangeManager.SETTLE_COIN, '').strip()
+        
+        volume = float(ticker_data[5])
+        price = float(ticker_data[4])
+        prev_price_24h = float(ticker_data[1])
+        high_price = float(ticker_data[2])
+        low_price = float(ticker_data[3])
+        if symbol.find(ExchangeManager.SETTLE_COIN) == 0:
+            volume = float(ticker_data[7])
+            price = (1 / price) if price != 0 else 0
+            prev_price_24h = (1 / prev_price_24h) if prev_price_24h != 0 else 0
+            high_price = (1 / high_price) if high_price != 0 else 0
+            low_price = (1 / low_price) if low_price != 0 else 0
+
         formatted_info = {
             'coin': coin,
-            'price': float(ticker_data[4]),
-            'volume': float(ticker_data[5]),
-            'prev_price_24h': float(ticker_data[1]),
-            'high_price': float(ticker_data[2]),
-            'low_price': float(ticker_data[3]),
+            'price': price,
+            'volume': volume,
+            'prev_price_24h': prev_price_24h,
+            'high_price': high_price,
+            'low_price': low_price,
         }
         info_date = date.fromtimestamp(float(ticker_data[6]) / 1000)
 
@@ -80,13 +93,26 @@ class BinanceManager(ExchangeManager):
         coin = data.get('symbol').replace(
             ExchangeManager.SETTLE_COIN, '').strip()
 
+        volume = float(data.get('volume'))
+        price = float(data.get('lastPrice'))
+        prev_price_24h = float(data.get('prevClosePrice'))
+        high_price = float(data.get('highPrice'))
+        low_price = float(data.get('lowPrice'))
+        if data.get('symbol').find(ExchangeManager.SETTLE_COIN) == 0:
+            volume = float(data.get('quoteVolume'))
+            price = (1 / price) if price != 0 else 0
+            prev_price_24h = (1 / prev_price_24h) if prev_price_24h != 0 else 0
+            high_price = (1 / high_price) if high_price != 0 else 0
+            low_price = (1 / low_price) if low_price != 0 else 0
+
+        is_active = float(data.get('askPrice')) > 0
         return {
             'coin': coin,
-            'volume': float(data.get('volume')),
-            'price': float(data.get('lastPrice')),
-            'prev_price_24h': float(data.get('prevClosePrice')),
-            'high_price': float(data.get('highPrice')),
-            'low_price': float(data.get('lowPrice')),
+            'volume': volume if is_active else 0,
+            'price': price if is_active else 0,
+            'prev_price_24h': prev_price_24h if is_active else 0 ,
+            'high_price': high_price if is_active else 0,
+            'low_price': low_price if is_active else 0,
         }
 
 
