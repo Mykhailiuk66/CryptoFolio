@@ -262,7 +262,7 @@ class KucoinManager(ExchangeManager):
             'coin': coin,
             'volume': float(data.get('vol')),
             'price': float(data.get('last')),
-            'prev_price_24h': float(data.get('last')) + float(data.get('changePrice') or 0),
+            'prev_price_24h': float(data.get('last')) - float(data.get('changePrice') or 0),
             'high_price': float(data.get('high')),
             'low_price': float(data.get('low')),
         }

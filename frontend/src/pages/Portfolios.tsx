@@ -72,8 +72,13 @@ const Portfolios = () => {
 
   const sortedItems = useMemo(() => {
     return [...filteredItems].sort((a, b) => {
-      const first = a[sortDescriptor.column as keyof ExtendedPortfolioHolding] as number;
-      const second = b[sortDescriptor.column as keyof ExtendedPortfolioHolding] as number;
+      let first: number = a[sortDescriptor.column as keyof ExtendedPortfolioHolding] as number;
+      let second: number = b[sortDescriptor.column as keyof ExtendedPortfolioHolding] as number;
+      if (sortDescriptor.column === 'price') {
+        first = a['price']! - a['purchase_price'];
+        second = b['price']! - b['purchase_price'];
+      }
+      
       const cmp = first < second ? -1 : first > second ? 1 : 0;
 
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
