@@ -138,7 +138,7 @@ const Portfolios = () => {
               )}
               {modalState === "EDIT_COIN" && (
                 <PortfolioHoldingFormModalContent
-                  title="Eddit asset"
+                  title="Edit asset"
                   holdingId={selectedPortfolioHolding}
                   value={portfolio?.holdings?.find((h) => h.id === selectedPortfolioHolding)}
                   onClose={onClose}
