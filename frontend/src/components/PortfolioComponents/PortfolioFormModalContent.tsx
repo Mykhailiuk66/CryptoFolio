@@ -63,7 +63,7 @@ const PortfolioFormModalContent = ({ title, portfolio, handleSave, onClose }: Po
         />
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onPress={() => {
+        <Button className="bg-primary-600" onPress={() => {
           onSave()
           onClose()
         }}>

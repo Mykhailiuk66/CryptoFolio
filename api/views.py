@@ -40,7 +40,7 @@ class PortfolioListCreateAPIView(ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return models.Portfolio.objects.filter(user=user)
+        return models.Portfolio.objects.filter(user=user).order_by('-created')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

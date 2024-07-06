@@ -40,7 +40,7 @@ const Authentication = () => {
         </div>
       </div>
 
-      <Card className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
+      <Card className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm border-solid border-1 border-default-200/50 bg-default-100/40 ">
         <span className="mt-10 mb-5 text-center text-2xl font-bold leading-9 ">
           CRYPTO
           <span className="font-bold text-green-500">FOLIO</span>

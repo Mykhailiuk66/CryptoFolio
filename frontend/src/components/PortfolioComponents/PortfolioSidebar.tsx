@@ -39,7 +39,7 @@ const PortfolioSidebar = () => {
     >
       {portfolios.map((p) => {
         return (
-          <CustomRadio key={p.id} value={p.id} description={p.notes}>
+          <CustomRadio key={p.id} value={p.id} description={p.notes} className="border-solid border-1 border-default-200/50 bg-default-100/40 hover:bg-default-100/70">
             {p.name}
           </CustomRadio>
         )

@@ -21,6 +21,7 @@ class Command(BaseCommand):
                     try:
                         if re.match(pattern, manager.get_symbol(ticker), re.IGNORECASE):
                             formatted_t = manager.format_ticker_info(ticker)
+                            if formatted_t.get('price', 0) == 0: continue
 
                             info = {'ticker_info': formatted_t,
                                     'exchange_name': e,

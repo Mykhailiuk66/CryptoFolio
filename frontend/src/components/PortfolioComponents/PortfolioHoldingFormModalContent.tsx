@@ -164,7 +164,7 @@ const PortfolioHoldingFormModalContent = ({ title, value, holdingId, onClose }: 
         {isError && <p className="text-red-500">
           Please fill out all required fields
         </p>}
-        <Button color="primary" onPress={onSave}>
+        <Button className="bg-primary-600" onPress={onSave}>
           Save Changes
         </Button>
       </ModalFooter>

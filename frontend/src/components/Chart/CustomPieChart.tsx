@@ -31,7 +31,7 @@ const renderActiveShape = (props: CustomPieSectorDataItem) => {
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill} className='font-bold'>
         {mlk}
       </text>
       <Sector

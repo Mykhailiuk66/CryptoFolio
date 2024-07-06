@@ -87,6 +87,9 @@ const WatchlistTopContent = ({
               aria-label="select-watchlist"
               variant="bordered"
               className="max-w-xs"
+              classNames={{
+                // mainWrapper: ["rounded-lr", "border-default-200/50", "bg-default-100/40"],
+              }}
               selectedKeys={[selectedWatchlist] as Iterable<string>}
               onChange={handleSelectionChange}
             >

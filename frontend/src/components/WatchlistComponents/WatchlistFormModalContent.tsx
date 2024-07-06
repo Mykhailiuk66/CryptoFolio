@@ -38,7 +38,7 @@ const WatchlistFormModalContent = ({ title, value, handleSave, onClose }: Watchl
       <ModalFooter>
         <Button
           isDisabled={!newValue && newValue!.length === 0}
-          color="primary"
+          className="bg-primary-600" 
           onPress={handleSubmit}
         >
           Save Changes

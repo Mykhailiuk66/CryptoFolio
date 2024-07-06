@@ -2,13 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+#root {
+	padding-bottom: 1rem;
+	background: linear-gradient(70deg, #0101002a 80%, #24df9127),
+		linear-gradient(250deg, #0101002a 70%, #24df9127);
+	min-height: 100vh;
+}
 
 .datepicker-dark.rmdp-wrapper,
 .rmdp-container .datepicker-dark.ep-arrow::after {
-    background-color: #27272a;
+	background-color: #27272a;
 }
 
 .datepicker .rmdp-day:not(.rmdp-day-hidden) span:hover {
-    background-color: #18ac6e !important;
+	background-color: #18ac6e !important;
 }
-

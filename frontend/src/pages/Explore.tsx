@@ -44,7 +44,7 @@ const Explore = () => {
 
         {(trendingCoins.length === 0) && [...Array(12)].map((e, i) => {
           return (
-            <Card className="px-5 pb-1 pt-6">
+            <Card className="px-5 pb-1 pt-6 bg-default-100/40">
               <Skeleton className="rounded-lg">
                 <div className="h-44 rounded-lg bg-default-300"></div>
               </Skeleton>
@@ -54,7 +54,6 @@ const Explore = () => {
             </Card>
           )
         })}
-
 
         {(trendingCoins.length !== 0) && trendingCoins.map((item) => {
           let coin = coins.find((c) => c.short_name === item.coin_short_name)
@@ -66,8 +65,7 @@ const Explore = () => {
               shadow="sm"
               key={item.id}
               isPressable
-              isHoverable
-              className="px-5 pb-1 pt-6"
+              className="px-5 pb-1 pt-6 border-solid border-1 border-default-200/50 bg-default-100/40 hover:bg-default-100/70"
             >
               <CardBody className="overflow-visible p-0">
                 <div className="flex flex-col gap-2">

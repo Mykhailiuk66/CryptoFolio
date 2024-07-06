@@ -23,7 +23,7 @@ const PortfolioCharts = () => {
   const portfolio = portfolios.find((p) => p.id === selectedPortfolio)
   return (
     <div className="grid grid-cols-5 gap-4" >
-      <Card className="py-5 mb-5 col-span-5 xl:col-span-3">
+      <Card className="py-5 mb-1 col-span-5 xl:col-span-3 border-solid border-1 border-default-200/50 bg-default-100/40">
         {portfolioSnapshots.length > 0 &&
           <CustomAreaChart
             data={portfolioSnapshots}
@@ -38,7 +38,7 @@ const PortfolioCharts = () => {
           </div>)
         }
       </Card>
-      <Card className="mb-5 col-span-5 xl:col-span-2 min-h-96">
+      <Card className="mb-1 col-span-5 xl:col-span-2 min-h-96 border-solid border-1 border-default-200/50 bg-default-100/40">
         {portfolio?.holdings!.length! > 0 &&
 
           <CustomPieChart
