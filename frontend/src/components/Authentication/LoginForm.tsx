@@ -12,9 +12,17 @@ const LoginForm = ({ handleSignUpClick }: LoginFormProps) => {
 
   return (
     <form className="flex flex-col gap-4" method="POST" onSubmit={loginUser}>
-      <Input isRequired label="Email" placeholder="Enter your email" type="email" name="email" />
       <Input
         isRequired
+        variant="bordered"
+        label="Email"
+        placeholder="Enter your email"
+        type="email"
+        name="email"
+      />
+      <Input
+        isRequired
+        variant="bordered"
         label="Password"
         placeholder="Enter your password"
         type="password"

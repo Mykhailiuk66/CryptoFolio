@@ -1,7 +1,6 @@
 import {
   Button,
   DropdownTrigger,
-  Dropdown,
   DropdownMenu,
   DropdownItem,
   Chip,
@@ -15,6 +14,7 @@ import { Key, useContext } from "react";
 import WatchlistContext from "../../store/WatchlistContext";
 import DataContext from "../../store/DataContext";
 import CoinModalContext from "../../store/CoinModalContext";
+import CustomDropdown from "../CustomNextUIComponents/CustomDropdown";
 
 
 type WatchlistCellProps = {
@@ -76,6 +76,7 @@ const WatchlistCell = ({ item, columnKey }: WatchlistCellProps) => {
     case "price":
       return (
         <Chip
+          className="bg-primary-background"
           variant="faded"
           color="success"
         >
@@ -94,7 +95,7 @@ const WatchlistCell = ({ item, columnKey }: WatchlistCellProps) => {
     case "actions":
       return (
         <div className="relative flex justify-end items-center gap-2">
-          <Dropdown>
+          <CustomDropdown>
             <DropdownTrigger aria-label="dropdown-trigger">
               <Button isIconOnly size="sm" variant="light">
                 <BsThreeDotsVertical />
@@ -105,7 +106,7 @@ const WatchlistCell = ({ item, columnKey }: WatchlistCellProps) => {
                 Remove
               </DropdownItem>
             </DropdownMenu>
-          </Dropdown>
+          </CustomDropdown>
         </div>
       );
     default:

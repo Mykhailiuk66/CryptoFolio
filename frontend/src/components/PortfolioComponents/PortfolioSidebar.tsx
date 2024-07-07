@@ -1,5 +1,5 @@
 import { Button, RadioGroup } from "@nextui-org/react"
-import CustomRadio from "../CustomRadio/CustomRadio"
+import PortfolioRadio from "./PortfolioRadio"
 import { MdAddCircleOutline } from "react-icons/md"
 import { useContext } from "react";
 import PortfolioContext from "../../store/ProtfolioContext";
@@ -39,9 +39,9 @@ const PortfolioSidebar = () => {
     >
       {portfolios.map((p) => {
         return (
-          <CustomRadio key={p.id} value={p.id} description={p.notes} className="border-solid border-1 border-default-200/50 bg-default-100/40 hover:bg-default-100/70">
+          <PortfolioRadio key={p.id} value={p.id} description={p.notes} className="border-solid border-1 border-default-200/50 bg-default-100/40 hover:bg-default-100/70">
             {p.name}
-          </CustomRadio>
+          </PortfolioRadio>
         )
       })}
     </RadioGroup>

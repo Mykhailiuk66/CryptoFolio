@@ -1,5 +1,4 @@
 import {
-  Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
@@ -9,6 +8,7 @@ import {
 import { SetStateAction } from "react";
 import { IoChevronDownSharp } from "react-icons/io5";
 import { Column } from "../../types";
+import CustomDropdown from "../CustomNextUIComponents/CustomDropdown";
 
 type ColumnsDropdownProps = {
   columns: Column[];
@@ -22,9 +22,9 @@ const ColumnsDropdown = ({
   setVisibleColumns,
 }: ColumnsDropdownProps) => {
   return (
-    <Dropdown>
+    <CustomDropdown>
       <DropdownTrigger className="hidden sm:flex">
-        <Button variant="flat" endContent={<IoChevronDownSharp />}>
+        <Button variant="bordered" endContent={<IoChevronDownSharp />}>
           Columns
         </Button>
       </DropdownTrigger>
@@ -49,7 +49,7 @@ const ColumnsDropdown = ({
             );
           })}
       </DropdownMenu>
-    </Dropdown>
+    </CustomDropdown>
   );
 };
 

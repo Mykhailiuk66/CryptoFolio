@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import {
-  Input, Button, Select, SelectItem, Dropdown,
+  Input, Button, Select, SelectItem,
   DropdownTrigger, DropdownItem, DropdownMenu, useDisclosure
 } from "@nextui-org/react";
 import { MdOutlineEdit, MdDeleteOutline, MdAddCircleOutline } from "react-icons/md";
@@ -10,9 +10,10 @@ import { FaPlus } from "react-icons/fa6";
 import ColumnsDropdown from "../TableComponents/ColumnsDropdown";
 import WatchlistContext from "../../store/WatchlistContext";
 import { Column, WatchlistModalState } from "../../types";
-import CustomModal from "../CustomModal/CustomModal";
+import CustomModal from "../CustomNextUIComponents/CustomModal";
 import WatchlistFormModalContent from "./WatchlistFormModalContent";
 import WatchlistCoinFormModalContent from "./WatchlistCoinFormModalContent";
+import CustomDropdown from "../CustomNextUIComponents/CustomDropdown";
 
 
 type WatchlistTopContentType = {
@@ -88,7 +89,7 @@ const WatchlistTopContent = ({
               variant="bordered"
               className="max-w-xs"
               classNames={{
-                // mainWrapper: ["rounded-lr", "border-default-200/50", "bg-default-100/40"],
+                popoverContent: ["border-solid", "border-1", "border-default-200/50", "bg-primary-background"],
               }}
               selectedKeys={[selectedWatchlist] as Iterable<string>}
               onChange={handleSelectionChange}
@@ -117,9 +118,10 @@ const WatchlistTopContent = ({
               mainWrapper: "h-full",
               input: "text-small",
               inputWrapper:
-                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                "h-full font-normal text-default-500",
             }}
             className="w-full sm:max-w-[25%]"
+            variant="bordered"
             placeholder="Search by name..."
             value={filterValue}
             onClear={onSearchChange}
@@ -143,38 +145,39 @@ const WatchlistTopContent = ({
               visibleColumns={visibleColumns}
               setVisibleColumns={setVisibleColumns}
             />
-            {selectedWatchlist && (<Dropdown>
-              <DropdownTrigger>
-                <Button
-                  isIconOnly
-                  variant="bordered"
-                >
-                  <BsThreeDotsVertical />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu variant="faded" aria-label="Dropdown menu with icons">
-                <DropdownItem
-                  key="edit"
-                  showDivider
-                  onPress={() => {
-                    setModalState("EDIT_WATCHLIST")
-                    onOpen()
-                  }}
-                  startContent={<MdOutlineEdit size={20} />}
-                >
-                  Edit
-                </DropdownItem>
-                <DropdownItem
-                  key="delete"
-                  className="text-danger"
-                  color="danger"
-                  onPress={deleteWatchlist}
-                  startContent={<MdDeleteOutline size={20} className={"text-danger"} />}
-                >
-                  Delete
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+            {selectedWatchlist && (
+              <CustomDropdown>
+                <DropdownTrigger>
+                  <Button
+                    isIconOnly
+                    variant="bordered"
+                  >
+                    <BsThreeDotsVertical />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu variant="bordered" aria-label="dropdown">
+                  <DropdownItem
+                    key="edit"
+                    showDivider
+                    onPress={() => {
+                      setModalState("EDIT_WATCHLIST")
+                      onOpen()
+                    }}
+                    startContent={<MdOutlineEdit size={20} />}
+                  >
+                    Edit
+                  </DropdownItem>
+                  <DropdownItem
+                    key="delete"
+                    className="text-danger"
+                    color="danger"
+                    onPress={deleteWatchlist}
+                    startContent={<MdDeleteOutline size={20} className={"text-danger"} />}
+                  >
+                    Delete
+                  </DropdownItem>
+                </DropdownMenu>
+              </CustomDropdown>
             )}
           </div>
         </div>

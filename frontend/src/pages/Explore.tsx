@@ -97,7 +97,7 @@ const Explore = () => {
 
               </CardBody>
               <CardFooter className="text-small justify-between">
-                <Chip className="capitalize" color="success" size="md" variant="faded">
+                <Chip className="capitalize bg-primary-background" color="success" size="md" variant="faded">
                   {item.coin_short_name}
                 </Chip>
                 <span className="text-default-500">

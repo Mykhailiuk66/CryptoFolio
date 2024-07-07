@@ -3,7 +3,6 @@ import DatePicker from "react-multi-date-picker"
 import type { Value } from "react-multi-date-picker"
 
 
-
 const CustomDataPicker = () => {
   const [value, setValue] = useState<Value>(new Date());
 

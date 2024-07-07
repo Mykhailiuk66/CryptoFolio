@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import {
-  Input, Button, Dropdown, DropdownTrigger,
+  Input, Button, DropdownTrigger,
   DropdownItem, DropdownMenu
 } from "@nextui-org/react";
 import { MdOutlineEdit, MdDeleteOutline } from "react-icons/md";
@@ -9,6 +9,7 @@ import { Column } from "../../types";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import PortfolioContext from "../../store/ProtfolioContext";
 import { FaPlus } from "react-icons/fa6";
+import CustomDropdown from "../CustomNextUIComponents/CustomDropdown";
 
 
 type PortfolioTopContentType = {
@@ -44,9 +45,10 @@ const PortfolioTopContent = ({
               mainWrapper: "h-full",
               input: "text-small",
               inputWrapper:
-                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                "h-full font-normal text-default-500",
             }}
             className="w-full sm:max-w-[25%]"
+            variant="bordered"
             placeholder="Search by name..."
             value={filterValue}
             onClear={onSearchChange}
@@ -72,7 +74,7 @@ const PortfolioTopContent = ({
               setVisibleColumns={setVisibleColumns}
             />
             {selectedPortfolio && (
-              <Dropdown>
+              <CustomDropdown>
                 <DropdownTrigger>
                   <Button
                     isIconOnly
@@ -104,7 +106,7 @@ const PortfolioTopContent = ({
                     Delete
                   </DropdownItem>
                 </DropdownMenu>
-              </Dropdown>
+              </CustomDropdown>
             )}
           </div>
         </div>

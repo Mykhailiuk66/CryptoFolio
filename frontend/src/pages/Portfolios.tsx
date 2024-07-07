@@ -11,7 +11,7 @@ import PortfolioTopContent from "../components/PortfolioComponents/PortfolioTopC
 import PortfolioFormModalContent from "../components/PortfolioComponents/PortfolioFormModalContent";
 import PortfolioCharts from "../components/PortfolioComponents/PortfolioCharts";
 import PortfolioSidebar from "../components/PortfolioComponents/PortfolioSidebar";
-import CustomModal from "../components/CustomModal/CustomModal";
+import CustomModal from "../components/CustomNextUIComponents/CustomModal";
 import PortfolioHoldingFormModalContent from "../components/PortfolioComponents/PortfolioHoldingFormModalContent";
 
 
