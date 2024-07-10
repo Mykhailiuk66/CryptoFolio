@@ -70,6 +70,7 @@ def create_or_update_coin_exchange_info_bulk(infos_list: List[Dict[str, any]], a
             date=info['info_date'],
             price=float(ticker_info['price']),
             volume=float(ticker_info['volume']),
+            turnover=float(ticker_info['turnover']),
             prev_price_24h=float(ticker_info['prev_price_24h']),
             high_price=float(ticker_info['high_price']),
             low_price=float(ticker_info['low_price']),
@@ -79,6 +80,6 @@ def create_or_update_coin_exchange_info_bulk(infos_list: List[Dict[str, any]], a
 
     CoinExchangeInfo.objects.bulk_create(objs=bulk_instances,
                                          update_conflicts=True,
-                                         update_fields=["price", "volume", "prev_price_24h",
-                                                        "high_price", "low_price"],
+                                         update_fields=["price", "volume", "turnover",
+                                                        "prev_price_24h", "high_price", "low_price"],
                                          unique_fields=["coin", "exchange", "date"])

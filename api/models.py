@@ -64,6 +64,8 @@ class CoinExchangeInfo(models.Model):
     date = models.DateField(default=date.today, blank=True)
     price = models.DecimalField(max_digits=40, decimal_places=20)
 
+    turnover = models.DecimalField(
+        max_digits=40, decimal_places=10, null=True, blank=True)
     volume = models.DecimalField(
         max_digits=40, decimal_places=10, null=True, blank=True)
     prev_price_24h = models.DecimalField(
@@ -72,12 +74,6 @@ class CoinExchangeInfo(models.Model):
         max_digits=40, decimal_places=20, null=True, blank=True)
     low_price = models.DecimalField(
         max_digits=40, decimal_places=20, null=True, blank=True)
-
-    @property
-    def get_turnover(self):
-        if self.volume:
-            return round((self.volume * self.price), 2)
-        return None
 
     @property
     def get_price_change(self):
@@ -175,8 +171,5 @@ class WatchlistCoin(models.Model):
     class Meta:
         unique_together = ('watchlist', 'coin', "exchange")
 
-
     def __str__(self):
         return f"{self.watchlist.name} - {self.watchlist.user.username} - {self.coin.short_name} - {self.exchange.name}"
-
-

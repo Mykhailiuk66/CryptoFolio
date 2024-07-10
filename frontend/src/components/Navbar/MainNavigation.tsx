@@ -51,8 +51,8 @@ const MainNavigation = () => {
 
         <NavbarContent className="hidden md:flex gap-3">
           <NavbarLink href="/" pathname={pathname}>Explore</NavbarLink>
-          <NavbarLink href="/portfolio" pathname={pathname}>Portfolio</NavbarLink>
           <NavbarLink href="/watchlist" pathname={pathname}>Watchlist</NavbarLink>
+          <NavbarLink href="/portfolio" pathname={pathname}>Portfolio</NavbarLink>
         </NavbarContent>
       </NavbarContent>
 
@@ -78,8 +78,8 @@ const MainNavigation = () => {
 
       <NavbarMenu>
         <NavbarMenuLink href="/" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Explore</NavbarMenuLink>
-        <NavbarMenuLink href="/portfolio" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Portfolio</NavbarMenuLink>
         <NavbarMenuLink href="/watchlist" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Watchlist</NavbarMenuLink>
+        <NavbarMenuLink href="/portfolio" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Portfolio</NavbarMenuLink>
 
         {!user && (<NavbarMenuLink href="/login" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Log In</NavbarMenuLink>)}
         {user && (<Button color="danger" onClick={logoutUser}>Log Out</Button>)}

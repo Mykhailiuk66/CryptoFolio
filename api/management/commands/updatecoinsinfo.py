@@ -29,7 +29,7 @@ class Command(BaseCommand):
 
                             tickers_info_list.append(info)
                     except Exception as ex:
-                        print("Error during tickers_info creation:", ex)
+                        print(f"Error during tickers_info creation ({e}, {manager.get_symbol(ticker)}): {ex}")
 
                 create_or_update_coin_exchange_info_bulk(tickers_info_list)
             except Exception as ex:

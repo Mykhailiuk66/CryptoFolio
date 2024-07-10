@@ -65,12 +65,14 @@ class BinanceManager(ExchangeManager):
         coin = symbol.replace(ExchangeManager.SETTLE_COIN, '').strip()
         
         volume = float(ticker_data[5])
+        turnover = float(ticker_data[7])
         price = float(ticker_data[4])
         prev_price_24h = float(ticker_data[1])
         high_price = float(ticker_data[2])
         low_price = float(ticker_data[3])
         if symbol.find(ExchangeManager.SETTLE_COIN) == 0:
             volume = float(ticker_data[7])
+            turnover = float(ticker_data[5])
             price = (1 / price) if price != 0 else 0
             prev_price_24h = (1 / prev_price_24h) if prev_price_24h != 0 else 0
             high_price = (1 / high_price) if high_price != 0 else 0
@@ -80,6 +82,7 @@ class BinanceManager(ExchangeManager):
             'coin': coin,
             'price': price,
             'volume': volume,
+            'turnover': turnover,
             'prev_price_24h': prev_price_24h,
             'high_price': high_price,
             'low_price': low_price,
@@ -94,12 +97,14 @@ class BinanceManager(ExchangeManager):
             ExchangeManager.SETTLE_COIN, '').strip()
 
         volume = float(data.get('volume'))
+        turnover = float(data.get('quoteVolume'))
         price = float(data.get('lastPrice'))
         prev_price_24h = float(data.get('prevClosePrice'))
         high_price = float(data.get('highPrice'))
         low_price = float(data.get('lowPrice'))
         if data.get('symbol').find(ExchangeManager.SETTLE_COIN) == 0:
             volume = float(data.get('quoteVolume'))
+            turnover = float(data.get('volume'))
             price = (1 / price) if price != 0 else 0
             prev_price_24h = (1 / prev_price_24h) if prev_price_24h != 0 else 0
             high_price = (1 / high_price) if high_price != 0 else 0
@@ -109,6 +114,7 @@ class BinanceManager(ExchangeManager):
         return {
             'coin': coin,
             'volume': volume if is_active else 0,
+            'turnover': turnover if is_active else 0,
             'price': price if is_active else 0,
             'prev_price_24h': prev_price_24h if is_active else 0 ,
             'high_price': high_price if is_active else 0,
@@ -148,6 +154,7 @@ class BybitManager(ExchangeManager):
             'coin': coin,
             'price': float(ticker_data[4]),
             'volume': float(ticker_data[5]),
+            'turnover': float(ticker_data[6]),
             'prev_price_24h': float(ticker_data[1]),
             'high_price': float(ticker_data[2]),
             'low_price': float(ticker_data[3]),
@@ -166,6 +173,7 @@ class BybitManager(ExchangeManager):
         return {
             'coin': coin,
             'volume': float(data.get('volume24h')),
+            'turnover': float(data.get('turnover24h')),
             'price': float(data.get('lastPrice')),
             'prev_price_24h': float(data.get('prevPrice24h')),
             'high_price': float(data.get('highPrice24h')),
@@ -216,6 +224,7 @@ class OkxManager(ExchangeManager):
             'coin': coin,
             'price': float(ticker_data[4]),
             'volume': float(ticker_data[5]),
+            'turnover': float(ticker_data[7]),
             'prev_price_24h': float(ticker_data[1]),
             'high_price': float(ticker_data[2]),
             'low_price': float(ticker_data[3]),
@@ -234,6 +243,7 @@ class OkxManager(ExchangeManager):
         return {
             'coin': coin,
             'volume': float(data.get('vol24h')),
+            'turnover': float(data.get('volCcy24h')),
             'price': float(data.get('last')),
             'prev_price_24h': float(data.get('open24h')),
             'high_price': float(data.get('high24h')),
@@ -270,6 +280,7 @@ class KucoinManager(ExchangeManager):
             'coin': coin,
             'price': float(ticker_data[2]),
             'volume': float(ticker_data[5]),
+            'turnover': float(ticker_data[6]),
             'prev_price_24h': float(ticker_data[1]),
             'high_price': float(ticker_data[3]),
             'low_price': float(ticker_data[4]),
@@ -287,6 +298,7 @@ class KucoinManager(ExchangeManager):
         return {
             'coin': coin,
             'volume': float(data.get('vol')),
+            'turnover': float(data.get('volValue')),
             'price': float(data.get('last')),
             'prev_price_24h': float(data.get('last')) - float(data.get('changePrice') or 0),
             'high_price': float(data.get('high')),
@@ -328,6 +340,7 @@ class BitgetManager(ExchangeManager):
             'coin': coin,
             'price': float(ticker_data[4]),
             'volume': float(ticker_data[5]),
+            'turnover': float(ticker_data[7]),
             'prev_price_24h': float(ticker_data[1]),
             'high_price': float(ticker_data[2]),
             'low_price': float(ticker_data[3]),
@@ -340,11 +353,11 @@ class BitgetManager(ExchangeManager):
 
     @staticmethod
     def format_ticker_info(data: dict):
-        coin = data.get('symbol').replace(
-            ExchangeManager.SETTLE_COIN, '').strip()
+        coin = data.get('symbol').replace(ExchangeManager.SETTLE_COIN, '').strip()
         return {
             'coin': coin,
             'volume': float(data.get('baseVol')),
+            'turnover': float(data.get('quoteVol')),
             'price': float(data.get('close')),
             'prev_price_24h': float(data.get('openUtc0')),
             'high_price': float(data.get('high24h')),
