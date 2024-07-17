@@ -56,7 +56,6 @@ const CustomAreaChart = <T,>({ data, xDataKey, yDataKey, showGrid }: CustomAreaC
         margin={{
           top: 10,
           right: 20,
-          left: 20,
           bottom: 0,
         }}
         stackOffset="wiggle"

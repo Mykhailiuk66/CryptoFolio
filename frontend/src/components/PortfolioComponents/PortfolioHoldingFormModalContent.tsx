@@ -13,7 +13,7 @@ import DatePicker from "react-multi-date-picker"
 import type { DateObject } from "react-multi-date-picker"
 import PortfolioContext from "../../store/ProtfolioContext";
 import CoinAutocomplete from "../Autocomplete/CoinAutocomplete";
-import ExchangeAutoComplete from "../Autocomplete/ExchangeAutoComplete";
+import ExchangeAutocomplete from "../Autocomplete/ExchangeAutocomplete";
 
 
 type PortfolioHoldingFormModalContentType = {
@@ -86,7 +86,7 @@ const PortfolioHoldingFormModalContent = ({ title, value, holdingId, onClose }: 
           selectedKey={formData.coin}
           onSelectionChange={(value) => handleChange('coin', value)}
         />
-        <ExchangeAutoComplete 
+        <ExchangeAutocomplete 
           label="Exchange *"
           selectedKey={formData.exchange}
           onSelectionChange={(value) => handleChange('exchange', value)}

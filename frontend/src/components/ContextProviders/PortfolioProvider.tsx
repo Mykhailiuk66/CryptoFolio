@@ -194,7 +194,7 @@ const PortfolioProvider = ({ children }: PortfolioProviderProps) => {
         throw new Error("Failed to edit portfolio holding");
       }
     } catch (error) {
-      console.error("Error editting portfolio holding:", error);
+      console.error("Error editing portfolio holding:", error);
     }
   }, [authTokens?.access, selectedPortfolio]);
 

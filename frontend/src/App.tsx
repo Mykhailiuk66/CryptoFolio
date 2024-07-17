@@ -7,6 +7,7 @@ import Authentication from "./pages/Authentication";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import WatchlistProvider from "./components/ContextProviders/WatchlistProvider";
 import PortfolioProvider from "./components/ContextProviders/PortfolioProvider";
+import Hero from "./pages/Hero";
 
 const router = createRouter([
   {
@@ -17,6 +18,10 @@ const router = createRouter([
     children: [
       {
         path: '',
+        element: <Hero />,
+      },
+      {
+        path: 'explore',
         element: <Explore />,
       },
       {

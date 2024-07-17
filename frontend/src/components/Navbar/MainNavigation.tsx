@@ -28,7 +28,7 @@ const MainNavigation = () => {
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       maxWidth="full"
-      className="bg-default-100/20"
+      className="bg-default-100/20 z-50"
       isBlurred
     >
       <NavbarContent justify="start">
@@ -50,7 +50,7 @@ const MainNavigation = () => {
         </Link>
 
         <NavbarContent className="hidden md:flex gap-3">
-          <NavbarLink href="/" pathname={pathname}>Explore</NavbarLink>
+          <NavbarLink href="/explore" pathname={pathname}>Explore</NavbarLink>
           <NavbarLink href="/watchlist" pathname={pathname}>Watchlist</NavbarLink>
           <NavbarLink href="/portfolio" pathname={pathname}>Portfolio</NavbarLink>
         </NavbarContent>
@@ -77,7 +77,7 @@ const MainNavigation = () => {
       </NavbarContent>
 
       <NavbarMenu>
-        <NavbarMenuLink href="/" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Explore</NavbarMenuLink>
+        <NavbarMenuLink href="/explore" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Explore</NavbarMenuLink>
         <NavbarMenuLink href="/watchlist" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Watchlist</NavbarMenuLink>
         <NavbarMenuLink href="/portfolio" pathname={pathname} onClick={() => setIsMenuOpen(false)}>Portfolio</NavbarMenuLink>
 

@@ -80,8 +80,8 @@ const WatchlistTopContent = ({
         )}
       </CustomModal>
       <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <div className="flex w-full max-w-xs items-center gap-2">
+        <div className="flex justify-between flex-wrap md:flex-nowrap gap-3 items-end">
+          <div className="flex w-full md:max-w-xs justify-between items-center gap-2">
             <Select
               disallowEmptySelection
               items={watchlists}
@@ -114,20 +114,20 @@ const WatchlistTopContent = ({
           <Input
             isClearable
             classNames={{
-              base: "max-w-full sm:max-w-[17rem] h-10 hidden md:block",
+              base: "max-w-full md:max-w-[17rem] h-10 hidden md:block",
               mainWrapper: "h-full",
               input: "text-small",
               inputWrapper:
                 "h-full font-normal text-default-500",
             }}
-            className="w-full sm:max-w-[25%]"
+            className="w-full md:max-w-[25%]"
             variant="bordered"
             placeholder="Search by name..."
             value={filterValue}
             onClear={onSearchChange}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
+          <div className="flex w-full md:max-w-fit md:justify-end gap-3">
             {selectedWatchlist && (<Button
               color="primary"
               variant="bordered"
@@ -145,12 +145,14 @@ const WatchlistTopContent = ({
               visibleColumns={visibleColumns}
               setVisibleColumns={setVisibleColumns}
             />
+
             {selectedWatchlist && (
               <CustomDropdown>
                 <DropdownTrigger>
                   <Button
                     isIconOnly
                     variant="bordered"
+                    className="ml-auto"
                   >
                     <BsThreeDotsVertical />
                   </Button>
