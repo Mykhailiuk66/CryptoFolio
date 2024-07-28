@@ -39,6 +39,7 @@ const MainNavigation = () => {
         <Link href="/" color="primary">
           <NavbarBrand className="mr-4">
             <Image
+              disableSkeleton
               width={60}
               src="static/logo.png"
               className="hidden sm:block "

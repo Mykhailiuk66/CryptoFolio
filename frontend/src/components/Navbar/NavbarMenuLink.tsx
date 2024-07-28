@@ -6,7 +6,7 @@ type NavbarMenuLinkProps = {
   children: string;
   href: string;
   pathname: string;
-  color?: "primary" | "foreground" | "secondary" | "success" | "warning" | "danger" | undefined;
+  color?: "primary" | "foreground" | "secondary" | "success" | "warning" | "danger";
   onClick?: MouseEventHandler;
 }
 
