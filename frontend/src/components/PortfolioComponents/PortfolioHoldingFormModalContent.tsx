@@ -14,6 +14,8 @@ import CoinAutocomplete from "../Autocomplete/CoinAutocomplete";
 import ExchangeAutocomplete from "../Autocomplete/ExchangeAutocomplete";
 import { DataContext } from "../../store/DataContext";
 import { PortfolioContext } from "../../store/PortfolioContext";
+import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
+import "react-multi-date-picker/styles/colors/green.css";
 
 type PortfolioHoldingFormModalContentType = {
 	title: string;

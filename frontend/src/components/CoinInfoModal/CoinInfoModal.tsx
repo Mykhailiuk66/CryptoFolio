@@ -1,70 +1,32 @@
 import {
 	Card,
-	CardBody,
-	CardHeader,
-	Chip,
-	Divider,
 	Modal,
 	ModalBody,
 	ModalContent,
 	ModalHeader,
 	Spinner,
 } from "@nextui-org/react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 import CustomAreaChart from "../Chart/CustomAreaChart";
-import { CoinData } from "../../types";
-import { DataContext } from "../../store/DataContext";
-import InfoField from "./InfoField";
-import { formatCurrency, formatProfitLoss } from "../../utils";
 import { CoinModalContext } from "../../store/CoinModalContext";
+import CoinInfoCard from "./CoinInfoCard";
 
 const CoinInfoModal = () => {
-	const [historyPrices, setHistoryPrices] = useState<CoinData[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>();
-	const { coins, exchanges } = useContext(DataContext);
-	const { isOpen, coinInfo, onClose } = useContext(CoinModalContext);
-
-	const coin = coins.find(
-		(c) => c.slug.toLowerCase() === coinInfo.coinSlug.toLowerCase()
-	);
-	const exchange = exchanges.find((e) => e.slug === coinInfo.exchangeSlug);
-	const latestData =
-		historyPrices.length > 0 ? historyPrices.slice(-1)[0] : null;
+	const {
+		isOpen,
+		coinInfo,
+		isLoading,
+		onClose,
+		historyPrices,
+		fetchHistoryPrices,
+	} = useContext(CoinModalContext);
 
 	useEffect(() => {
-		const fetchHistoryPrices = async (
-			exchangeSlug: string,
-			coinSlug: string
-		) => {
-			try {
-				const response = await fetch(
-					`/api/history-prices/${exchangeSlug}/${coinSlug}/`,
-					{
-						method: "GET",
-						headers: {
-							"Content-Type": "application/json",
-						},
-					}
-				);
-				if (!response.ok) {
-					throw new Error("Failed to fetch history prices");
-				}
-				const data = await response.json();
-				setHistoryPrices(data);
-			} catch (error) {
-				console.error("Error fetching history prices:", error);
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
 		if (coinInfo.coinSlug && coinInfo.exchangeSlug) {
-			setHistoryPrices([]);
-			setIsLoading(true);
 			fetchHistoryPrices(coinInfo.exchangeSlug!, coinInfo.coinSlug!);
 		}
-	}, [coinInfo.coinSlug, coinInfo.exchangeSlug]);
+	}, [coinInfo.coinSlug, coinInfo.exchangeSlug, fetchHistoryPrices]);
 
 	return (
 		<Modal
@@ -105,102 +67,7 @@ const CoinInfoModal = () => {
 											</Card>
 										</div>
 										<div className="col-span-12 md:col-span-4">
-											<Card className="max-w-[600px] min-h-full border-solid border-1 border-default-200/50 bg-default-100/10">
-												<CardHeader className="flex gap-3">
-													<div className="flex w-full justify-between items-end">
-														<Chip
-															className="capitalize bg-primary-background"
-															color="success"
-															size="lg"
-															variant="faded"
-														>
-															{coin?.short_name}
-														</Chip>
-														<Chip
-															className="capitalize bg-primary-background"
-															color="success"
-															size="md"
-															variant="faded"
-														>
-															{exchange?.name}
-														</Chip>
-													</div>
-												</CardHeader>
-												<Divider />
-												<CardBody>
-													<div className="flex flex-col gap-1">
-														{latestData && (
-															<>
-																<InfoField
-																	label="Price:"
-																	value={
-																		"$" +
-																		formatCurrency(
-																			latestData?.price
-																		)
-																	}
-																/>
-																<InfoField
-																	label="Volume (24h):"
-																	value={formatCurrency(
-																		latestData?.volume
-																	)}
-																/>
-																<InfoField
-																	label="Previous Price (24h):"
-																	value={
-																		"$" +
-																		formatCurrency(
-																			latestData?.prev_price_24h
-																		)
-																	}
-																/>
-																<InfoField
-																	label="High Price (24h):"
-																	value={
-																		"$" +
-																		formatCurrency(
-																			latestData?.high_price
-																		)
-																	}
-																/>
-																<InfoField
-																	label="Low Price (24h):"
-																	value={
-																		"$" +
-																		formatCurrency(
-																			latestData?.low_price
-																		)
-																	}
-																/>
-																<InfoField
-																	label="Turnover (24h):"
-																	value={
-																		"$" +
-																		formatCurrency(
-																			latestData?.turnover
-																		)
-																	}
-																/>
-																<InfoField
-																	label="Price Change (24h):"
-																	value={formatProfitLoss(
-																		latestData?.price_change
-																	)}
-																/>
-																<InfoField
-																	label="Price Change (%):"
-																	value={
-																		formatCurrency(
-																			latestData?.price_change_perc
-																		) + "%"
-																	}
-																/>
-															</>
-														)}
-													</div>
-												</CardBody>
-											</Card>
+											<CoinInfoCard />
 										</div>
 									</div>
 								)}

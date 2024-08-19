@@ -1,82 +1,85 @@
 import {
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input,
-  Textarea,
+	ModalHeader,
+	ModalBody,
+	ModalFooter,
+	Button,
+	Input,
+	Textarea,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { PortfolioFormType, PortfolioType } from "../../types";
 
-
 type PortfolioFormModalContentType = {
-  title: string;
-  portfolio?: PortfolioType;
-  handleSave: (submittedPortfolio: PortfolioFormType) => void;
-  onClose: () => void,
-}
+	title: string;
+	portfolio?: PortfolioType;
+	handleSave: (submittedPortfolio: PortfolioFormType) => void;
+	onClose: () => void;
+};
 
-const PortfolioFormModalContent = ({ title, portfolio, handleSave, onClose }: PortfolioFormModalContentType) => {
-  const [name, setName] = useState("");
-  const [notes, setNotes] = useState("");
+const PortfolioFormModalContent = ({
+	title,
+	portfolio,
+	handleSave,
+	onClose,
+}: PortfolioFormModalContentType) => {
+	const [name, setName] = useState("");
+	const [notes, setNotes] = useState("");
 
-  useEffect(() => {
-    if (portfolio) {
-      setName(portfolio?.name)
-      setNotes(portfolio?.notes!)
-    }
-  }, [portfolio])
+	useEffect(() => {
+		if (portfolio) {
+			setName(portfolio?.name);
+			setNotes(portfolio?.notes!);
+		}
+	}, [portfolio]);
 
+	const onSave = () => {
+		const newPortfolio: PortfolioFormType = {
+			name: name,
+			notes: notes,
+		};
+		handleSave(newPortfolio);
+		setName("");
+		setNotes("");
+	};
 
-  const onSave = () => {
-    const newPortfolio: PortfolioFormType = {
-      name: name,
-      notes: notes,
-    };
-    handleSave(newPortfolio);
-    setName("");
-    setNotes("");
-  }
+	return (
+		<>
+			<ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
+			<ModalBody>
+				<Input
+					autoFocus
+					isRequired
+					label="Portfolio Name"
+					variant="bordered"
+					name="name"
+					value={name}
+					onValueChange={setName}
+				/>
+				<Textarea
+					label="Notes"
+					placeholder="Add notes..."
+					variant="bordered"
+					name="notes"
+					value={notes}
+					onValueChange={setNotes}
+					className="mt-2"
+					maxLength={500}
+				/>
+			</ModalBody>
+			<ModalFooter>
+				<Button
+					isDisabled={!name}
+					className="bg-primary-600 text-background"
+					onPress={() => {
+						onSave();
+						onClose();
+					}}
+				>
+					Save
+				</Button>
+			</ModalFooter>
+		</>
+	);
+};
 
-  return (
-    <>
-      <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
-      <ModalBody>
-        <Input
-          autoFocus
-          isRequired
-          label="Portfolio Name"
-          variant="bordered"
-          name="name"
-          value={name}
-          onValueChange={setName}
-        />
-        <Textarea
-          label="Notes"
-          placeholder="Add notes..."
-          variant="bordered"
-          name="notes"
-          value={notes}
-          onValueChange={setNotes}
-          className="mt-2"
-          maxLength={500}
-        />
-      </ModalBody>
-      <ModalFooter>
-        <Button
-          isDisabled={!name}
-          className="bg-primary-600 text-background"
-          onPress={() => {
-            onSave()
-            onClose()
-          }}>
-          Save
-        </Button>
-      </ModalFooter>
-    </>
-  )
-}
-
-
-export default PortfolioFormModalContent
+export default PortfolioFormModalContent;
