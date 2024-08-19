@@ -7,11 +7,11 @@ import {
 } from "@nextui-org/react";
 import { SetStateAction } from "react";
 import { IoChevronDownSharp } from "react-icons/io5";
-import { Column } from "../../types";
+import { ColumnType } from "../../types";
 import CustomDropdown from "../CustomNextUIComponents/CustomDropdown";
 
 type ColumnsDropdownProps = {
-  columns: Column[];
+  columns: ColumnType[];
   visibleColumns: Selection;
   setVisibleColumns: (selection: SetStateAction<Selection>) => void;
 };

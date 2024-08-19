@@ -23,7 +23,7 @@ export type AuthContextType = {
 	logoutUser: () => void;
 	registerUser: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 	registerErrors: Record<string, string[]>;
-  isLoginUnsuccessful: boolean | undefined
+	isLoginUnsuccessful: boolean | undefined;
 };
 
 export type CoinData = {
@@ -41,7 +41,7 @@ export type CoinData = {
 	price_change_perc: number;
 };
 
-export type Column = {
+export type ColumnType = {
 	name: string;
 	id: string;
 	visible?: boolean;
@@ -84,7 +84,7 @@ export type WatchlistModalState =
 	| "EDIT_WATCHLIST"
 	| "ADD_COIN"
 	| null;
-  
+
 export type PortfolioModalState =
 	| "ADD_PORTFOLIO"
 	| "EDIT_PORTFOLIO"
@@ -212,4 +212,8 @@ export type CustomCoinExchangeType = {
 	name: string | null;
 	slug: string;
 	icon: string;
+};
+
+export type DefaultProviderProps = {
+	children: React.ReactNode;
 };

@@ -8,13 +8,13 @@ import {
   SortDescriptor,
 } from "@nextui-org/react";
 import { Key } from "react";
-import { Column } from "../../types";
+import { ColumnType } from "../../types";
 
 type CustomTableProps<T> = {
   sortDescriptor: SortDescriptor;
   setSortDescriptor: React.Dispatch<React.SetStateAction<SortDescriptor>>;
   topContent: React.ReactNode;
-  headerColumns: Column[];
+  headerColumns: ColumnType[];
   sortedItems: T[];
   CellComponent: React.ComponentType<{ item: T; columnKey: Key }>;
 };
