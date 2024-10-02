@@ -23,7 +23,10 @@ class Command(BaseCommand):
                 try:
                     infos_list = []
 
-                    history_prices = manager.get_history_prices(symbol=symbol)
+                    history_prices = manager.get_history_prices(symbol=symbol,
+                                                                interval="1w")
+                    history_prices.extend(manager.get_history_prices(
+                        symbol=symbol, interval="1d", limit=150))
                     for i, h in enumerate(history_prices[:-1]):
                         ticker_info, info_date = manager.format_ticker_history(
                             symbol, h)

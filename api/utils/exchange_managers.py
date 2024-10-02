@@ -54,16 +54,21 @@ class BinanceManager(ExchangeManager):
     def get_symbols(self):
         return [ticker['symbol'] for ticker in self.client.ticker_price() if self.SETTLE_COIN in ticker['symbol']]
 
-    def get_history_prices(self, symbol, interval="1w"):
+    def get_history_prices(self, symbol, interval="1w", limit=1000):
+        intv = {
+            '1d': '1d',
+            '1w': '1w',
+        }.get(interval)
+
         return self.client.klines(symbol=symbol,
-                                  interval=interval,
-                                  limit=1000,
+                                  interval=intv,
+                                  limit=limit,
                                   )
 
     @staticmethod
     def format_ticker_history(symbol, ticker_data):
         coin = symbol.replace(ExchangeManager.SETTLE_COIN, '').strip()
-        
+
         volume = float(ticker_data[5])
         turnover = float(ticker_data[7])
         price = float(ticker_data[4])
@@ -116,7 +121,7 @@ class BinanceManager(ExchangeManager):
             'volume': volume if is_active else 0,
             'turnover': turnover if is_active else 0,
             'price': price if is_active else 0,
-            'prev_price_24h': prev_price_24h if is_active else 0 ,
+            'prev_price_24h': prev_price_24h if is_active else 0,
             'high_price': high_price if is_active else 0,
             'low_price': low_price if is_active else 0,
         }
@@ -141,10 +146,15 @@ class BybitManager(ExchangeManager):
     def get_symbols(self):
         return [ticker['symbol'] for ticker in self.client.get_tickers(category='spot')['result']['list'] if self.SETTLE_COIN in ticker['symbol']]
 
-    def get_history_prices(self, symbol, interval="W"):
+    def get_history_prices(self, symbol, interval="1w", limit=1000):
+        intv = {
+            '1d': 'D',
+            '1w': 'W',
+        }.get(interval)
+
         return self.client.get_kline(symbol=symbol,
-                                     interval=interval,
-                                     limit=1000,
+                                     interval=intv,
+                                     limit=limit,
                                      )['result']['list'][::-1]
 
     @staticmethod
@@ -199,15 +209,20 @@ class OkxManager(ExchangeManager):
     def get_symbols(self):
         return [ticker['instId'] for ticker in self.client.get_index_tickers(quoteCcy=ExchangeManager.SETTLE_COIN)['data'] if self.SETTLE_COIN in ticker['instId']]
 
-    def get_history_prices(self, symbol, interval="1W"):
+    def get_history_prices(self, symbol, interval="1w", limit=300):
+        intv = {
+            '1d': '1Dutc',
+            '1w': '1Wutc',
+        }.get(interval)
+
         history_prices = []
 
         before = ''
         while True:
             resp = self.client.get_candlesticks(instId=symbol,
                                                 after=before,
-                                                bar=interval,
-                                                limit=300)['data']
+                                                bar=intv,
+                                                limit=limit)['data']
             if not resp:
                 break
 
@@ -269,9 +284,14 @@ class KucoinManager(ExchangeManager):
     def get_symbols(self):
         return [ticker['symbolName'] for ticker in self.client.get_all_tickers()['ticker'] if self.SETTLE_COIN in ticker['symbolName']]
 
-    def get_history_prices(self, symbol, interval="1week"):
+    def get_history_prices(self, symbol, interval="1w", limit=1000):
+        intv = {
+            '1d': '1day',
+            '1w': '1week',
+        }.get(interval)
+
         return self.client.get_kline(symbol=symbol,
-                                     kline_type=interval)[::-1]
+                                     kline_type=intv)[:limit:-1]
 
     @staticmethod
     def format_ticker_history(symbol, ticker_data):
@@ -325,11 +345,16 @@ class BitgetManager(ExchangeManager):
     def get_symbols(self):
         return [ticker['symbol'] for ticker in self.client.spot_get_tickers()['data'] if self.SETTLE_COIN in ticker['symbol']]
 
-    def get_history_prices(self, symbol, interval="1Wutc"):
+    def get_history_prices(self, symbol, interval="1w", limit=1000):
+        intv = {
+            '1d': '1Dutc',
+            '1w': '1Wutc',
+        }.get(interval)
+
         params = {
             'symbol': symbol,
-            'granularity': interval,
-            'limit': 1000,
+            'granularity': intv,
+            'limit': limit,
         }
         return self.client._request("GET", '/api/v2/spot/market/candles', params)['data']
 
@@ -353,7 +378,8 @@ class BitgetManager(ExchangeManager):
 
     @staticmethod
     def format_ticker_info(data: dict):
-        coin = data.get('symbol').replace(ExchangeManager.SETTLE_COIN, '').strip()
+        coin = data.get('symbol').replace(
+            ExchangeManager.SETTLE_COIN, '').strip()
         return {
             'coin': coin,
             'volume': float(data.get('baseVol')),
